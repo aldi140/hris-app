@@ -1,4 +1,4 @@
-import { Building, CalendarArrowUp, History, LayoutDashboard, PanelsLeftBottom } from "lucide-react";
+import { BriefcaseBusiness, Building, CalendarArrowUp, History, LayoutDashboard, PanelsLeftBottom, Users } from "lucide-react";
 import { Button } from "../../ui/button"
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "../../ui/sheet"
 
@@ -40,8 +40,14 @@ const SidebarResponsive = ({ location }) => {
                         <NavLinkResponsive to="#" title="Pengajuan Cuti/Izin" icon={LayoutDashboard} />
                         <NavLinkResponsive to="#" title="Riwayat Pengajuan" icon={LayoutDashboard} />
 
-                        <div className="px-3 py-2 text-sm font-semibold text-foreground">Departmen</div>
-                        <NavLinkResponsive to="/departmen" active={location.pathname === "/departmen"} title="Departmen" icon={Building} />
+                        <div className="px-3 py-2 text-sm font-semibold text-foreground">Departemen</div>
+                        <NavLinkResponsive to="/departmen"  active={location.pathname.startsWith("/departmen")} title="Master Departmen" icon={Building} />
+
+                        <div className="px-3 py-2 text-sm font-semibold text-foreground">Jabatan</div>
+                        <NavLinkResponsive to="/jabatan"  active={location.pathname.startsWith("/jabatan")} title="Master Jabatan" icon={BriefcaseBusiness} />
+
+                        <div className="px-3 py-2 text-sm font-semibold text-foreground">Karyawan</div>
+                        <NavLinkResponsive to="/karyawan"  active={location.pathname.startsWith("/karyawan")} title="Master Karyawan" icon={Users} />
                     </nav>
                 </nav>
 

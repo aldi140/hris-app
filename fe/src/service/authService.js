@@ -8,7 +8,7 @@ export const login = async (email, password) => {
   // if (response.data.token) {
   //     localStorage.setItem("user", JSON.stringify(response.data));
   // }
-  return response;
+  return response.data;
 };
 
 export const register = async (name, email, password) => {
@@ -17,5 +17,5 @@ export const register = async (name, email, password) => {
     email,
     password,
   });
-  return response;
+  return response.data;
 };

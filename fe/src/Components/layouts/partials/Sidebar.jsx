@@ -1,4 +1,4 @@
-import { Building, CalendarArrowUp, History, LayoutDashboard, PanelsLeftBottom } from "lucide-react";
+import { BriefcaseBusiness, Building, CalendarArrowUp, History, LayoutDashboard, PanelsLeftBottom, Users } from "lucide-react";
 import NavLink from "../../commons/atoms/NavLink";
 
 
@@ -17,7 +17,13 @@ const Sidebar = ({ location}) => {
             <NavLink to="#" title="Riwayat Pengajuan" icon={LayoutDashboard} />
 
             <div className="px-3 py-2 text-sm font-semibold text-foreground">Departmen</div>
-            <NavLink to="/departmen" active={location.pathname === "/departmen"} title="Master" icon={Building } />
+            <NavLink to="/departmen" active={location.pathname.startsWith("/departmen")} title="Master Departmen" icon={Building } />
+
+            <div className="px-3 py-2 text-sm font-semibold text-foreground">Jabatan</div>
+            <NavLink to="/jabatan" active={location.pathname.startsWith("/jabatan")} title="Master Jabatan" icon={BriefcaseBusiness  } />
+
+            <div className="px-3 py-2 text-sm font-semibold text-foreground">Karyawan</div>
+            <NavLink to="/karyawan" active={location.pathname.startsWith("/karyawan")} title="Master Karyawan" icon={Users} />
         </nav>
     )
 }

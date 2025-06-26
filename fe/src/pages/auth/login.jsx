@@ -24,10 +24,7 @@ const PageLogin = ({title}) => {
         const email = e.target.email.value;
         const password = e.target.password.value;
         try {
-            const result = await handleLogin({ email, password });
-            console.log(result);
-            localStorage.setItem("user", JSON.stringify(result.data.user));
-            localStorage.setItem("token", result.data.api_token);
+            await handleLogin({ email, password });
             navigate("/");
         } catch (error) {
             console.log(error);

@@ -6,9 +6,15 @@ import { Avatar, AvatarFallback } from "../ui/avatar";
 
 import Sidebar from "./partials/Sidebar";
 import SidebarResponsive from "./partials/SidebarResponsive";
+import { useDispatch, useSelector } from "react-redux";
+import { dataUser } from "../../features/auth/authSlice";
+import { useAuth } from "../../hooks/useAuth";
 
 const MainLayout = () => {
-    const location = useLocation();
+    const { handleLogout } = useAuth()
+    const user = useSelector(dataUser)
+    const location = useLocation()
+
     return (
         <>
 
@@ -33,12 +39,12 @@ const MainLayout = () => {
                 <div className="flex flex-col flex-1 w-full lg:w-4/5">
                     <header className="flex h-12 items-center justify-between gap-4 border-b px-4 lg:h-[60px] lg:px-6 lg:justify-end">
                         {/* sidebar responsive */}
-                        <SidebarResponsive location={location}/>
+                        <SidebarResponsive location={location} />
                         {/* dropdown */}
                         <DropdownMenu>
                             <DropdownMenuTrigger asChild>
                                 <Button variant="ghost" className="flex gap-x-2">
-                                    <span>Hi, Budi Setiawan</span>
+                                    <span>Hi, {user.name}</span>
                                     <Avatar>
                                         <AvatarFallback>B</AvatarFallback>
                                     </Avatar>
@@ -49,7 +55,9 @@ const MainLayout = () => {
                                 <DropdownMenuSeparator />
                                 <DropdownMenuItem>Profile</DropdownMenuItem>
                                 <DropdownMenuItem asChild>
-                                    <Link to="#">Logout</Link>
+                                    <button onClick={handleLogout} className="w-full text-left">
+                                        Logout
+                                    </button>
                                 </DropdownMenuItem>
                             </DropdownMenuContent>
                         </DropdownMenu>

@@ -1,47 +1,71 @@
+import { useEffect, useState } from "react";
 import api from "../service";
-import { departmen } from "../service/departmenService";
+import {
+  addDepertmen,
+  deleteDepertmen,
+  departmen,
+  detailDepertmen,
+  updateDepertmen,
+} from "../service/departmenService";
 
 export const useDepartmen = () => {
-    
-    const getDepartmen = async () => {
-        try {
-            const response = await departmen();
-            return response;
-        } catch (error) {
-            console.log( error);
-            throw error
-        }
+  const [departmenList, setDepartmenList] = useState([]);
+  useEffect(() => {
+    getDepartmen();
+  }, []);
+  const getDepartmen = async () => {
+    try {
+      const response = await departmen();
+      setDepartmenList(response.data.data);
+      return response;
+    } catch (error) {
+      console.log(error);
+      throw error;
     }
-    
-    const addDepartmen = async ({ name }) => {
-        try {
-            const response = await api.post("/departmen", { name });
-            return response;
-        } catch (error) {
-            console.log( error);
-            throw error
-        }
-    }
+  };
 
-    const updateDepartmen = async ({ id, name }) => {
-        try {
-            const response = await api.put(`/departmen/${id}`, { name });
-            return response;
-        } catch (error) {
-            console.log( error);
-            throw error
-        }
-    }
+  const getDepartmenName = (id) => {
+    const departmenName = departmenList.find((item) => item.id === id);
+    return departmenName ? departmenName.nama : "";
+  };
 
-    const deleteDepartmen = async ({ id }) => {
-        try {
-            const response = await api.delete(`/departmen/${id}`);
-            return response;
-        } catch (error) {
-            console.log( error);
-            throw error
-        }
+  const handleAddDepartmen = async ({ nama }) => {
+    try {
+      const response = await addDepertmen({ nama });
+      return response;
+    } catch (error) {
+      console.log(error);
+      throw error;
     }
-    
-    return { getDepartmen, addDepartmen, updateDepartmen, deleteDepartmen };
-}
+  };
+  
+
+  const handleUpdateDepartmen = async ({ id, name }) => {
+    try {
+      const response = await updateDepertmen({ id, name });
+      return response;
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  };
+
+  const handleDeleteDepartmen = async ({ id }) => {
+    try {
+      const response = await deleteDepertmen({ id });
+      // console.log(response);
+      return response;
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  };
+
+  return {
+    getDepartmen,
+    getDepartmenName,
+    handleAddDepartmen,
+    handleUpdateDepartmen,
+    handleDeleteDepartmen,
+  };
+};
