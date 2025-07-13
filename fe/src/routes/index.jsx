@@ -1,5 +1,6 @@
 import MainLayout from "../Components/layouts/main.layout";
 import Home from "../pages";
+import PageAbsensi from "../pages/absensi";
 import PageLogin from "../pages/auth/login";
 import PageRegister from "../pages/auth/register";
 import Dashboard from "../pages/dashboard";
@@ -42,6 +43,9 @@ export const routes = [
       // Karyawan
       { path: '/karyawan', element: <PageKaryawan title={"Karyawan"} /> },
       { path: '/karyawan/create', element: <CreateKaryawan title={"Tambah Karyawan"} /> },
+
+      // absensi
+      { path: '/absensi', element: <PageAbsensi title={"Absensi"} /> },
     ]
   }
 ]

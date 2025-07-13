@@ -20,7 +20,7 @@ const NavLink = ({ active = false, to="#", title, icon: Icon, ...props }) => {
         )}
        >
         <Icon className='w-4 h-4'/>
-        <span className="group-hover:translate-x-1 transition-transform duration-200">{title}</span>
+        <p className="group-hover:translate-x-1 transition-transform duration-200">{title}</p>
        </Link>
     )
 }

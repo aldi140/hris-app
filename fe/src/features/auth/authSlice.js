@@ -34,7 +34,7 @@ const token =  localStorage.getItem("token") ? localStorage.getItem("token") : n
 const initialState = {
     user: user,
     token: token,
-    isAuthenticated: token ? true : false,
+    isAuthenticated: !!token,
     isLoading: false,
     isError: null
 }
@@ -59,7 +59,7 @@ export const authSlice = createSlice({
                 state.isLoading = false;
                 state.user = action.payload.user;
                 state.token = action.payload.api_token;
-                state.isAuthenticated = true;
+                state.isAuthenticated =  state.token ? true : false;
             })
             .addCase(loginUser.rejected, (state, action) => {
                 state.isLoading = false;

@@ -29,9 +29,10 @@ const DepartmenList = ({ title }) => {
         const fetchDepartmen = async () => {
             const response = await getDepartmen();
             setData(response.data.data);
+            console.log(response.data.data);
         }
         fetchDepartmen();
-    }, [data])
+    }, [])
 
     const getDepartmenById = async (id) => {
         try {
@@ -56,6 +57,9 @@ const DepartmenList = ({ title }) => {
 
                 toast.success(response.data.message);
                 console.log(response);
+
+                // update data lokal
+                setData(prev => prev.map(item => item.id === departmenById.id ? { ...item, ...values } : item));
 
                 setTimeout(() => {
                     closeDialogRef.current?.click()
@@ -136,7 +140,7 @@ const DepartmenList = ({ title }) => {
                                                             Edit Departmen disini, klik save untuk menyimpan.
                                                         </DialogDescription>
                                                     </DialogHeader>
-                                                    <div className="grid gap-4">
+                                                    <div className="grid gap-4 mt-3">
                                                         <div className="grid gap-3">
                                                             <Label htmlFor="nama">Nama Departmen</Label>
                                                             <Input id="nama" name="nama" value={formik.values.nama} onChange={handleForm} />
