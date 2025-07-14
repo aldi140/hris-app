@@ -79,7 +79,7 @@ const CreateKaryawan = ({ title }) => {
                     if (value instanceof Date && !isNaN(value)) {
                         const formattedDate = format(value, "yyyy-MM-dd");
                         formData.append(key, formattedDate);
-                        // console.log(`${key}:`, formattedDate); // ← ini yang ditampilkan
+                        // console.log(`${key}:`, formattedDate); 
                     } else {
                         formData.append(key, value);
                         // console.log(`${key}:`, value);

@@ -11,12 +11,12 @@ export const addKaryawan = async (data) => {
 }
 
 export const detailKaryawan = async ({ id }) => {
-    const response = await api.get(`/v1/karyawan/${id}`);
+    const response = await api.get(`/v1/karyawan/show/${id}`);
     return response;
 }
 
-export const updateKaryawan = async ({ id }) => {
-    const response = await api.put(`/v1/karyawan/update/${id}`)
+export const updateKaryawan = async ({ id, data }) => {
+    const response = await api.post(`/v1/karyawan/update/${id}`, data)
     return response;
 }
 
