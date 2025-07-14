@@ -26,6 +26,7 @@ return new class extends Migration
             $table->double('komisi', 8, 2)->default(0);
             $table->double('shift', 8, 2)->default(0);
             $table->double('dinas_luar', 8, 2)->default(0);
+            $table->string('user_at', 20)->nullable();
             $table->timestamps();
         });
     }

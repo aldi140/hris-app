@@ -96,16 +96,23 @@ $app->routeMiddleware([
 */
 
 $app->configure('permission');
+$app->configure('filesystems');
+
 $app->alias('cache', \Illuminate\Cache\CacheManager::class);  // if you don't have this already
 $app->register(Spatie\Permission\PermissionServiceProvider::class);
-
+$app->register(Illuminate\Filesystem\FilesystemServiceProvider::class);
 // $app->register(App\Providers\AppServiceProvider::class);
 $app->register(App\Providers\AuthServiceProvider::class);
 // $app->register(App\Providers\EventServiceProvider::class);
 
+$app->register(Maatwebsite\Excel\ExcelServiceProvider::class);
+$app->register(Haruncpi\LaravelIdGenerator\IdGeneratorServiceProvider::class);
+
 $app->withAliases([
     'Permission' => Spatie\Permission\Models\Permission::class,
     'Role' => Spatie\Permission\Models\Role::class,
+    'Excel' => Maatwebsite\Excel\Facades\Excel::class,
+    'IdGenerator' => Haruncpi\LaravelIdGenerator\Facades\IdGenerator::class,
 ]);
 
 /*

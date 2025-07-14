@@ -25,6 +25,7 @@ return new class extends Migration
             $table->double('potongan_absensi', 8, 2)->default(0);
             $table->double('cicilan_koperasi', 8, 2)->default(0);
             $table->double('asuransi_lain', 8, 2)->default(0);
+            $table->string('user_at', 20)->nullable();
             $table->timestamps();
         });
     }

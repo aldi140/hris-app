@@ -46,7 +46,7 @@ class GapokController extends Controller
             $data_save->golongan = $request->get('golongan');
             $data_save->gapok = $request->get('gapok');
             $data_save->tgl_aktif = $request->get('tgl_aktif');
-            $data_save->user_at = 'System';
+            $data_save->user_at = auth()->user()->name;
             $data_save->save();
             return response()->json(
                 [
@@ -78,7 +78,7 @@ class GapokController extends Controller
                 'golongan' => $request->get('golongan'),
                 'gapok' => $request->get('gapok'),
                 'tgl_aktif' => $request->get('tgl_aktif'),
-                'user_at' => 'System',
+                'user_at' => auth()->user()->name,
             ]);
 
             return response()->json(
@@ -108,6 +108,23 @@ class GapokController extends Controller
             return response()->json(['status' => false, 'message' => $th->getMessage()]);
         } catch (QueryException $e){
             return response()->json(['status' => false, 'message' => $e->getMessage()]);
+        }
+    }
+
+    public function show($id)
+    {
+        $data = new GapokModel;
+        if (count($data->get()) > 0) {
+            return response()->json([
+                'status' => true,
+                'message' => 'Berhasil menampilkan data',
+                'data' => $data->where('id',$id)->first(),
+            ], Response::HTTP_OK);
+        }else{
+            return response()->json([
+                'status' => false,
+                'message' => 'Tidak ada data',
+            ], Response::HTTP_BAD_REQUEST);
         }
     }
 }

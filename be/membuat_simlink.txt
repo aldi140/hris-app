@@ -1,0 +1,7 @@
+windows:
+- cd D:\Projects\my-lumen-app\public
+- mklink /D storage ..\storage\app\public
+
+Linux:
+- cd /path/to/your/lumen/project
+- ln -sfn storage/app/public public/storage

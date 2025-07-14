@@ -43,7 +43,7 @@ class DepartemenController extends Controller
 
             $Departemen = new DepartemenModel;
             $Departemen->nama = $request->get('nama');
-            $Departemen->user_at = 'System';
+            $Departemen->user_at = auth()->user()->name;
             $Departemen->save();
             return response()->json(
                 [
@@ -71,7 +71,7 @@ class DepartemenController extends Controller
         try {
             DepartemenModel::where('id',$id)->update([
                 'nama' => $request->get('nama'),
-                'user_at' => 'System',
+                'user_at' => auth()->user()->name,
             ]);
 
             return response()->json(
@@ -101,6 +101,23 @@ class DepartemenController extends Controller
             return response()->json(['status' => false, 'message' => $th->getMessage()]);
         } catch (QueryException $e){
             return response()->json(['status' => false, 'message' => $e->getMessage()]);
+        }
+    }
+
+    public function show($id)
+    {
+        $data = new DepartemenModel;
+        if (count($data->get()) > 0) {
+            return response()->json([
+                'status' => true,
+                'message' => 'Berhasil menampilkan data',
+                'data' => $data->where('id',$id)->first(),
+            ], Response::HTTP_OK);
+        }else{
+            return response()->json([
+                'status' => false,
+                'message' => 'Tidak ada data',
+            ], Response::HTTP_BAD_REQUEST);
         }
     }
 }

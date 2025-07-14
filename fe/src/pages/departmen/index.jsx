@@ -31,7 +31,7 @@ const DepartmenList = ({ title }) => {
             setData(response.data.data);
         }
         fetchDepartmen();
-    }, [data])
+    }, [])
 
     const getDepartmenById = async (id) => {
         try {

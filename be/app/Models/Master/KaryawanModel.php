@@ -26,6 +26,7 @@ class KaryawanModel extends Model
         'bpjs_ketenagakerjaan',
         'npwp',
         'ijazah',
+        'file_foto',
         'file_ktp',
         'file_bpjs_kesehatan',
         'file_bpjs_ketenagakerjaan',

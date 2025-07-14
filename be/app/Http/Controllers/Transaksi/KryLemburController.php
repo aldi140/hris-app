@@ -1,23 +1,23 @@
 <?php
-namespace App\Http\Controllers\Master;
+namespace App\Http\Controllers\Transaksi;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\Master\JabatanModel;
+use App\Models\Transaksi\KaryawanLemburModels;
 use Exception;
 use Haruncpi\LaravelIdGenerator\IdGenerator;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpFoundation\Response;
-class JabatanController extends Controller
+class KryLemburController extends Controller
 {
     public function index()
     {
-        $data = new JabatanModel;
+        $data = new KaryawanLemburModels;
         if (count($data->get()) > 0) {
             return response()->json([
                 'status' => true,
                 'message' => 'Berhasil menampilkan data',
-                'data' => $data->all(),
+                'data' => $data->with('karyawan')->get(),
             ], Response::HTTP_OK);
         }else{
             return response()->json([
@@ -29,21 +29,33 @@ class JabatanController extends Controller
 
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(),[
-            'nama' => 'required',
-        ]);
+        $rules = [
+            'id_karyawan' => 'required|integer|exists:ms_karyawan,id',
+        ];
 
+        $messages = [
+            'id_karyawan.required' => 'Karyawan wajib diisi.',
+            'id_karyawan.exists' => 'Karyawan yang dipilih tidak valid atau tidak ditemukan.',
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages);
         if ($validator->fails()) {
             return response()->json(['message' => $validator->errors()], Response::HTTP_FORBIDDEN);
         }
-
         try {
-            // $id = IdGenerator::generate(['table' => 'ak_jeniskurikulum','field' => 'kodekurikulum','length' => 10, 'prefix' =>date('m')]);
+            $no_dokumen = IdGenerator::generate(['table' => 'trx_karyawan_lembur','field' => 'no_dokumen','length' => 11, 'prefix' =>"L.".date('ym')]);
 
-            $Departemen = new JabatanModel;
-            $Departemen->nama = $request->get('nama');
-            $Departemen->user_at = auth()->user()->name;
-            $Departemen->save();
+            $data_save = new KaryawanLemburModels;
+            $data_save->id_karyawan = $request->get('id_karyawan');
+            $data_save->no_dokumen = $no_dokumen;
+            $data_save->tgl_lembur = $request->get('tgl_lembur');
+            $data_save->jam_mulai = $request->get('jam_mulai');
+            $data_save->jam_akhir = $request->get('jam_akhir');
+            $data_save->total_hours = $request->get('total_hours');
+            $data_save->keterangan = $request->get('keterangan');
+            $data_save->status = 'Pending';
+            $data_save->user_at = auth()->user()->name;
+            $data_save->save();
             return response()->json(
                 [
                     'status' => true,
@@ -59,17 +71,27 @@ class JabatanController extends Controller
 
     public function update(Request $request, $id)
     {
-        $validator = Validator::make($request->all(),[
-            'nama' => 'required',
-        ]);
+        $rules = [
+            'id_karyawan' => 'required|integer|exists:ms_karyawan,id',
+        ];
 
+        $messages = [
+            'id_karyawan.required' => 'Karyawan wajib diisi.',
+            'id_karyawan.exists' => 'Karyawan yang dipilih tidak valid atau tidak ditemukan.',
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages);
         if ($validator->fails()) {
             return response()->json(['message' => $validator->errors()], Response::HTTP_FORBIDDEN);
         }
-
         try {
-            JabatanModel::where('id',$id)->update([
-                'nama' => $request->get('nama'),
+            KaryawanLemburModels::where('id',$id)->update([
+                'id_karyawan' => $request->get('id_karyawan'),
+                'tgl_lembur' => $request->get('tgl_lembur'),
+                'jam_mulai' => $request->get('jam_mulai'),
+                'jam_akhir' => $request->get('jam_akhir'),
+                'total_hours' => $request->get('total_hours'),
+                'keterangan' => $request->get('keterangan'),
                 'user_at' => auth()->user()->name,
             ]);
 
@@ -89,7 +111,11 @@ class JabatanController extends Controller
     public function delete($id)
     {
         try {
-            JabatanModel::where('id',$id)->delete();
+            $data = KaryawanLemburModels::where('id',$id)->first();
+            if($data){
+                deleteFile($data->attachment_path);
+            }
+            KaryawanLemburModels::where('id',$id)->delete();
             return response()->json(
                 [
                     'status' => true,
@@ -105,12 +131,12 @@ class JabatanController extends Controller
 
     public function show($id)
     {
-        $data = new JabatanModel;
+        $data = new KaryawanLemburModels;
         if (count($data->get()) > 0) {
             return response()->json([
                 'status' => true,
                 'message' => 'Berhasil menampilkan data',
-                'data' => $data->where('id',$id)->first(),
+                'data' => $data->with('karyawan')->where('id',$id)->first(),
             ], Response::HTTP_OK);
         }else{
             return response()->json([
