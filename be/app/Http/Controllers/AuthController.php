@@ -21,6 +21,7 @@ class AuthController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|unique:users',
             'password' => 'required|string|min:6',
+            'id_karyawan' => 'required|exists:ms_jabatan,id'
         ]);
 
         try {
@@ -29,6 +30,7 @@ class AuthController extends Controller
                 'email' => $request->input('email'),
                 'password' => Hash::make($request->input('password')),
                 'api_token' => Str::random(80), // Generate API token saat registrasi
+                'id_karyawan' => $request->input('id_karyawan'),
             ]);
 
             return response()->json(['message' => 'User registered successfully', 'user' => $user], 201);
@@ -83,7 +85,7 @@ class AuthController extends Controller
      */
     public function profile(Request $request)
     {
-        return response()->json(auth()->user());
+        return response()->json(auth()->user()->load(['karyawan','karyawan.jabatan','karyawan.departemen']));
     }
 
     /**

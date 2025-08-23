@@ -73,6 +73,16 @@ const Sidebar = ({ location, minMaxSize }) => {
                 icon={Users}
                 {...(minMaxSize && { title: "Master Karyawan" })}
             />
+
+            {minMaxSize && (
+                <div className="px-3 py-2 text-sm font-semibold text-foreground">Shift</div>
+            )}
+            <NavLink
+                to="/shift"
+                active={location.pathname.startsWith("/shift")}
+                icon={Users}
+                {...(minMaxSize && { title: "Master Shift Karyawan" })}
+            />
         </nav>
     );
 };

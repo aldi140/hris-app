@@ -5,6 +5,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Master\JadwalKerjaModels;
 use App\Models\Master\KaryawanModel;
 use App\Models\Master\TunjanganModels;
+use App\Models\Master\PotonganModels;
 use App\Models\Transaksi\KaryawanAbsensiModels;
 use App\Models\Transaksi\KaryawanCutiModels;
 use App\Models\Transaksi\KaryawanKasbonModels;
@@ -126,6 +127,34 @@ class GenerateController extends Controller
                             $tu_dinas_luar      = $dataTunjangan->dinas_luar;
                         }
 
+                        // cek potongan
+                        $dataPotongan = PotonganModels::where('id_karyawan', $idKaryawan)
+                                            ->first();
+                        $po_pph_21      = 0;
+                        $po_jht         = 0;
+                        $po_jp          = 0;
+                        $po_jk          = 0;
+                        $po_jkk         = 0;
+                        $po_bpjs        = 0;
+                        $po_pinjaman_karyawan   = 0;
+                        $po_serikat_pekerja     = 0;
+                        $po_potongan_absensi    = 0;
+                        $po_cicilan_koperasi    = 0;
+                        $po_asuransi_lain       = 0;
+                        if($dataPotongan){
+                            $po_pph_21      = $dataPotongan->pph_21;
+                            $po_jht         = $dataPotongan->jaminan_hari_tua;
+                            $po_jp          = $dataPotongan->jaminan_pensiun;
+                            $po_jk          = $dataPotongan->jaminan_kematian;
+                            $po_jkk         = $dataPotongan->jaminan_kecelakaan_kerja;
+                            $po_bpjs        = $dataPotongan->bpjs;
+                            $po_pinjaman_karyawan   = $dataPotongan->pinjaman_karyawan;
+                            $po_serikat_pekerja     = $dataPotongan->serikat_pekerja;
+                            $po_potongan_absensi    = $dataPotongan->potongan_absensi;
+                            $po_cicilan_koperasi    = $dataPotongan->cicilan_koperasi;
+                            $po_asuransi_lain       = $dataPotongan->asuransi_lain;
+                        }
+
                         // $tu_lembur
                         if($isHoliday){
                             $tu_makan           = 0;
@@ -144,6 +173,7 @@ class GenerateController extends Controller
                         $data_save->overtime_hour       = $overtime_jam;
                         $data_save->status_absensi      = $statusAbsensi;
                         $data_save->status_hari         = $statusHari;
+                        // tunjangan
                         $data_save->jabatan         = $tu_jabatan;
                         $data_save->transportasi    = $tu_transportasi;
                         $data_save->makan           = $tu_makan;
@@ -156,7 +186,19 @@ class GenerateController extends Controller
                         $data_save->komisi          = $tu_komisi;
                         $data_save->shift           = $tu_shift;
                         $data_save->dinas_luar      = $tu_dinas_luar;
-                        $data_save->user_at = auth()->user()->name;
+                        // potongan
+                        $data_save->pph_21              = $po_pph_21;
+                        $data_save->jaminan_hari_tua    = $po_jht;
+                        $data_save->jaminan_pensiun     = $po_jp;
+                        $data_save->jaminan_kematian    = $po_jk;
+                        $data_save->jaminan_kecelakaan_kerja = $po_jkk;
+                        $data_save->bpjs                = $po_bpjs;
+                        $data_save->pinjaman_karyawan   = $po_pinjaman_karyawan;
+                        $data_save->serikat_pekerja     = $po_serikat_pekerja;
+                        $data_save->potongan_absensi    = $po_potongan_absensi;
+                        $data_save->cicilan_koperasi    = $po_cicilan_koperasi;
+                        $data_save->asuransi_lain       = $po_asuransi_lain;
+                        $data_save->user_at             = auth()->user()->name;
                         $data_save->save();
                     }
                     $workDays++;

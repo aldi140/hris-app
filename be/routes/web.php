@@ -28,7 +28,7 @@ $router->group(['middleware' => 'auth'], function () use ($router) {
 });
 $router->post('/upload', 'FileController@uploadFile');
 $router->get('/genpayroll','Payroll\GenerateController@absensi');
-
+$router->get('v1/karyawan/show-nik','Master\KaryawanController@show_nik');
 $router->group(['prefix' => 'v1'], function() use ($router)
 {
     $router->group(['prefix' => 'user'], function() use ($router) {
@@ -36,6 +36,24 @@ $router->group(['prefix' => 'v1'], function() use ($router)
         $router->post('posts','Master\UserController@store');
         $router->post('update/{id}','Master\UserController@update');
         $router->delete('delete/{id}','Master\UserController@delete');
+        $router->post('posts/role','Master\UserController@setupRolesAndPermissions');
+        $router->get('role/{userId}','Master\UserController@checkUserPermissions');
+    });
+
+    $router->group(['prefix' => 'permission'], function() use ($router) {
+        $router->get('/','Master\PermissionController@index');
+        $router->post('posts','Master\PermissionController@store');
+        $router->post('update/{id}','Master\PermissionController@update');
+        $router->delete('delete/{id}','Master\PermissionController@delete');
+        $router->get('show/{id}','Master\PermissionController@show');
+    });
+
+    $router->group(['prefix' => 'role'], function() use ($router) {
+        $router->get('/','Master\RoleController@index');
+        $router->post('posts','Master\RoleController@store');
+        $router->post('update/{id}','Master\RoleController@update');
+        $router->delete('delete/{id}','Master\RoleController@delete');
+        $router->get('show/{id}','Master\RoleController@show');
     });
 
     $router->group(['prefix' => 'departemen'], function() use ($router) {
@@ -68,7 +86,7 @@ $router->group(['prefix' => 'v1'], function() use ($router)
         $router->post('update/{id}','Master\KaryawanController@update');
         $router->delete('delete/{id}','Master\KaryawanController@delete');
         $router->get('show/{id}','Master\KaryawanController@show');
-        $router->get('show-nik','Master\KaryawanController@show_nik');
+        // $router->get('show-nik','Master\KaryawanController@show_nik');
     });
 
     $router->group(['prefix' => 'tgllibur'], function() use ($router) {

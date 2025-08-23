@@ -82,6 +82,7 @@ $app->routeMiddleware([
     'auth' => App\Http\Middleware\Authenticate::class,
     'permission' => App\Http\Middleware\PermissionMiddleware::class, // cloned from Spatie\Permission\Middleware
     'role'       => App\Http\Middleware\RoleMiddleware::class,  // cloned from Spatie\Permission\Middleware
+    'role_or_permission' => Spatie\Permission\Middlewares\RoleOrPermissionMiddleware::class,
 ]);
 
 /*
@@ -99,7 +100,7 @@ $app->configure('permission');
 $app->configure('filesystems');
 
 $app->alias('cache', \Illuminate\Cache\CacheManager::class);  // if you don't have this already
-$app->register(Spatie\Permission\PermissionServiceProvider::class);
+// $app->register(Spatie\Permission\PermissionServiceProvider::class);
 $app->register(Illuminate\Filesystem\FilesystemServiceProvider::class);
 // $app->register(App\Providers\AppServiceProvider::class);
 $app->register(App\Providers\AuthServiceProvider::class);

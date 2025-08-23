@@ -8,6 +8,8 @@ import DepartmenCreate from "../pages/departmen/Create";
 import DepartmenList from "../pages/departmen/Index";
 import ListJabatan from "../pages/jabatan";
 import CreateJabatan from "../pages/jabatan/Create";
+import ListShift from "../pages/shift";
+import CreateShift from "../pages/shift/Create";
 import PageKaryawan from "../pages/karyawan";
 import CreateKaryawan from "../pages/karyawan/Create";
 import { PrivateRoute } from "./privateRoute";
@@ -43,6 +45,10 @@ export const routes = [
       // Karyawan
       { path: '/karyawan', element: <PageKaryawan title={"Karyawan"} /> },
       { path: '/karyawan/create', element: <CreateKaryawan title={"Tambah Karyawan"} /> },
+
+      // Shift
+      { path: '/shift', element: <ListShift title={"Shift"} /> },
+      { path: '/shift/create', element: <CreateShift title={"Tambah Shift"} /> },
 
       // absensi
       { path: '/absensi', element: <PageAbsensi title={"Absensi"} /> },
