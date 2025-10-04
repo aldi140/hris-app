@@ -8,7 +8,7 @@ import DepartmenCreate from "../pages/departmen/Create";
 import DepartmenList from "../pages/departmen/Index";
 import ListJabatan from "../pages/jabatan";
 import CreateJabatan from "../pages/jabatan/Create";
-import ListShift from "../pages/shift";
+import ListShift from "../pages/shift/Index";
 import CreateShift from "../pages/shift/Create";
 import PageKaryawan from "../pages/karyawan";
 import CreateKaryawan from "../pages/karyawan/Create";
@@ -41,6 +41,10 @@ export const routes = [
       // Jabatan
       { path: '/jabatan', element: <ListJabatan title={"Jabatan"} /> },
       { path: '/jabatan/create', element: <CreateJabatan title={"Tambah Jabatan"} /> },
+
+      // Gapok
+      { path: '/gapok', element: <ListGapok title={"Gapok"} /> },
+      { path: '/gapok/create', element: <CreateGapok title={"Tambah Gapok"} /> },
 
       // Karyawan
       { path: '/karyawan', element: <PageKaryawan title={"Karyawan"} /> },

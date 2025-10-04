@@ -5,8 +5,8 @@ export const getShift = async () => {
     return response;
 }
 
-export const addShift = async ({ nama }) => {
-    const response = await api.post("/v1/shift/posts", { nama });
+export const addShift = async (data) => {
+    const response = await api.post("/v1/shift/posts", data);
     return response;
 }
 
@@ -15,9 +15,8 @@ export const detailShift = async ({ id }) => {
     return response;
 }
 
-export const updateShift = async (data) => {
-    const {id, ...payload} = data
-    const response = await api.post(`/v1/shift/update/${id}`, payload);
+export const updateShift = async ({ id, data }) => {
+    const response = await api.post(`/v1/shift/update/${id}`, data);
     return response;
 }
 

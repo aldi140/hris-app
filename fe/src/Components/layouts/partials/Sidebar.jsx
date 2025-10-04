@@ -63,6 +63,24 @@ const Sidebar = ({ location, minMaxSize }) => {
                 icon={BriefcaseBusiness}
                 {...(minMaxSize && { title: "Master Jabatan" })}
             />
+            <NavLink
+                to="/gapok"
+                active={location.pathname.startsWith("/gapok")}
+                icon={BriefcaseBusiness}
+                {...(minMaxSize && { title: "Master Gapok" })}
+            />
+            <NavLink
+                to="/jabatan"
+                active={location.pathname.startsWith("/jabatan")}
+                icon={BriefcaseBusiness}
+                {...(minMaxSize && { title: "Master Tunjangan" })}
+            />
+            <NavLink
+                to="/jabatan"
+                active={location.pathname.startsWith("/jabatan")}
+                icon={BriefcaseBusiness}
+                {...(minMaxSize && { title: "Master Potongan" })}
+            />
 
             {minMaxSize && (
                 <div className="px-3 py-2 text-sm font-semibold text-foreground">Karyawan</div>
