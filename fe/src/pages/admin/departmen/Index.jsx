@@ -1,19 +1,19 @@
 import { useEffect, useRef, useState } from "react";
-import { useDepartmen } from "../../hooks/useDepartmen";
-import HeaderTitle from "../../Components/commons/atoms/HeaderTitle";
+import { useDepartmen } from "../../../hooks/useDepartmen";
+import HeaderTitle from "../../../Components/commons/atoms/HeaderTitle";
 import { Building, Pencil, Plus, Trash } from "lucide-react";
-import { Button } from "../../Components/ui/button";
+import { Button } from "../../../Components/ui/button";
 import { Link } from "react-router-dom";
-import { Card, CardContent } from "../../Components/ui/card";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../../Components/ui/table";
-import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "../../Components/ui/alert-dialog";
-import { formatDate } from "../../lib/utils";
+import { Card, CardContent } from "../../../Components/ui/card";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../../../Components/ui/table";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "../../../Components/ui/alert-dialog";
+import { formatDate } from "../../../lib/utils";
 import { toast } from "sonner";
-import { usePageTitle } from "../../hooks/usePageTitle";
-import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "../../Components/ui/dialog";
-import { Label } from "../../Components/ui/label";
-import { Input } from "../../Components/ui/input";
-import { departmen, detailDepertmen, updateDepertmen } from "../../service/departmenService";
+import { usePageTitle } from "../../../hooks/usePageTitle";
+import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "../../../Components/ui/dialog";
+import { Label } from "../../../Components/ui/label";
+import { Input } from "../../../Components/ui/input";
+import { departmen, detailDepertmen, updateDepertmen } from "../../../service/departmenService";
 import * as yup from 'yup'
 import { useFormik } from "formik";
 

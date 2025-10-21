@@ -4,13 +4,13 @@ import PageAbsensi from "../pages/absensi";
 import PageLogin from "../pages/auth/login";
 import PageRegister from "../pages/auth/register";
 import Dashboard from "../pages/dashboard";
-import DepartmenCreate from "../pages/departmen/Create";
-import DepartmenList from "../pages/departmen/Index";
+import DepartmenCreate from "../pages/admin/departmen/Create";
+import DepartmenList from "../pages/admin/departmen/Index";
 import ListJabatan from "../pages/jabatan";
 import CreateJabatan from "../pages/jabatan/Create";
-import PageKaryawan from "../pages/karyawan";
-import CreateKaryawan from "../pages/karyawan/Create";
+import CreateKaryawan from "../pages/admin/karyawan/Create";
 import { PrivateRoute } from "./privateRoute";
+import PageKaryawan from "../pages/admin/karyawan/Index";
 
 export const routes = [
   {
@@ -32,17 +32,17 @@ export const routes = [
       { path: '/', element: <Dashboard title={"Dashboard"} /> },
 
       // Departemen
-      { path: '/departmen', element: <DepartmenList title={"Departemen"} /> },
-      { path: '/departmen/create', element: <DepartmenCreate title={"Tambah Departemen"} /> },
+      { path: '/admin/departmen', element: <DepartmenList title={"Departemen"} /> },
+      { path: '/admin/departmen/create', element: <DepartmenCreate title={"Tambah Departemen"} /> },
       // { path: '/departmen/edit/:id', element: <Departmen title={"Departmen"} /> },
 
       // Jabatan
-      { path: '/jabatan', element: <ListJabatan title={"Jabatan"} /> },
-      { path: '/jabatan/create', element: <CreateJabatan title={"Tambah Jabatan"} /> },
+      { path: '/admin/jabatan', element: <ListJabatan title={"Jabatan"} /> },
+      { path: '/admin/jabatan/create', element: <CreateJabatan title={"Tambah Jabatan"} /> },
 
       // Karyawan
-      { path: '/karyawan', element: <PageKaryawan title={"Karyawan"} /> },
-      { path: '/karyawan/create', element: <CreateKaryawan title={"Tambah Karyawan"} /> },
+      { path: '/admin/karyawan', element: <PageKaryawan title={"Karyawan"} /> },
+      { path: '/admin/karyawan/create', element: <CreateKaryawan title={"Tambah Karyawan"} /> },
 
       // absensi
       { path: '/absensi', element: <PageAbsensi title={"Absensi"} /> },

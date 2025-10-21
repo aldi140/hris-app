@@ -1,28 +1,28 @@
 import { useEffect, useRef, useState } from "react";
-import HeaderTitle from "../../Components/commons/atoms/HeaderTitle";
 import { BriefcaseBusiness, Building, CalendarIcon, Pencil, Plus, Trash, Users } from "lucide-react";
-import { Button } from "../../Components/ui/button";
+import { Button } from "../../../Components/ui/button";
 import { Link, useNavigate } from "react-router-dom";
-import { Card, CardContent, CardTitle } from "../../Components/ui/card";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../../Components/ui/table";
-import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "../../Components/ui/alert-dialog";
+import { Card, CardContent, CardTitle } from "../../../Components/ui/card";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../../../Components/ui/table";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "../../../Components/ui/alert-dialog";
 import { toast } from "sonner";
-import { usePageTitle } from "../../hooks/usePageTitle";
-import { deleteKaryawan, detailKaryawan, getKaryawan, updateKaryawan } from "../../service/karyawanService";
-import { useDepartmen } from "../../hooks/useDepartmen";
-import { useJabatan } from "../../hooks/useJabatan";
-import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "../../Components/ui/dialog";
-import { Label } from "../../Components/ui/label";
-import { Input } from "../../Components/ui/input";
-import { Calendar } from "../../Components/ui/calendar";
-import { Popover, PopoverContent, PopoverTrigger } from "../../Components/ui/popover";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../Components/ui/select";
-import { Textarea } from "../../Components/ui/textarea";
+import { usePageTitle } from "../../../hooks/usePageTitle";
+import { deleteKaryawan, detailKaryawan, getKaryawan, updateKaryawan } from "../../../service/karyawanService";
+import { useDepartmen } from "../../../hooks/useDepartmen";
+import { useJabatan } from "../../../hooks/useJabatan";
+import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "../../../Components/ui/dialog";
+import { Label } from "../../../Components/ui/label";
+import { Input } from "../../../Components/ui/input";
+import { Calendar } from "../../../Components/ui/calendar";
+import { Popover, PopoverContent, PopoverTrigger } from "../../../Components/ui/popover";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../../Components/ui/select";
+import { Textarea } from "../../../Components/ui/textarea";
 import { useFormik } from "formik";
 
 import * as yup from 'yup'
 import { format } from "date-fns";
-import { ImageURL } from "../../api";
+import { ImageURL } from "../../../api";
+import HeaderTitle from "../../../Components/commons/atoms/HeaderTitle";
 
 const PageKaryawan = ({ title }) => {
     usePageTitle(title);

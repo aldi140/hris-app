@@ -86,5 +86,5 @@ export default authSlice.reducer
 export const {logout} = authSlice.actions
 
 export const isAuthenticated = (state) => state.auth.isAuthenticated
-export const dataToken = (state) => state.auth.token
+// export const dataToken = (state) => state.auth.token
 export const dataUser = (state) => state.auth.user

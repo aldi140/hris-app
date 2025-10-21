@@ -1,14 +1,14 @@
 import { Building, MoveLeft } from "lucide-react"
-import HeaderTitle from "../../Components/commons/atoms/HeaderTitle"
-import { Button } from "../../Components/ui/button"
+import HeaderTitle from "../../../Components/commons/atoms/HeaderTitle"
+import { Button } from "../../../Components/ui/button"
 import { Link, useNavigate } from "react-router-dom"
-import { Card, CardContent } from "../../Components/ui/card"
-import { Label } from "../../Components/ui/label"
-import { Input } from "../../Components/ui/input"
+import { Card, CardContent } from "../../../Components/ui/card"
+import { Label } from "../../../Components/ui/label"
+import { Input } from "../../../Components/ui/input"
 import { useFormik } from "formik"
 
 import * as yup from 'yup'
-import { useDepartmen } from "../../hooks/useDepartmen"
+import { useDepartmen } from "../../../hooks/useDepartmen"
 import { toast } from "sonner"
 
 const DepartmenCreate = () => {
