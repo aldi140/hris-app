@@ -27,6 +27,7 @@ return new class extends Migration
             $table->string('bpjs_ketenagakerjaan', 20)->nullable();
             $table->string('npwp', 20)->nullable();
             $table->string('ijazah', 20)->nullable();
+            $table->text('file_foto')->nullable();
             $table->text('file_ktp')->nullable();
             $table->text('file_bpjs_kesehatan')->nullable();
             $table->text('file_bpjs_ketenagakerjaan')->nullable();

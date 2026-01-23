@@ -140,55 +140,27 @@ const Sidebar = ({ location, minMaxSize }) => {
                         <ChevronRight className="h-4 w-4 shrink-0 transition-transform duration-200 group-data-[state=open]:rotate-90" />
                     )}
                 </CollapsibleTrigger>
-
-                {minMaxSize && (
-                    <CollapsibleContent className="overflow-hidden data-[state=closed]:animate-collapsible-up data-[state=open]:animate-collapsible-down">
-                        <div className="ml-4 border-l-2 border-muted pl-4 flex flex-col gap-1 py-2">
-                            <NavLink
-                                to="/admin/jabatan"
-                                active={location.pathname.startsWith("/admin/jabatan")}
-                                icon={BriefcaseBusiness}
-                                title="Master Jabatan"
-                            />
-                        </div>
-                    </CollapsibleContent>
-                )}
             </Collapsible>
 
-            {/* Karyawan */}
-            <Collapsible>
-                <CollapsibleTrigger
-                    className={cn(
-                        "group flex items-center justify-between w-full p-3 text-sm text-muted-foreground hover:bg-indigo-100 hover:text-indigo-500 rounded-md transition",
+            {minMaxSize && (
+                <div className="px-3 py-2 text-sm font-semibold text-foreground">Jabatan</div>
+            )}
+            <NavLink
+                to="/jabatan"
+                active={location.pathname.startsWith("/jabatan")}
+                icon={BriefcaseBusiness}
+                {...(minMaxSize && { title: "Master Jabatan" })}
+            />
 
-                    )}
-                >
-                    {minMaxSize ? (
-                        <span className="flex items-center gap-3">
-                            <Users className="h-4 w-4 shrink-0" />
-                            Karyawan
-                        </span>
-                    ) : (
-                        <Users className="h-4 w-4 shrink-0" />
-                    )}
-                    {minMaxSize && (
-                        <ChevronRight className="h-4 w-4 shrink-0 transition-transform duration-200 group-data-[state=open]:rotate-90" />
-                    )}
-                </CollapsibleTrigger>
-
-                {minMaxSize && (
-                    <CollapsibleContent className="overflow-hidden data-[state=closed]:animate-collapsible-up data-[state=open]:animate-collapsible-down">
-                        <div className="ml-4 border-l-2 border-muted pl-4 flex flex-col gap-1 py-2">
-                            <NavLink
-                                to="/admin/karyawan"
-                                active={location.pathname.startsWith("/admin/karyawan")}
-                                icon={Users}
-                                title="Master Karyawan"
-                            />
-                        </div>
-                    </CollapsibleContent>
-                )}
-            </Collapsible>
+            {minMaxSize && (
+                <div className="px-3 py-2 text-sm font-semibold text-foreground">Karyawan</div>
+            )}
+            <NavLink
+                to="/karyawan"
+                active={location.pathname.startsWith("/karyawan")}
+                icon={Users}
+                {...(minMaxSize && { title: "Master Karyawan" })}
+            />
         </nav>
 
     );

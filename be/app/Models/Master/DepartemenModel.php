@@ -5,8 +5,8 @@ class DepartemenModel extends Model
 {
     protected $table = 'ms_departemen';
     // public $timestamps = false;
-    public $autoincrement = false;
-    public $incrementing  = false;
+    // public $autoincrement = false;
+    // public $incrementing  = false;
     protected $primaryKey = "id";
     protected $fillable = [
         'id',

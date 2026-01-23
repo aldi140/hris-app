@@ -82,6 +82,7 @@ $app->routeMiddleware([
     'auth' => App\Http\Middleware\Authenticate::class,
     'permission' => App\Http\Middleware\PermissionMiddleware::class, // cloned from Spatie\Permission\Middleware
     'role'       => App\Http\Middleware\RoleMiddleware::class,  // cloned from Spatie\Permission\Middleware
+    'role_or_permission' => Spatie\Permission\Middlewares\RoleOrPermissionMiddleware::class,
 ]);
 
 /*
@@ -96,16 +97,23 @@ $app->routeMiddleware([
 */
 
 $app->configure('permission');
-$app->alias('cache', \Illuminate\Cache\CacheManager::class);  // if you don't have this already
-$app->register(Spatie\Permission\PermissionServiceProvider::class);
+$app->configure('filesystems');
 
+$app->alias('cache', \Illuminate\Cache\CacheManager::class);  // if you don't have this already
+// $app->register(Spatie\Permission\PermissionServiceProvider::class);
+$app->register(Illuminate\Filesystem\FilesystemServiceProvider::class);
 // $app->register(App\Providers\AppServiceProvider::class);
 $app->register(App\Providers\AuthServiceProvider::class);
 // $app->register(App\Providers\EventServiceProvider::class);
 
+$app->register(Maatwebsite\Excel\ExcelServiceProvider::class);
+$app->register(Haruncpi\LaravelIdGenerator\IdGeneratorServiceProvider::class);
+
 $app->withAliases([
     'Permission' => Spatie\Permission\Models\Permission::class,
     'Role' => Spatie\Permission\Models\Role::class,
+    'Excel' => Maatwebsite\Excel\Facades\Excel::class,
+    'IdGenerator' => Haruncpi\LaravelIdGenerator\Facades\IdGenerator::class,
 ]);
 
 /*

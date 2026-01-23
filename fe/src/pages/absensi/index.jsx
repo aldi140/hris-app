@@ -5,11 +5,13 @@ import {
     CircleArrowUp,
     ClockArrowDown,
     ClockArrowUp,
+    Link,
     Pencil
 } from "lucide-react"
 
 import HeaderTitle from "../../Components/commons/atoms/HeaderTitle"
-import { Card, CardContent, CardHeader } from "../../Components/ui/card"
+import { FiArrowLeft } from "react-icons/fi";
+import { Card, CardContent, CardDescription, CardHeader } from "../../Components/ui/card"
 import {
     Table,
     TableBody,
@@ -21,7 +23,30 @@ import {
 import { Button } from "../../Components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "../../Components/ui/avatar"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
+
+
+const RealtimeClock = () => {
+    const [time, setTime] = useState("");
+
+    useEffect(() => {
+        const updateTime = () => {
+            const now = new Date();
+            const formatted =
+                String(now.getHours()).padStart(2, "0") +
+                ":" +
+                String(now.getMinutes()).padStart(2, "0");
+
+            setTime(formatted);
+        };
+
+        updateTime();
+        const interval = setInterval(updateTime, 1000);
+        return () => clearInterval(interval);
+    }, []);
+
+    return <p className="text-md font-medium text-white/80">{time}</p>;
+}
 
 const PageAbsensi = () => {
     const [status, setStatus] = useState("")
@@ -94,123 +119,157 @@ const PageAbsensi = () => {
     }
 
     return (
-        <div className="flex flex-col w-full ">
-            {/* Header */}
-            <div className="bg-gradient-to-l from-indigo-400 via-indigo-600 to-indigo-500  relative pt-6 pb-16 px-6 rounded-3xl mb-4">
-                <div className="flex flex-col items-start justify-between mb-4 gap-y-4 lg:flex-row lg:items-center ">
-                    <div className="flex flex-col">
-                        <div className="flex flex-row items-center gap-x-1">
-                            {/* <Icon className="size-6" /> */}
-                            <h1 className="text-2xl font-bold text-white">Absensi</h1>
+        <div className="max-w-2xl mx-auto">
+            <div className="flex flex-col w-full gap-16">
+
+                {/* Header */}
+                <div className="bg-gradient-to-l from-green-800 via-green-900 to-green-800 relative pt-6 pb-24 lg:pb-34 px-6 rounded-b-4xl mb-4">
+                    <div className="flex flex-col items-start justify-between mb-4 gap-y-4 lg:flex-row lg:items-center ">
+                        <div className="flex flex-col w-full">
+                            <div className="flex flex-col gap-3 ">
+                                {/* <Icon className="size-6" /> */}
+                                <div className="flex flex-row gap-x-2 justify-between w-full">
+                                    <div className="flex flex-row gap-x-2 items-center">
+                                        <a href="/" className="text-emerald-200"><FiArrowLeft className="size-5" /></a>
+                                        <p className="text-md font-normal text-emerald-100"> Kembali</p>
+
+                                    </div>
+                                    <RealtimeClock />
+
+                                </div>
+                                <div className="flex flex-row gap-x-2  w-full">
+                                    <div className="flex flex-row gap-x-1 items-center">
+                                        <p className="text-xl font-medium text-emerald-100"> Selamat Datang</p>
+                                        <img src="/assets/img/karakter-1.png" className="size-12" />
+                                    </div>
+                                </div>
+                                <div className="flex flex-row gap-x-2 justify-between w-full items-center">
+                                    <div className="flex flex-col gap-x-1">
+                                        <h3 className="text-2xl font-bold text-white">John Doe</h3>
+                                        <p className="text-sm font-medium text-emerald-200">Frontend Developer - IT</p>
+                                    </div>
+                                    <Avatar className="w-10 h-10">
+                                        <AvatarImage src="https://github.com/shadcn.png" />
+                                        <AvatarFallback>CN</AvatarFallback>
+                                    </Avatar>
+                                </div>
+                            </div>
+
                         </div>
-                        <p className="text-sm font-medium text-white/80">Manage your workforce smarter</p>
+                    </div>
+                    <div className="flex flex-col gap-4 lg:absolute  lg:left-1/2 transform lg:-translate-x-1/2 w-full lg:px-4 mb-4">
+                        {/* Informasi Jam Masuk, Keluar, dan Status */}
+                        <div className="grid grid-cols-1 gap-4">
+
+                            {/* keterangan */}
+                            <div className="grid grid-cols-3 gap-3">
+                                <Card className="bg-white/10 shadow-sm py-2 px-3 gap-2">
+                                    <CardHeader className="flex flex-row justify-between items-center px-0">
+                                        <span className="text-[12px] text-white/70">
+                                            Jam Masuk</span>
+                                    </CardHeader>
+                                    <CardDescription>
+                                        <span className="text-md font-semibold text-white">10:00</span>
+                                    </CardDescription>
+
+                                </Card>
+                                <Card className="bg-white/10 shadow-sm py-2 px-3 gap-2">
+                                    <CardHeader className="flex flex-row justify-between items-center px-0">
+                                        <span className="text-[12px] text-white/70">
+
+                                            Jam Keluar</span>
+
+
+                                    </CardHeader>
+                                    <CardDescription>
+                                        <span className="text-md font-semibold text-white">17:00</span>
+                                    </CardDescription>
+
+                                </Card>
+                                <Card className="bg-white/10 shadow-sm py-2 px-3 gap-2">
+                                    <CardHeader className="flex flex-row justify-between items-center px-0">
+                                        <span className="text-[12px] text-white/70">
+
+                                            Status</span>
+
+
+                                    </CardHeader>
+                                    <CardDescription>
+                                        <span className="text-md font-semibold text-white">10:00</span>
+                                    </CardDescription>
+
+                                </Card>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div className="relative">
+                        <Card className="w-full shadow-2xl py-3 bg-white/40 backdrop-blur-lg border border-white/30  rounded-2xl absolute left-1/2 transform -translate-x-1/2 -bottom-44 lg:-bottom-54">
+                            <CardContent className="space-y-4">
+                                <div className="flex felx-row justify-between">
+                                    <span className="text-xs font-extralight text-white/70">Jam Kerja</span>
+                                    <span className="text-xs font-extralight text-white/70">Kamis, 28 Jan 2023</span>
+                                </div>
+                                <div className="flex flex-col items-center space-y-4">
+                                    <div className="space-y-1">
+                                        <div className="flex justify-center gap-3">
+                                            <p className="text-white font-bold text-2xl">
+                                                07:30 - 17:00
+                                            </p>
+
+
+                                        </div>
+                                    </div>
+
+                                    <div className="flex flex-col lg:flex-row gap-2 w-full justify-center">
+                                        <Button variant="outlineGreen" onClick={() => handleAbsensi("checkin")} disabled={loading}>
+                                            <CircleArrowDown /> Check in
+                                        </Button>
+                                        <Button variant="red" onClick={() => handleAbsensi("checkout")} disabled={loading}>
+                                            <CircleArrowUp /> Check out
+                                        </Button>
+                                    </div>
+
+                                    {status && (
+                                        <p className="text-sm text-muted-foreground text-center">{status}</p>
+                                    )}
+                                </div>
+                            </CardContent>
+                        </Card>
                     </div>
                 </div>
-                <div className="flex flex-col gap-4 lg:absolute  lg:left-1/2 transform lg:-translate-x-1/2 w-full lg:px-4">
-                    {/* Informasi Jam Masuk, Keluar, dan Status */}
-                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-                        <Card className="shadow-sm">
-                            <CardHeader className="flex flex-row justify-between items-center">
-                                <div className="flex flex-col space-y-1">
-                                    <span className="text-sm text-muted-foreground">Jam Masuk</span>
-                                    <span className="text-xl font-semibold text-foreground">{jamMasuk}</span>
-                                </div>
-                                <ClockArrowDown className="size-6 text-green-500" />
-                            </CardHeader>
-                        </Card>
-
-                        <Card className="shadow-sm">
-                            <CardHeader className="flex flex-row justify-between items-center">
-                                <div className="flex flex-col space-y-1">
-                                    <span className="text-sm text-muted-foreground">Jam Keluar</span>
-                                    <span className="text-xl font-semibold text-foreground">{jamKeluar}</span>
-                                </div>
-                                <ClockArrowUp className="size-6 text-red-500" />
-                            </CardHeader>
-                        </Card>
-
-                        <Card className="shadow-sm">
-                            <CardHeader className="flex flex-row justify-between items-center">
-                                <div className="flex flex-col space-y-1">
-                                    <span className="text-sm text-muted-foreground">Status</span>
-                                    <span className="text-xl font-semibold text-foreground">Terlambat</span>
-                                </div>
-                                <CheckCircle className="size-6 text-yellow-500" />
-                            </CardHeader>
-                        </Card>
-                    </div>
 
 
+                {/* Tabel */}
+                <div className="flex flex-col  gap-4 lg:pt-12 p-4">
+                    <p className="text-xl font-semibold text-black/80">History</p>
+                    <Card className="w-full ">
+                        <CardContent className="p-0 [&_td]:whitespace-nowrap [&_td]:px-6 [&_th]:px-6">
+                            <Table>
+                                <TableHeader>
+                                    <TableRow>
+                                        <TableHead>No</TableHead>
+                                        <TableHead>Nama</TableHead>
+                                        <TableHead className="text-center">Jam Masuk</TableHead>
+                                        <TableHead className="text-center">Jam Keluar</TableHead>
+                                        <TableHead className="text-center">Status</TableHead>
+                                    </TableRow>
+                                </TableHeader>
+                                <TableBody>
+                                    <TableRow>
+                                        <TableCell>1</TableCell>
+                                        <TableCell>John Doe</TableCell>
+                                        <TableCell className="text-center">09:00</TableCell>
+                                        <TableCell className="text-center">17:00</TableCell>
+                                        <TableCell className="text-center">Hadir</TableCell>
+                                    </TableRow>
+                                </TableBody>
+                            </Table>
+                        </CardContent>
+                    </Card>
                 </div>
+
             </div>
-
-
-            {/* Tabel + Kartu Pegawai */}
-            <div className="flex flex-col-reverse lg:flex-row gap-4 lg:pt-12">
-                <Card className="w-full lg:w-3/4">
-                    <CardContent className="p-0 [&_td]:whitespace-nowrap [&_td]:px-6 [&_th]:px-6">
-                        <Table>
-                            <TableHeader>
-                                <TableRow>
-                                    <TableHead>No</TableHead>
-                                    <TableHead>Nama</TableHead>
-                                    <TableHead className="text-center">Jam Masuk</TableHead>
-                                    <TableHead className="text-center">Jam Keluar</TableHead>
-                                    <TableHead className="text-center">Status</TableHead>
-                                </TableRow>
-                            </TableHeader>
-                            <TableBody>
-                                <TableRow>
-                                    <TableCell>1</TableCell>
-                                    <TableCell>John Doe</TableCell>
-                                    <TableCell className="text-center">09:00</TableCell>
-                                    <TableCell className="text-center">17:00</TableCell>
-                                    <TableCell className="text-center">Hadir</TableCell>
-                                </TableRow>
-                            </TableBody>
-                        </Table>
-                    </CardContent>
-                </Card>
-
-                <Card className="w-full lg:w-1/3">
-                    <CardContent className="space-y-4">
-                        <div className="flex flex-col items-center space-y-4">
-                            <Avatar className="w-24 h-24">
-                                <AvatarImage src="https://github.com/shadcn.png" />
-                                <AvatarFallback>CN</AvatarFallback>
-                            </Avatar>
-
-                            <div className="text-center">
-                                <h3 className="font-semibold text-lg">Andi Saputra</h3>
-                                <p className="text-sm text-muted-foreground">Frontend Developer - IT</p>
-                            </div>
-
-                            <div className="text-center space-y-1">
-                                <span className="text-sm text-muted-foreground font-semibold">Jam Kerja</span>
-                                <div className="flex justify-center gap-3 text-xl font-semibold text-foreground">
-                                    <span>07:30</span>
-                                    <span>-</span>
-                                    <span>17:00</span>
-                                </div>
-                            </div>
-
-                            <div className="flex flex-col lg:flex-row gap-2 w-full justify-center">
-                                <Button variant="outline" onClick={() => handleAbsensi("checkin")} disabled={loading}>
-                                    <CircleArrowDown className="mr-2" /> Check in
-                                </Button>
-                                <Button variant="outline" onClick={() => handleAbsensi("checkout")} disabled={loading}>
-                                    <CircleArrowUp className="mr-2" /> Check out
-                                </Button>
-                            </div>
-
-                            {status && (
-                                <p className="text-sm text-muted-foreground text-center">{status}</p>
-                            )}
-                        </div>
-                    </CardContent>
-                </Card>
-            </div>
-
         </div>
     )
 }

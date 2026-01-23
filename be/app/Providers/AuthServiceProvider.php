@@ -5,6 +5,9 @@ namespace App\Providers;
 use App\Models\User;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
+use Spatie\Permission\Contracts\Permission;
+use Spatie\Permission\Contracts\Role;
+use Spatie\Permission\PermissionRegistrar;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -15,7 +18,17 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        // Pastikan file 'permission.php' ada dan dimuat
+        $this->app->configure('permission');
+
+        // Ikat kontrak Spatie ke modelnya
+        $this->app->bind(Permission::class, \Spatie\Permission\Models\Permission::class);
+        $this->app->bind(Role::class, \Spatie\Permission\Models\Role::class);
+
+        // // Daftarkan PermissionRegistrar sebagai singleton
+        // $this->app->singleton(PermissionRegistrar::class, function ($app) {
+        //     return new PermissionRegistrar($app);
+        // });
     }
 
     /**
@@ -36,6 +49,21 @@ class AuthServiceProvider extends ServiceProvider
             }
             if ($request->bearerToken()) {
                 return User::where('api_token', $request->bearerToken())->first();
+            }
+        });
+
+        // Bagian penting untuk Spatie:
+        // Mengikat Gate Lumen dengan sistem izin Spatie
+        $this->app->singleton('Illuminate\Contracts\Auth\Access\Gate', function ($app) {
+            return new \Illuminate\Auth\Access\Gate($app, function () use ($app) {
+                return $app['auth']->user();
+            });
+        });
+
+        // Mendaftarkan izin Spatie dengan Gate
+        Gate::before(function ($user, $ability) {
+            if (method_exists($user, 'hasPermissionTo')) {
+                return $user->hasPermissionTo($ability) ?: null;
             }
         });
     }

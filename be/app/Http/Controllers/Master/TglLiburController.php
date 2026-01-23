@@ -43,7 +43,7 @@ class TglLiburController extends Controller
             $data_save = new TglLiburModel;
             $data_save->tgl_libur = $request->get('tgl_libur');
             $data_save->keterangan = $request->get('keterangan');
-            $data_save->user_at = 'System';
+            $data_save->user_at = auth()->user()->name;
             $data_save->save();
             return response()->json(
                 [
@@ -72,7 +72,7 @@ class TglLiburController extends Controller
             TglLiburModel::where('id',$id)->update([
                 'tgl_libur' => $request->get('tgl_libur'),
                 'keterangan' => $request->get('keterangan'),
-                'user_at' => 'System',
+                'user_at' => auth()->user()->name,
             ]);
 
             return response()->json(
@@ -102,6 +102,23 @@ class TglLiburController extends Controller
             return response()->json(['status' => false, 'message' => $th->getMessage()]);
         } catch (QueryException $e){
             return response()->json(['status' => false, 'message' => $e->getMessage()]);
+        }
+    }
+
+    public function show($id)
+    {
+        $data = new TglLiburModel;
+        if (count($data->get()) > 0) {
+            return response()->json([
+                'status' => true,
+                'message' => 'Berhasil menampilkan data',
+                'data' => $data->where('id',$id)->first(),
+            ], Response::HTTP_OK);
+        }else{
+            return response()->json([
+                'status' => false,
+                'message' => 'Tidak ada data',
+            ], Response::HTTP_BAD_REQUEST);
         }
     }
 }

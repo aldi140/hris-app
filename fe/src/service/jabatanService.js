@@ -11,12 +11,13 @@ export const addJabatan = async ({ nama }) => {
 }
 
 export const detailJabatan = async ({ id }) => {
-    const response = await api.get(`/v1/jabatan/${id}`);
+    const response = await api.get(`/v1/jabatan/show/${id}`);
     return response;
 }
 
-export const updateJabatan = async ({ id }) => {
-    const response = await api.put(`/v1/jabatan/update/${id}`)
+export const updateJabatan = async (data) => {
+    const {id, ...payload} = data
+    const response = await api.post(`/v1/jabatan/update/${id}`, payload);
     return response;
 }
 
