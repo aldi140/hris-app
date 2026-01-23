@@ -158,7 +158,13 @@ $router->group(['prefix' => 'v1'], function() use ($router)
     $router->group(['prefix' => 'gen'], function() use ($router) {
         $router->get('/{filename}','GeneralController@getPhotoUrl');
     });
+
+    $router->group(['prefix' => 'transaksi'], function() use ($router) {
+        $router->get('/listdata','Transaksi\PinjamanController@list_data');
+    });
 });
+
+
 
 $router->options('{any:.*}', function () {
     return response('', 200);

@@ -12,6 +12,8 @@ import ListShift from "../pages/shift/Index";
 import CreateShift from "../pages/shift/Create";
 import PageKaryawan from "../pages/karyawan";
 import CreateKaryawan from "../pages/karyawan/Create";
+import ListGapok from "../pages/gapok/Index";
+import CreateGapok from "../pages/gapok/Create";
 import { PrivateRoute } from "./privateRoute";
 
 export const routes = [

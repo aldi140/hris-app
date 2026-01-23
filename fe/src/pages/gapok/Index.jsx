@@ -9,34 +9,35 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from ".
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "../../Components/ui/alert-dialog";
 import { formatDate } from "../../lib/utils";
 import { toast } from "sonner";
-import { useJabatan } from "../../hooks/useJabatan";
+import { useGapok } from "../../hooks/useGapok";
 import { usePageTitle } from "../../hooks/usePageTitle";
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "../../Components/ui/dialog";
 import { Label } from "../../Components/ui/label";
 import { Input } from "../../Components/ui/input";
-import { detailJabatan, getJabatan, updateJabatan } from "../../service/jabatanService";
+import { InputGroup } from "../../Components/ui/InputGroup"
+import { detailGapok, getGapok, updateGapok } from "../../service/gapokService";
 import * as yup from 'yup'
 import { Formik, useFormik } from "formik";
 
-const ListJabatan = ({title}) => {
+const ListGapok = ({title}) => {
     usePageTitle(title);
     const closeDialogRef = useRef(null);
     const [data, setData] = useState([]);
-    const [jabatanById, setJabatanById] = useState({});
-    const { hanldeGetJabatan, handleDeleteJabatan } = useJabatan();
+    const [gapokById, setGapokById] = useState({});
+    const { hanldeGetGapok, handleDeleteGapok } = useGapok();
     useEffect(() => {
         
         const fetchDepartmen = async () => {
-            const response = await getJabatan();
+            const response = await getGapok();
             setData(response.data.data);
         }
         fetchDepartmen();
     }, []);
 
-    const getJabatanById = async (id) => {
+    const getGapokById = async (id) => {
         try {
-            const response = await detailJabatan({id});
-            setJabatanById(response.data.data);
+            const response = await detailGapok({id});
+            setGapokById(response.data.data);
         } catch (error) {
             console.log(error);
         }
@@ -44,17 +45,38 @@ const ListJabatan = ({title}) => {
     const formik = useFormik({
         enableReinitialize: true,
         initialValues: {
-            nama : jabatanById?.nama || '',
+            golongan : gapokById?.golongan || '',
+            gapok : gapokById?.gapok || '',
+            tgl_aktif : gapokById?.tgl_aktif || '',
+            status : gapokById?.status || '',
         },
         onSubmit: async (values, actions) => {
+            const formData = new FormData();
+
+            for (const key in values) {
+                const value = values[key];
+                if (value !== undefined && value !== null) {
+                    if (value instanceof Date && !isNaN(value)) {
+                        const formattedDate = format(value, "yyyy-MM-dd");
+                        formData.append(key, formattedDate);
+                        // console.log(`${key}:`, formattedDate); 
+                    } else {
+                        formData.append(key, value);
+                        // console.log(`${key}:`, value);
+                    }
+                }
+            }
+
             try {
-                const response = await updateJabatan({
-                    id: jabatanById.id,
-                    ...values
+                const response = await updateGapok({
+                    id: gapokById.id,
+                    data: formData
                 })
 
                 toast.success(response.data.message);
                 console.log(response);
+
+                setData(prev => prev.map(item => item.id === gapokById.id ? { ...item, ...values } : item))
 
                 setTimeout(() => {
                     closeDialogRef.current?.click()
@@ -64,7 +86,7 @@ const ListJabatan = ({title}) => {
             }
         },
         validationSchema: yup.object().shape({
-            nama: yup.string().required('Nama Jabatan wajib diisi'),
+            gapok: yup.string().required('Gaji Pokok wajib diisi'),
         })
     })
 
@@ -73,10 +95,11 @@ const ListJabatan = ({title}) => {
         formik.setFieldValue(name, value);
 
     }
+    
 
     const onDelete = async (id) => {
         try {
-            const response = await handleDeleteJabatan({ id }); 
+            const response = await handleDeleteGapok({ id }); 
             setData(prev => prev.filter(item => item.id !== id));
             // console.log(response)
             toast.success(response.data.message);
@@ -88,9 +111,9 @@ const ListJabatan = ({title}) => {
     return (
         <div className="flex flex-col w-full pb-32">
             <div className="flex flex-col items-start justify-between mb-8 gap-y-4 lg:flex-row lg:items-center">
-                <HeaderTitle title="Jabatan" subtitle="Menampilkan semua data departmen yang tersedia pada platform ini" icon={BriefcaseBusiness } />
+                <HeaderTitle title="Gaji Pokok Karyawan" subtitle="Menampilkan semua data gaji pokok yang tersedia pada platform ini" icon={BriefcaseBusiness } />
                 <Button variant="blue" size="lg" asChild>
-                    <Link to="/jabatan/create"><Plus className="size-5" />Tambah Jabatan</Link>
+                    <Link to="/gapok/create"><Plus className="size-5" />Tambah Gapok</Link>
                 </Button>
             </div>
             <Card>
@@ -99,8 +122,10 @@ const ListJabatan = ({title}) => {
                         <TableHeader>
                             <TableRow>
                                 <TableHead>#</TableHead>
-                                <TableHead>Nama</TableHead>
-                                <TableHead>Dibuat pada</TableHead>
+                                <TableHead>Golongan</TableHead>
+                                <TableHead>Gaji Pokok</TableHead>
+                                <TableHead>Tgl. Aktif</TableHead>
+                                <TableHead>Status</TableHead>
                                 <TableHead>User at</TableHead>
                                 <TableHead>Aksi</TableHead>
                             </TableRow>
@@ -109,8 +134,10 @@ const ListJabatan = ({title}) => {
                             {data.map((item, index) => (
                                 <TableRow key={item.id}>
                                     <TableCell>{index + 1}</TableCell>
-                                    <TableCell>{item.nama}</TableCell>
-                                    <TableCell>{formatDate(item.created_at)}</TableCell>
+                                    <TableCell>{item.golongan}</TableCell>
+                                    <TableCell>{item.gapok}</TableCell>
+                                    <TableCell>{item.tgl_aktif}</TableCell>
+                                    <TableCell>{item.status}</TableCell>
                                     <TableCell>{item.user_at}</TableCell>
                                     <TableCell className="flex gap-2">
                                         {/* <Button variant="yellow" size="sm" asChild>
@@ -118,24 +145,65 @@ const ListJabatan = ({title}) => {
                                         </Button> */}
                                         <Dialog>
                                             <DialogTrigger asChild>
-                                                <Button variant="yellow" size="sm" onClick={() => getJabatanById(item.id)}>
+                                                <Button variant="yellow" size="sm" onClick={() => getGapokById(item.id)}>
                                                     <Pencil className="size-4"/>
                                                 </Button>
                                             </DialogTrigger>
                                             <DialogContent className="sm:max-w-[425px]">
                                                 <form onSubmit={formik.handleSubmit}>
                                                     <DialogHeader>
-                                                        <DialogTitle>Edit Jabatan</DialogTitle>
+                                                        <DialogTitle>Edit Gapok</DialogTitle>
                                                         <DialogDescription>
-                                                            Edit Jabatan disini, klik save untuk menyimpan.
+                                                            Edit Gaji Pokok disini, klik save untuk menyimpan.
                                                         </DialogDescription>
                                                     </DialogHeader>
                                                     <div className="grid gap-4">
                                                         <div className="grid gap-3">
-                                                            <Label htmlFor="nama">Nama Jabatan</Label>
+                                                            <Label htmlFor="nama">Nama</Label>
                                                             <Input id="nama" name="nama" value={formik.values.nama} onChange={handleForm} />
                                                             {formik.errors.nama && (
                                                                 <span className="text-sm text-destructive">{formik.errors.nama}</span>
+                                                            )}
+                                                        </div>
+                                                        <div className="grid gap-3">
+                                                            <Label htmlFor="start_time">Jam Masuk</Label>
+                                                            <Input type="time" name="start_time" step="1" value={formik.values.start_time} className="bg-background appearance-none [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none" onChange={handleForm}/>
+                                                            {formik.errors.start_time && (
+                                                                <span className="text-sm text-destructive">{formik.errors.start_time}</span>
+                                                            )}
+                                                        </div>
+                                                        <div className="grid gap-3">
+                                                            <Label htmlFor="end_time">Jam Keluar</Label>
+                                                            <Input type="time" name="end_time" step="1" value={formik.values.end_time} className="bg-background appearance-none [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none" onChange={handleForm}/>
+                                                            {formik.errors.end_time && (
+                                                                <span className="text-sm text-destructive">{formik.errors.end_time}</span>
+                                                            )}
+                                                        </div>
+                                                        <div className="grid gap-3">
+                                                            <Label htmlFor="jumlah_jam">Jam Kerja</Label>
+                                                            <InputGroup 
+                                                                type="number"
+                                                                name="jumlah_jam"
+                                                                value={formik.values.jumlah_jam}
+                                                                placeholder="0"
+                                                                inputright={'Jam'} 
+                                                                onChange={handleForm}
+                                                              />
+                                                            {formik.errors.jumlah_jam && (
+                                                                <span className="text-sm text-destructive">{formik.errors.jumlah_jam}</span>
+                                                            )}
+                                                        </div>
+                                                        <div className="grid gap-3">
+                                                            <Label htmlFor="break_minutes">Istirahat</Label><InputGroup 
+                                                                type="number"
+                                                                name="break_minutes"
+                                                                value={formik.values.break_minutes}
+                                                                placeholder="0"
+                                                                inputright={'Jam'} 
+                                                                onChange={handleForm}
+                                                              />
+                                                            {formik.errors.break_minutes && (
+                                                                <span className="text-sm text-destructive">{formik.errors.break_minutes}</span>
                                                             )}
                                                         </div>
                                                     </div>
@@ -178,4 +246,4 @@ const ListJabatan = ({title}) => {
     )
 }
 
-export default ListJabatan
+export default ListGapok
