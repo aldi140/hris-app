@@ -24,7 +24,7 @@ class UserController extends Controller
             return response()->json([
                 'status' => true,
                 'message' => 'Berhasil menampilkan data',
-                'data' => $data->with('karyawan', 'karyawan.jabatan', 'karyawan.departemen')->get(),
+                'data' => $data->with('karyawan', 'karyawan.jabatan', 'karyawan.departemen', 'roles', 'permissions')->get(),
             ], Response::HTTP_OK);
         }else{
             return response()->json([

@@ -11,6 +11,10 @@ import CreateJabatan from "../pages/admin/jabatan/Create";
 import CreateKaryawan from "../pages/admin/karyawan/Create";
 import { PrivateRoute } from "./privateRoute";
 import PageKaryawan from "../pages/admin/karyawan/Index";
+import ListShift from "../pages/admin/shift/Index";
+import CreateShift from "../pages/admin/shift/Create";
+
+import ListGapok from "../pages/admin/gapok/Index";
 
 export const routes = [
   {
@@ -21,10 +25,7 @@ export const routes = [
     path: "/register",
     element: <PageRegister title={"Register"} />,
   },
-  {
-    path: "/absensi",
-    element: <PageAbsensi title={"Absensi"} />,
-  },
+
   {
     element: (
       <PrivateRoute>
@@ -41,27 +42,33 @@ export const routes = [
       // { path: '/departmen/edit/:id', element: <Departmen title={"Departmen"} /> },
 
       // Jabatan
-      { path: '/jabatan', element: <ListJabatan title={"Jabatan"} /> },
+      { path: '/admin/jabatan', element: <ListJabatan title={"Jabatan"} /> },
       { path: '/jabatan/create', element: <CreateJabatan title={"Tambah Jabatan"} /> },
 
       // Karyawan
-      { path: '/karyawan', element: <PageKaryawan title={"Karyawan"} /> },
+      { path: '/admin/karyawan', element: <PageKaryawan title={"Karyawan"} /> },
       { path: '/admin/karyawan/create', element: <CreateKaryawan title={"Tambah Karyawan"} /> },
 
       // Gapok
-      { path: '/karyawan', element: <PageKaryawan title={"Karyawan"} /> },
+      { path: 'admin/gapok', element: <ListGapok title={"Karyawan"} /> },
       { path: '/admin/karyawan/create', element: <CreateKaryawan title={"Tambah Karyawan"} /> },
 
       // Shift
-      { path: '/karyawan', element: <PageKaryawan title={"Karyawan"} /> },
+      { path: '/admin/aryawan', element: <PageKaryawan title={"Karyawan"} /> },
       { path: '/admin/karyawan/create', element: <CreateKaryawan title={"Tambah Karyawan"} /> },
 
       // Karyawan
-      { path: '/karyawan', element: <PageKaryawan title={"Karyawan"} /> },
-      { path: '/admin/karyawan/create', element: <CreateKaryawan title={"Tambah Karyawan"} /> },
+      { path: '/admin/shift', element: <ListShift title={"Shift"} /> },
+      { path: '/admin/shift/create', element: <CreateShift title={"Tambah Shift"} /> },
 
-      // // absensi
-      // { path: '/absensi', element: <PageAbsensi title={"Absensi"} /> },
+      // // Tunjangan
+      // { path: '/tunjangan', element: <PageKaryawan title={"Karyawan"} /> },
+      // { path: '/admin/karyawan/create', element: <CreateShift title={"Tambah Shift"} /> },
+
+      // // Potongan
+      // { path: '/karyawan', element: <PageKaryawan title={"Karyawan"} /> },
+      // { path: '/admin/karyawan/create', element: <CreateKaryawan title={"Tambah Karyawan"} /> },
+
     ]
   }
 ]

@@ -1,20 +1,20 @@
 import { BriefcaseBusiness, Building, MoveLeft } from "lucide-react"
-import HeaderTitle from "../../Components/commons/atoms/HeaderTitle"
-import { Button } from "../../Components/ui/button"
+import HeaderTitle from "../../../Components/commons/atoms/HeaderTitle"
+import { Button } from "../../../Components/ui/button"
 import { Link, useNavigate } from "react-router-dom"
-import { Card, CardContent } from "../../Components/ui/card"
-import { Label } from "../../Components/ui/label"
-import { Input } from "../../Components/ui/input"
-import { InputGroup } from "../../Components/ui/InputGroup"
+import { Card, CardContent } from "../../../Components/ui/card"
+import { Label } from "../../../Components/ui/label"
+import { Input } from "../../../Components/ui/input"
+import { InputGroup } from "../../../Components/ui/InputGroup"
 import { useFormik } from "formik"
-import { addShift } from "../../service/shiftService"
+import { addShift } from "../../../service/shiftService"
 
 import * as yup from 'yup'
 import { toast } from "sonner"
-import { useShift } from "../../hooks/useShift"
-import { usePageTitle } from "../../hooks/usePageTitle"
+import { useShift } from "../../../hooks/useShift"
+import { usePageTitle } from "../../../hooks/usePageTitle"
 
-const CreateShift = ({title}) => {
+const CreateShift = ({ title }) => {
     usePageTitle(title)
     const { handleAddShift } = useShift()
     const navigate = useNavigate()
@@ -84,11 +84,11 @@ const CreateShift = ({title}) => {
                 <HeaderTitle
                     title="Tambah Shift"
                     subtitle="Buat shift baru di sini, lalu klik 'Simpan' setelah selesai."
-                    icon={BriefcaseBusiness }
+                    icon={BriefcaseBusiness}
                 />
 
                 <Button variant="secondary" size="lg" asChild>
-                    <Link to="/shift"><MoveLeft className="size-5" />Kembali</Link>
+                    <Link to="/admin/shift"><MoveLeft className="size-5" />Kembali</Link>
                 </Button>
             </div>
             <Card>
@@ -101,44 +101,44 @@ const CreateShift = ({title}) => {
                         </div>
                         <div className="grid w-full items-center gap-1.5">
                             <Label htmlFor="start_time">Jam Masuk</Label>
-                            <Input type="time" name="start_time" step="1" defaultValue="00:00:00" className="bg-background appearance-none [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none" onChange={handleForm}/>
+                            <Input type="time" name="start_time" step="1" defaultValue="00:00:00" className="bg-background appearance-none [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none" onChange={handleForm} />
                             {formik.errors.start_time && <span className="text-sm text-destructive">{formik.errors.start_time}</span>}
                         </div>
                         <div className="grid w-full items-center gap-1.5">
                             <Label htmlFor="end_time">Jam Keluar</Label>
-                            <Input type="time" name="end_time" step="1" defaultValue="00:00:00" className="bg-background appearance-none [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none" onChange={handleForm}/>
+                            <Input type="time" name="end_time" step="1" defaultValue="00:00:00" className="bg-background appearance-none [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none" onChange={handleForm} />
                             {formik.errors.end_time && <span className="text-sm text-destructive">{formik.errors.end_time}</span>}
                         </div>
                         <div className="grid w-full items-center gap-1.5">
                             <Label htmlFor="jumlah_jam">Jam Kerja</Label>
-                            <InputGroup 
+                            <InputGroup
                                 type="number"
                                 name="jumlah_jam"
                                 value="0"
                                 placeholder="0"
-                                inputright={'Jam'} 
+                                inputright={'Jam'}
                                 onChange={handleForm}
-                              />
+                            />
                             {formik.errors.jumlah_jam && <span className="text-sm text-destructive">{formik.errors.jumlah_jam}</span>}
                         </div>
                         <div className="grid w-full items-center gap-1.5">
                             <Label htmlFor="break_minutes">Istirahat</Label>
-                            <InputGroup 
+                            <InputGroup
                                 type="number"
                                 name="break_minutes"
                                 value="0"
                                 placeholder="0"
-                                inputright={'Menit'} 
+                                inputright={'Menit'}
                                 onChange={handleForm}
-                              />
+                            />
                             {formik.errors.break_minutes && <span className="text-sm text-destructive">{formik.errors.break_minutes}</span>}
                         </div>
-                        
+
                         <div className="flex justify-end gap-x-2">
                             <Button variant="outline" type="button" size="lg" onClick={onReset}>Reset</Button>
                             <Button variant="blue" type="submit" size="lg" disabled={formik.isSubmitting}>Save</Button>
                         </div>
-                        
+
                     </form>
                 </CardContent>
             </Card>

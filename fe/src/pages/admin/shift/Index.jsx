@@ -1,32 +1,32 @@
 import { use, useActionState, useEffect, useRef, useState } from "react";
-import { useDepartmen } from "../../hooks/useDepartmen";
-import HeaderTitle from "../../Components/commons/atoms/HeaderTitle";
+import { useDepartmen } from "../../../hooks/useDepartmen";
+import HeaderTitle from "../../../Components/commons/atoms/HeaderTitle";
 import { BriefcaseBusiness, Building, Pencil, Plus, Trash } from "lucide-react";
-import { Button } from "../../Components/ui/button";
+import { Button } from "../../../Components/ui/button";
 import { Link } from "react-router-dom";
-import { Card, CardContent } from "../../Components/ui/card";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../../Components/ui/table";
-import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "../../Components/ui/alert-dialog";
-import { formatDate } from "../../lib/utils";
+import { Card, CardContent } from "../../../Components/ui/card";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../../../Components/ui/table";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "../../../Components/ui/alert-dialog";
+import { formatDate } from "../../../lib/utils";
 import { toast } from "sonner";
-import { useShift } from "../../hooks/useShift";
-import { usePageTitle } from "../../hooks/usePageTitle";
-import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "../../Components/ui/dialog";
-import { Label } from "../../Components/ui/label";
-import { Input } from "../../Components/ui/input";
-import { InputGroup } from "../../Components/ui/InputGroup"
-import { detailShift, getShift, updateShift } from "../../service/shiftService";
+import { useShift } from "../../../hooks/useShift";
+import { usePageTitle } from "../../../hooks/usePageTitle";
+import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "../../../Components/ui/dialog";
+import { Label } from "../../../Components/ui/label";
+import { Input } from "../../../Components/ui/input";
+import { InputGroup } from "../../../Components/ui/InputGroup"
+import { detailShift, getShift, updateShift } from "../../../service/shiftService";
 import * as yup from 'yup'
 import { Formik, useFormik } from "formik";
 
-const ListShift = ({title}) => {
+const ListShift = ({ title }) => {
     usePageTitle(title);
     const closeDialogRef = useRef(null);
     const [data, setData] = useState([]);
     const [shiftById, setShiftById] = useState({});
     const { hanldeGetShift, handleDeleteShift } = useShift();
     useEffect(() => {
-        
+
         const fetchDepartmen = async () => {
             const response = await getShift();
             setData(response.data.data);
@@ -36,7 +36,7 @@ const ListShift = ({title}) => {
 
     const getShiftById = async (id) => {
         try {
-            const response = await detailShift({id});
+            const response = await detailShift({ id });
             setShiftById(response.data.data);
         } catch (error) {
             console.log(error);
@@ -45,12 +45,12 @@ const ListShift = ({title}) => {
     const formik = useFormik({
         enableReinitialize: true,
         initialValues: {
-            nama : shiftById?.nama || '',
-            start_time : shiftById?.start_time || '',
-            end_time : shiftById?.end_time || '',
-            break_minutes : shiftById?.break_minutes || '',
-            jumlah_jam : shiftById?.jumlah_jam || '',
-            is_active : 1,
+            nama: shiftById?.nama || '',
+            start_time: shiftById?.start_time || '',
+            end_time: shiftById?.end_time || '',
+            break_minutes: shiftById?.break_minutes || '',
+            jumlah_jam: shiftById?.jumlah_jam || '',
+            is_active: 1,
         },
         onSubmit: async (values, actions) => {
             const formData = new FormData();
@@ -97,11 +97,11 @@ const ListShift = ({title}) => {
         formik.setFieldValue(name, value);
 
     }
-    
+
 
     const onDelete = async (id) => {
         try {
-            const response = await handleDeleteShift({ id }); 
+            const response = await handleDeleteShift({ id });
             setData(prev => prev.filter(item => item.id !== id));
             // console.log(response)
             toast.success(response.data.message);
@@ -113,9 +113,9 @@ const ListShift = ({title}) => {
     return (
         <div className="flex flex-col w-full pb-32">
             <div className="flex flex-col items-start justify-between mb-8 gap-y-4 lg:flex-row lg:items-center">
-                <HeaderTitle title="Shift Karyawan" subtitle="Menampilkan semua data shift yang tersedia pada platform ini" icon={BriefcaseBusiness } />
+                <HeaderTitle title="Shift Karyawan" subtitle="Menampilkan semua data shift yang tersedia pada platform ini" icon={BriefcaseBusiness} />
                 <Button variant="blue" size="lg" asChild>
-                    <Link to="/shift/create"><Plus className="size-5" />Tambah Shift</Link>
+                    <Link to="/admin/shift/create"><Plus className="size-5" />Tambah Shift</Link>
                 </Button>
             </div>
             <Card>
@@ -150,7 +150,7 @@ const ListShift = ({title}) => {
                                         <Dialog>
                                             <DialogTrigger asChild>
                                                 <Button variant="yellow" size="sm" onClick={() => getShiftById(item.id)}>
-                                                    <Pencil className="size-4"/>
+                                                    <Pencil className="size-4" />
                                                 </Button>
                                             </DialogTrigger>
                                             <DialogContent className="sm:max-w-[425px]">
@@ -171,41 +171,41 @@ const ListShift = ({title}) => {
                                                         </div>
                                                         <div className="grid gap-3">
                                                             <Label htmlFor="start_time">Jam Masuk</Label>
-                                                            <Input type="time" name="start_time" step="1" value={formik.values.start_time} className="bg-background appearance-none [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none" onChange={handleForm}/>
+                                                            <Input type="time" name="start_time" step="1" value={formik.values.start_time} className="bg-background appearance-none [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none" onChange={handleForm} />
                                                             {formik.errors.start_time && (
                                                                 <span className="text-sm text-destructive">{formik.errors.start_time}</span>
                                                             )}
                                                         </div>
                                                         <div className="grid gap-3">
                                                             <Label htmlFor="end_time">Jam Keluar</Label>
-                                                            <Input type="time" name="end_time" step="1" value={formik.values.end_time} className="bg-background appearance-none [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none" onChange={handleForm}/>
+                                                            <Input type="time" name="end_time" step="1" value={formik.values.end_time} className="bg-background appearance-none [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none" onChange={handleForm} />
                                                             {formik.errors.end_time && (
                                                                 <span className="text-sm text-destructive">{formik.errors.end_time}</span>
                                                             )}
                                                         </div>
                                                         <div className="grid gap-3">
                                                             <Label htmlFor="jumlah_jam">Jam Kerja</Label>
-                                                            <InputGroup 
+                                                            <InputGroup
                                                                 type="number"
                                                                 name="jumlah_jam"
                                                                 value={formik.values.jumlah_jam}
                                                                 placeholder="0"
-                                                                inputright={'Jam'} 
+                                                                inputright={'Jam'}
                                                                 onChange={handleForm}
-                                                              />
+                                                            />
                                                             {formik.errors.jumlah_jam && (
                                                                 <span className="text-sm text-destructive">{formik.errors.jumlah_jam}</span>
                                                             )}
                                                         </div>
                                                         <div className="grid gap-3">
-                                                            <Label htmlFor="break_minutes">Istirahat</Label><InputGroup 
+                                                            <Label htmlFor="break_minutes">Istirahat</Label><InputGroup
                                                                 type="number"
                                                                 name="break_minutes"
                                                                 value={formik.values.break_minutes}
                                                                 placeholder="0"
-                                                                inputright={'Jam'} 
+                                                                inputright={'Jam'}
                                                                 onChange={handleForm}
-                                                              />
+                                                            />
                                                             {formik.errors.break_minutes && (
                                                                 <span className="text-sm text-destructive">{formik.errors.break_minutes}</span>
                                                             )}
