@@ -1,10 +1,7 @@
 import { useState } from "react";
 import { Eye, X } from "lucide-react";
-import {
-  Dialog,
-  DialogContent,
-  DialogClose,
-} from "@/components/ui/dialog";
+import { Dialog, DialogClose, DialogContent } from "../../ui/dialog";
+
 
 const ImagePreview = ({ src, alt, className }) => {
   const [open, setOpen] = useState(false);
