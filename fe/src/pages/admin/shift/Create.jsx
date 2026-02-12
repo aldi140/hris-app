@@ -5,7 +5,6 @@ import { Link, useNavigate } from "react-router-dom"
 import { Card, CardContent } from "../../../Components/ui/card"
 import { Label } from "../../../Components/ui/label"
 import { Input } from "../../../Components/ui/input"
-import { InputGroup } from "../../../Components/ui/inputGroup"
 import { useFormik } from "formik"
 import { addShift } from "../../../service/shiftService"
 
@@ -13,6 +12,7 @@ import * as yup from 'yup'
 import { toast } from "sonner"
 import { useShift } from "../../../hooks/useShift"
 import { usePageTitle } from "../../../hooks/usePageTitle"
+import { MyInputGroup } from "../../../Components/ui/myInputGroup"
 
 const CreateShift = ({ title }) => {
     usePageTitle(title)
@@ -111,7 +111,7 @@ const CreateShift = ({ title }) => {
                         </div>
                         <div className="grid w-full items-center gap-1.5">
                             <Label htmlFor="jumlah_jam">Jam Kerja</Label>
-                            <InputGroup
+                            <MyInputGroup
                                 type="number"
                                 name="jumlah_jam"
                                 value="0"
@@ -123,7 +123,7 @@ const CreateShift = ({ title }) => {
                         </div>
                         <div className="grid w-full items-center gap-1.5">
                             <Label htmlFor="break_minutes">Istirahat</Label>
-                            <InputGroup
+                            <MyInputGroup
                                 type="number"
                                 name="break_minutes"
                                 value="0"

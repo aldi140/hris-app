@@ -1,7 +1,7 @@
 import * as React from "react"
 import { cn } from "@/lib/utils"
 
-const InputGroup = ({ label, type, name, value, placeholder, icon, inputright, className, ...props }) => {
+const MyInputGroup = ({ label, type, name, value, placeholder, icon, inputright, className, ...props }) => {
   return (
     <div className="mb-4">
       {/* Label untuk input */}
@@ -13,7 +13,7 @@ const InputGroup = ({ label, type, name, value, placeholder, icon, inputright, c
 
       {/* Kontainer untuk input dan ikon */}
       <div className="flex items-center border border-gray-300 rounded-lg shadow-sm">
-        
+
         {/* Bagian ikon atau teks tambahan (opsional) */}
         {icon && (
           <span className="px-3 text-gray-500 bg-gray-50 border-r border-gray-300 rounded-l-lg">
@@ -46,4 +46,4 @@ const InputGroup = ({ label, type, name, value, placeholder, icon, inputright, c
   );
 };
 
-export { InputGroup }
+export { MyInputGroup }

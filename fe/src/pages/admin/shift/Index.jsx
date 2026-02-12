@@ -14,10 +14,10 @@ import { usePageTitle } from "../../../hooks/usePageTitle";
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "../../../Components/ui/dialog";
 import { Label } from "../../../Components/ui/label";
 import { Input } from "../../../Components/ui/input";
-import { InputGroup } from "../../../Components/ui/inputGroup"
 import { detailShift, getShift, updateShift } from "../../../service/shiftService";
 import * as yup from 'yup'
 import { Formik, useFormik } from "formik";
+import { MyInputGroup } from "../../../Components/ui/myInputGroup";
 
 const ListShift = ({ title }) => {
     usePageTitle(title);
@@ -188,7 +188,7 @@ const ListShift = ({ title }) => {
                                                         </div>
                                                         <div className="grid gap-3">
                                                             <Label htmlFor="jumlah_jam">Jam Kerja</Label>
-                                                            <InputGroup
+                                                            <MyInputGroup
                                                                 type="number"
                                                                 name="jumlah_jam"
                                                                 value={formik.values.jumlah_jam}
@@ -201,7 +201,7 @@ const ListShift = ({ title }) => {
                                                             )}
                                                         </div>
                                                         <div className="grid gap-3">
-                                                            <Label htmlFor="break_minutes">Istirahat</Label><InputGroup
+                                                            <Label htmlFor="break_minutes">Istirahat</Label><MyInputGroup
                                                                 type="number"
                                                                 name="break_minutes"
                                                                 value={formik.values.break_minutes}
