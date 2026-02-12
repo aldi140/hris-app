@@ -2,7 +2,7 @@ import { AiFillInfoCircle } from "react-icons/ai";
 import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import FormLogin from "../../Components/commons/organisms/FormLogin";
 import AuthTemplate from "../../Components/commons/template/AuthTemplate";
-import { AspectRatio } from "@/components/ui/aspect-ratio"
+// import { AspectRatio } from "@/components/ui/aspect-ratio"
 import { Toaster } from "sonner";
 import { useEffect, useState } from "react";
 import { useAuth } from "../../hooks/useAuth";
@@ -10,6 +10,7 @@ import { Alert, AlertTitle } from "../../Components/ui/alert";
 import { Info } from "lucide-react";
 import { useSelector } from "react-redux";
 import { isAuthentication } from "../../features/auth/authSlice";
+import { AspectRatio } from "../../Components/ui/aspect-ratio";
 // import Image from "next/image"
 
 const PageLogin = ({ title }) => {

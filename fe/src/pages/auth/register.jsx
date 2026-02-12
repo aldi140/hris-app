@@ -1,15 +1,16 @@
 import AuthTemplate from "../../Components/commons/template/AuthTemplate";
 import FormRegister from "../../Components/commons/organisms/FormRegister";
-import { AspectRatio } from "@/components/ui/aspect-ratio"
+// import { AspectRatio } from "@/components/ui/aspect-ratio"
 import { useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Alert, AlertTitle } from "../../Components/ui/alert";
 import { Info } from "lucide-react";
+import { AspectRatio } from "../../Components/ui/aspect-ratio";
 
 
 
 
-const PageRegister = ({title}) => {
+const PageRegister = ({ title }) => {
     const location = useLocation();
     const [error, setError] = useState(null);
     useEffect(() => {
