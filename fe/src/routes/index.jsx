@@ -1,6 +1,6 @@
 import MainLayout from "../Components/layouts/main.layout";
 import Home from "../pages";
-import PageAbsensi from "../pages/absensi";
+import PageAbsensi from "../pages/absensi/index";
 import PageLogin from "../pages/auth/login";
 import PageRegister from "../pages/auth/register";
 import Dashboard from "../pages/dashboard";

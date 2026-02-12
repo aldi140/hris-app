@@ -4,15 +4,8 @@ import {
 } from "lucide-react"
 
 import { FiArrowLeft } from "react-icons/fi";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../../Components/ui/card"
-import {
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow
-} from "../../Components/ui/table"
+import { Card, CardContent } from "../../Components/ui/card"
+
 import { Button } from "../../Components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "../../Components/ui/avatar"
 
