@@ -25,7 +25,7 @@ const DepartmenCreate = () => {
                 toast.success(res.data.message)
 
                 setTimeout(() => {
-                    navigate('/departmen')
+                    navigate('/admin/departmen')
                 }, 1500)
             } catch (error) {
                 toast({ title: "Error", description: "Gagal menambahkan" })
@@ -34,7 +34,7 @@ const DepartmenCreate = () => {
                 actions.resetForm()
             }
         },
-       
+
         validationSchema: yup.object().shape({
             nama: yup.string().required('Departmen name is required'),
         })
@@ -61,7 +61,7 @@ const DepartmenCreate = () => {
                             {formik.errors.nama && <span className="text-sm text-destructive">{formik.errors.nama}</span>}
                         </div>
                         <div className="flex justify-end gap-x-2">
-                            <Button variant="outline" type="button" size="lg"  onClick={() => formik.resetForm()}>Reset</Button>
+                            <Button variant="outline" type="button" size="lg" onClick={() => formik.resetForm()}>Reset</Button>
                             <Button variant="blue" type="submit" size="lg" disabled={formik.isSubmitting}>Save</Button>
                         </div>
                     </form>

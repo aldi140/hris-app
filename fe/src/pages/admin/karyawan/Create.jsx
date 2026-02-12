@@ -96,10 +96,10 @@ const CreateKaryawan = ({ title }) => {
                 toast.success(res.data.message)
 
                 setTimeout(() => {
-                    navigate('/karyawan')
+                    navigate('/admin/karyawan')
                 }, 1500)
             } catch (error) {
-                toast({ title: "Error", description: "Gagal menambahkan" })
+                toast.error("Gagal menambahkan")
             } finally {
                 actions.setSubmitting(false)
             }

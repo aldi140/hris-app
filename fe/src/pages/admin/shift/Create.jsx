@@ -88,7 +88,7 @@ const CreateShift = ({ title }) => {
                 />
 
                 <Button variant="secondary" size="lg" asChild>
-                    <Link to="/admin/shift"><MoveLeft className="size-5" />Kembali</Link>
+                    <Link to="/shift"><MoveLeft className="size-5" />Kembali</Link>
                 </Button>
             </div>
             <Card>

@@ -1,32 +1,41 @@
 import { useEffect, useState } from "react";
-import api from "../service";
 import {
   addDepertmen,
   deleteDepertmen,
-  departmen,
-  detailDepertmen,
+  getDepartmen,
   updateDepertmen,
 } from "../service/departmenService";
 
 export const useDepartmen = () => {
   const [departmenList, setDepartmenList] = useState([]);
-  useEffect(() => {
-    getDepartmen();
-  }, []);
-  const getDepartmen = async () => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  const handleGetDepartmen = async (params = {}) => {
     try {
-      const response = await departmen();
-      setDepartmenList(response.data.data);
-      return response;
+      setIsLoading(true);
+      setError(null);
+      const response = await getDepartmen(params);
+      const { data, message, status } = response.data;
+      if (!status) {
+        setDepartmenList([]);
+        setError(message);
+        return [];
+      }
+
+      setDepartmenList(data);
+      return data;
     } catch (error) {
-      console.log(error);
-      throw error;
+      setError(
+        error?.response?.data?.message || error?.message || "Terjadi kesalahan",
+      );
+    } finally {
+      setIsLoading(false);
     }
   };
 
-  const getDepartmenName = (id) => {
-    const departmenName = departmenList.find((item) => item.id === id);
-    return departmenName ? departmenName.nama : "";
+  const getDepartmenById = (id) => {
+    return departmenList.find((item) => item.id === id) || null;
   };
 
   const handleAddDepartmen = async ({ nama }) => {
@@ -38,11 +47,14 @@ export const useDepartmen = () => {
       throw error;
     }
   };
-  
 
-  const handleUpdateDepartmen = async ({ id, name }) => {
+  const handleUpdateDepartmen = async ({ id, nama }) => {
     try {
-      const response = await updateDepertmen({ id, name });
+      const response = await updateDepertmen({ id, nama });
+      setDepartmenList((prev) =>
+        prev.map((item) => (item.id === id ? { ...item, nama } : item)),
+      );
+
       return response;
     } catch (error) {
       console.log(error);
@@ -53,6 +65,7 @@ export const useDepartmen = () => {
   const handleDeleteDepartmen = async ({ id }) => {
     try {
       const response = await deleteDepertmen({ id });
+      setDepartmenList((prev) => prev.filter((item) => item.id !== id));
       // console.log(response);
       return response;
     } catch (error) {
@@ -62,8 +75,11 @@ export const useDepartmen = () => {
   };
 
   return {
-    getDepartmen,
-    getDepartmenName,
+    departmenList,
+    isLoading,
+    error,
+    getDepartmenById,
+    handleGetDepartmen,
     handleAddDepartmen,
     handleUpdateDepartmen,
     handleDeleteDepartmen,

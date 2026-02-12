@@ -1,7 +1,6 @@
-import { use, useActionState, useEffect, useRef, useState } from "react";
-import { useDepartmen } from "../../../hooks/useDepartmen";
 import HeaderTitle from "../../../Components/commons/atoms/HeaderTitle";
-import { BriefcaseBusiness, Building, Pencil, Plus, Trash } from "lucide-react";
+import { BriefcaseBusiness, Pencil, Plus, SearchIcon, Trash } from "lucide-react";
+import { HiArrowsUpDown } from "react-icons/hi2";
 import { Button } from "../../../Components/ui/button";
 import { Link } from "react-router-dom";
 import { Card, CardContent } from "../../../Components/ui/card";
@@ -14,33 +13,37 @@ import { usePageTitle } from "../../../hooks/usePageTitle";
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "../../../Components/ui/dialog";
 import { Label } from "../../../Components/ui/label";
 import { Input } from "../../../Components/ui/input";
-import { detailJabatan, getJabatan, updateJabatan } from "../../../service/jabatanService";
 import * as yup from 'yup'
-import { Formik, useFormik } from "formik";
+import { InputGroup, InputGroupAddon, InputGroupInput } from "../../../Components/ui/input-group";
+import noDataImg from "@/assets/img/no_data.svg";
+import { useEffect, useRef, useState } from "react";
+import { useFormik } from "formik";
 
 const ListJabatan = ({ title }) => {
     usePageTitle(title);
     const closeDialogRef = useRef(null);
-    const [data, setData] = useState([]);
+    const [search, setSearch] = useState("");
     const [jabatanById, setJabatanById] = useState({});
-    const { hanldeGetJabatan, handleDeleteJabatan } = useJabatan();
-    useEffect(() => {
+    const { jabatanList, isLoading, error, getJabatanById, handleGetJabatan, handleDeleteJabatan, handleUpdateJabatan } = useJabatan();
 
-        const fetchDepartmen = async () => {
-            const response = await getJabatan();
-            setData(response.data.data);
-        }
-        fetchDepartmen();
-    }, []);
-
-    const getJabatanById = async (id) => {
-        try {
-            const response = await detailJabatan({ id });
-            setJabatanById(response.data.data);
-        } catch (error) {
-            console.log(error);
-        }
+    const handleSearch = (e) => {
+        setSearch(e.target.value);
     }
+    useEffect(() => {
+        const delay = setTimeout(() => {
+            handleGetJabatan({ search });
+        }, 500);
+        return () => clearTimeout(delay);
+    }, [search]);
+
+
+
+    const handleGetJabatanById = (id) => {
+        const data = getJabatanById(id);
+        // console.log(data)
+        setJabatanById(data);
+    };
+
     const formik = useFormik({
         enableReinitialize: true,
         initialValues: {
@@ -48,7 +51,7 @@ const ListJabatan = ({ title }) => {
         },
         onSubmit: async (values, actions) => {
             try {
-                const response = await updateJabatan({
+                const response = await handleUpdateJabatan({
                     id: jabatanById.id,
                     ...values
                 })
@@ -77,7 +80,7 @@ const ListJabatan = ({ title }) => {
     const onDelete = async (id) => {
         try {
             const response = await handleDeleteJabatan({ id });
-            setData(prev => prev.filter(item => item.id !== id));
+            // setData(prev => prev.filter(item => item.id !== id));
             // console.log(response)
             toast.success(response.data.message);
         } catch (error) {
@@ -86,29 +89,71 @@ const ListJabatan = ({ title }) => {
         }
     }
     return (
-        <div className="flex flex-col w-full pb-32">
+        <div className="flex flex-col w-full pb-32 gap-4">
             <div className="flex flex-col items-start justify-between mb-8 gap-y-4 lg:flex-row lg:items-center">
                 <HeaderTitle title="Jabatan" subtitle="Menampilkan semua data departmen yang tersedia pada platform ini" icon={BriefcaseBusiness} />
                 <Button variant="blue" size="lg" asChild>
                     <Link to="/jabatan/create"><Plus className="size-5" />Tambah Jabatan</Link>
                 </Button>
             </div>
-            <Card>
-                <CardContent className="p-0 [&_td]:whitespace-nowrap [&_td]:px-6 [&_th]:px-6">
-                    <Table className="w-full">
-                        <TableHeader>
+            <div className="grid grid-cols-6 lg:grid-cols-12 gap-4">
+                <InputGroup className="col-span-6 lg:col-span-2 bg-white">
+                    <InputGroupInput placeholder="Search..." onChange={handleSearch} value={search} />
+                    <InputGroupAddon>
+                        <SearchIcon />
+                    </InputGroupAddon>
+                </InputGroup>
+            </div>
+            <div className="overflow-hidden rounded-md border bg-white [&_td]:whitespace-nowrap [&_td]:px-6 [&_th]:whitespace-nowrap [&_th]:px-6 ">
+                <Table className="w-full">
+                    <TableHeader className="bg-slate-200">
+                        <TableRow>
+
+                            <TableHead>
+                                <div className="flex flex-row items-center gap-2">
+                                    Nama
+
+                                </div>
+                            </TableHead>
+                            <TableHead>
+                                <div className="flex flex-row items-center gap-2">
+                                    Dibuat Pada
+
+                                </div>
+                            </TableHead>
+                            <TableHead>
+                                <div className="flex flex-row items-center gap-2">
+                                    Pembuat
+
+                                </div>
+                            </TableHead>
+                            <TableHead>
+                                <div className="flex flex-row items-center gap-2">
+                                    Aksi
+                                    <Button
+                                        variant="ghost"
+                                        className="group inline-flex"
+                                        size="sm"
+                                        onClick={() => onSortable('id')}
+                                    >
+                                    </Button>
+                                </div>
+                            </TableHead>
+                        </TableRow>
+                    </TableHeader>
+                    <TableBody>
+
+
+                        {error ? (
                             <TableRow>
-                                <TableHead>#</TableHead>
-                                <TableHead>Nama</TableHead>
-                                <TableHead>Dibuat pada</TableHead>
-                                <TableHead>User at</TableHead>
-                                <TableHead>Aksi</TableHead>
+                                <TableCell colSpan={5} className="h-24 text-center p-10">
+                                    <img src={noDataImg} alt="No Data" className="mx-auto w-20" />
+                                    <p className="mt-4 text-sm text-muted-foreground">{error}</p>
+                                </TableCell>
                             </TableRow>
-                        </TableHeader>
-                        <TableBody>
-                            {data.map((item, index) => (
+                        ) : (
+                            jabatanList.map((item, index) => (
                                 <TableRow key={item.id}>
-                                    <TableCell>{index + 1}</TableCell>
                                     <TableCell>{item.nama}</TableCell>
                                     <TableCell>{formatDate(item.created_at)}</TableCell>
                                     <TableCell>{item.user_at}</TableCell>
@@ -118,7 +163,7 @@ const ListJabatan = ({ title }) => {
                                         </Button> */}
                                         <Dialog>
                                             <DialogTrigger asChild>
-                                                <Button variant="yellow" size="sm" onClick={() => getJabatanById(item.id)}>
+                                                <Button variant="yellow" size="sm" onClick={() => handleGetJabatanById(item.id)}>
                                                     <Pencil className="size-4" />
                                                 </Button>
                                             </DialogTrigger>
@@ -141,9 +186,11 @@ const ListJabatan = ({ title }) => {
                                                     </div>
                                                     <DialogFooter className='mt-4'>
                                                         <DialogClose asChild >
-                                                            <Button variant="outline" ref={closeDialogRef}>Cancel</Button>
+                                                            <Button variant="outline" ref={closeDialogRef}>Kembali</Button>
                                                         </DialogClose>
-                                                        <Button type="submit">Save changes</Button>
+                                                        <Button type="submit">
+                                                            {isLoading ? "Loading..." : "Simpan"}
+                                                        </Button>
                                                     </DialogFooter>
                                                 </form>
                                             </DialogContent>
@@ -169,11 +216,12 @@ const ListJabatan = ({ title }) => {
                                         </AlertDialog>
                                     </TableCell>
                                 </TableRow>
-                            ))}
-                        </TableBody>
-                    </Table>
-                </CardContent>
-            </Card>
+                            ))
+                        )}
+
+                    </TableBody>
+                </Table>
+            </div>
         </div>
     )
 }

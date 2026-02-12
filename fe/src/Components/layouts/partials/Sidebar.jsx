@@ -1,26 +1,28 @@
-import { BriefcaseBusiness, Building, CalendarArrowUp, CalendarClock, CalendarOff, ChevronRight, Database, Dot, FileClock, FilePen, History, LayoutDashboard, PanelsLeftBottom, Users } from "lucide-react";
+import { BriefcaseBusiness, Building, CalendarArrowUp, CalendarClock, CalendarOff, ChevronRight, Database, Dot, FileClock, FilePen, History, LayoutDashboard, MapPinCheck, PanelsLeftBottom, Users } from "lucide-react";
 import NavLink from "../../commons/atoms/NavLink";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "../../ui/collapsible";
 import { cn } from "../../../lib/utils";
 import { use, useEffect, useState } from "react";
-import { is, se } from "date-fns/locale";
 
 
 const Sidebar = ({ location, minMaxSize }) => {
     const sectionMasterDataRoutes = [
-        "/admin/karyawan",
-        "/admin/jabatan",
-        "/admin/departmen",
-        "/admin/shift",
-        "/admin/gapok",
+        "/karyawan",
+        "/jabatan",
+        "/departmen",
+        "/shift",
+        "/gapok",
+        "/jadwal-kerja",
+        "/office",
+
     ];
     const sectionLeaveRoutes = [
-        "/admin/cuti",
-        "/admin/riwayat-cuti",
+        "/cuti",
+        "/riwayat-cuti",
     ];
     const sectionAttandanceRoutes = [
-        "/admin/absensi",
-        "/admin/kehadiran",
+        "/attendance/list-attendance",
+        "/attendance/list-presence",
     ]
 
     const [openMaster, setOpenMaster] = useState(false);
@@ -52,13 +54,22 @@ const Sidebar = ({ location, minMaxSize }) => {
                 icon={LayoutDashboard}
                 {...(minMaxSize && { title: "Dashboard" })}
             />
+            <NavLink
+                to="/field-visit"
+                isMasterActive={location.pathname === "/field-visit"}
+                icon={MapPinCheck}
+                {...(minMaxSize && { title: "Survey & Kunjungan" })}
+            />
 
             {/* Absensi & Kehadiran */}
             <Collapsible open={openAttandance} onOpenChange={setOpenAttandance} >
                 <CollapsibleTrigger
                     className={cn(
-                        isAttandanceActive && "bg-indigo-100 text-indigo-500",
-                        "group flex items-center justify-between w-full p-3 text-sm text-muted-foreground hover:bg-indigo-100 hover:text-indigo-500 rounded-md transition",
+                        "group flex items-center justify-between w-full p-3 text-sm rounded-md transition",
+                        isAttandanceActive ?
+                            'bg-gradient-to-r from-indigo-400 via-indigo-600 to-indigo-500 font-semibold text-white hover:text-white'
+                            :
+                            'text-muted-foreground hover:bg-indigo-100 hover:text-indigo-500 '
 
                     )}
                 >
@@ -78,15 +89,17 @@ const Sidebar = ({ location, minMaxSize }) => {
                 {minMaxSize && (
                     <CollapsibleContent className="overflow-hidden data-[state=closed]:animate-collapsible-up data-[state=open]:animate-collapsible-down">
                         <div className="ml-4 border-l-2 border-muted pl-4 flex flex-col gap-1 py-2">
-                            <NavLink
-                                to="/riwayat-kehadiran"
+                            {/* <NavLink
+                                to="attendance/list-presence"
                                 icon={Dot}
                                 title="Riwayat Kehadiran"
-                            />
+                                active={location.pathname === "/attendance/list-presence"}
+                            /> */}
                             <NavLink
-                                to="/riwayat-kehadiran"
+                                to="attendance/list-attendance"
                                 icon={Dot}
                                 title="Riwayat Absensi"
+                                active={location.pathname === "/attendance/list-attendance"}
                             />
                         </div>
                     </CollapsibleContent>
@@ -97,8 +110,12 @@ const Sidebar = ({ location, minMaxSize }) => {
             <Collapsible open={openLeave} onOpenChange={setOpenLeave} >
                 <CollapsibleTrigger
                     className={cn(
-                        isAttandanceActive && "bg-indigo-100 text-indigo-500",
-                        "group flex items-center justify-between w-full p-3 text-sm text-muted-foreground hover:bg-indigo-100 hover:text-indigo-500 rounded-md transition",
+                        "group flex items-center justify-between w-full p-3 text-sm rounded-md transition",
+                        isLeaveActive ?
+                            'bg-gradient-to-r from-indigo-400 via-indigo-600 to-indigo-500 font-semibold text-white hover:text-white'
+                            :
+                            'text-muted-foreground hover:bg-indigo-100 hover:text-indigo-500 '
+
 
                     )}
                 >
@@ -118,8 +135,8 @@ const Sidebar = ({ location, minMaxSize }) => {
                 {minMaxSize && (
                     <CollapsibleContent className="overflow-hidden data-[state=closed]:animate-collapsible-up data-[state=open]:animate-collapsible-down">
                         <div className="ml-4 border-l-2 border-muted pl-4 flex flex-col gap-1 py-2">
-                            <NavLink to="/cuti" icon={Dot} title="Pengajuan Cuti/Izin" />
-                            <NavLink to="/riwayat-cuti" icon={Dot} title="Riwayat Pengajuan" />
+                            <NavLink to="#" icon={Dot} title="Pengajuan Cuti/Izin" />
+                            <NavLink to="#" icon={Dot} title="Riwayat Pengajuan" />
                         </div>
                     </CollapsibleContent>
                 )}
@@ -184,40 +201,52 @@ const Sidebar = ({ location, minMaxSize }) => {
                     <CollapsibleContent className="max-h-[250px] overflow-y-auto scrollbar-thin data-[state=closed]:animate-collapsible-up data-[state=open]:animate-collapsible-down">
                         <div className="ml-4 border-l-2 border-muted pl-4 flex flex-col gap-1 py-2">
                             <NavLink
-                                to="/admin/karyawan"
-                                active={location.pathname.startsWith("/admin/karyawan")}
+                                to="karyawan"
+                                active={location.pathname.startsWith("/karyawan")}
                                 icon={Dot}
                                 title="Karyawan"
                             />
                             <NavLink
-                                to="/admin/jabatan"
-                                active={location.pathname.startsWith("/admin/jabatan")}
+                                to="jabatan"
+                                active={location.pathname.startsWith("/jabatan")}
                                 icon={Dot}
                                 title="Jabatan"
                             />
                             <NavLink
-                                to="/admin/departmen"
-                                active={location.pathname.startsWith("/admin/departmen")}
+                                to="departmen"
+                                active={location.pathname.startsWith("/departmen")}
                                 icon={Dot}
-                                title="Departmen"
+                                title="Departemen"
                             />
                             <NavLink
-                                to="/admin/shift"
-                                active={location.pathname.startsWith("/admin/shift")}
+                                to="shift"
+                                active={location.pathname.startsWith("/shift")}
                                 icon={Dot}
                                 title="Shift"
                             />
-                            <NavLink
-                                to="/admin/tunjaangan"
-                                active={location.pathname.startsWith("/admin/tunjaangan")}
+                            {/* <NavLink
+                                to="tunjangan"
+                                active={location.pathname.startsWith("/tunjangan")}
                                 icon={Dot}
-                                title="Tunjanagan"
-                            />
-                            <NavLink
-                                to="/admin/potongan"
-                                active={location.pathname.startsWith("/admin/potongan")}
+                                title="Tunjangan"
+                            /> */}
+                            {/* <NavLink
+                                to="potongan"
+                                active={location.pathname.startsWith("/potongan")}
                                 icon={Dot}
                                 title="Potongan"
+                            /> */}
+                            {/* <NavLink
+                                to="jadwal-kerja"
+                                active={location.pathname.startsWith("/jadwal-kerja")}
+                                icon={Dot}
+                                title="Jadwal Kerja"
+                            /> */}
+                            <NavLink
+                                to="office"
+                                active={location.pathname.startsWith("/office")}
+                                icon={Dot}
+                                title="Kantor"
                             />
                         </div>
                     </CollapsibleContent>

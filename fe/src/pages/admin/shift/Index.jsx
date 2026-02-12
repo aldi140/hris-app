@@ -22,17 +22,13 @@ import { Formik, useFormik } from "formik";
 const ListShift = ({ title }) => {
     usePageTitle(title);
     const closeDialogRef = useRef(null);
-    const [data, setData] = useState([]);
     const [shiftById, setShiftById] = useState({});
-    const { hanldeGetShift, handleDeleteShift } = useShift();
-    useEffect(() => {
+    const { shiftList, loading, error, hanldeGetShift, handleDeleteShift } = useShift();
 
-        const fetchDepartmen = async () => {
-            const response = await getShift();
-            setData(response.data.data);
-        }
-        fetchDepartmen();
+    useEffect(() => {
+        hanldeGetShift();
     }, []);
+
 
     const getShiftById = async (id) => {
         try {
@@ -115,28 +111,35 @@ const ListShift = ({ title }) => {
             <div className="flex flex-col items-start justify-between mb-8 gap-y-4 lg:flex-row lg:items-center">
                 <HeaderTitle title="Shift Karyawan" subtitle="Menampilkan semua data shift yang tersedia pada platform ini" icon={BriefcaseBusiness} />
                 <Button variant="blue" size="lg" asChild>
-                    <Link to="/admin/shift/create"><Plus className="size-5" />Tambah Shift</Link>
+                    <Link to="/shift/create"><Plus className="size-5" />Tambah Shift</Link>
                 </Button>
             </div>
-            <Card>
-                <CardContent className="p-0 [&_td]:whitespace-nowrap [&_td]:px-6 [&_th]:px-6">
-                    <Table className="w-full">
-                        <TableHeader>
+
+            <div className="overflow-hidden rounded-md border bg-white [&_td]:whitespace-nowrap [&_td]:px-6 [&_th]:whitespace-nowrap [&_th]:px-6">
+                <Table className="w-full">
+
+                    <TableHeader className="bg-slate-200 ">
+                        <TableRow>
+                            <TableHead>Nama</TableHead>
+                            <TableHead>Jam Masuk</TableHead>
+                            <TableHead>Jam Keluar</TableHead>
+                            <TableHead>Jam Kerja</TableHead>
+                            <TableHead>Istirahat</TableHead>
+                            <TableHead>User at</TableHead>
+                            <TableHead>Aksi</TableHead>
+                        </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                        {error ? (
                             <TableRow>
-                                <TableHead>#</TableHead>
-                                <TableHead>Nama</TableHead>
-                                <TableHead>Jam Masuk</TableHead>
-                                <TableHead>Jam Keluar</TableHead>
-                                <TableHead>Jam Kerja</TableHead>
-                                <TableHead>Istirahat</TableHead>
-                                <TableHead>User at</TableHead>
-                                <TableHead>Aksi</TableHead>
+                                <TableCell colSpan={5} className="h-24 text-center p-10">
+                                    <img src={noDataImg} alt="No Data" className="mx-auto w-20" />
+                                    <p className="mt-4 text-sm text-muted-foreground">{error}</p>
+                                </TableCell>
                             </TableRow>
-                        </TableHeader>
-                        <TableBody>
-                            {data.map((item, index) => (
+                        ) : (
+                            shiftList.map((item, index) => (
                                 <TableRow key={item.id}>
-                                    <TableCell>{index + 1}</TableCell>
                                     <TableCell>{item.nama}</TableCell>
                                     <TableCell>{item.start_time}</TableCell>
                                     <TableCell>{item.end_time}</TableCell>
@@ -241,11 +244,11 @@ const ListShift = ({ title }) => {
                                         </AlertDialog>
                                     </TableCell>
                                 </TableRow>
-                            ))}
-                        </TableBody>
-                    </Table>
-                </CardContent>
-            </Card>
+                            ))
+                        )}
+                    </TableBody>
+                </Table>
+            </div>
         </div>
     )
 }

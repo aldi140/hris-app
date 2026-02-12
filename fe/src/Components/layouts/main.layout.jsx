@@ -9,7 +9,7 @@ import SidebarResponsive from "./partials/SidebarResponsive";
 import { useDispatch, useSelector } from "react-redux";
 import { dataUser } from "../../features/auth/authSlice";
 import { useAuth } from "../../hooks/useAuth";
-import { ArrowLeftToLine } from "lucide-react";
+import { ArrowLeftToLine, Bell } from "lucide-react";
 import { useState } from "react";
 
 const MainLayout = () => {
@@ -17,6 +17,7 @@ const MainLayout = () => {
     const user = useSelector(dataUser)
     const location = useLocation()
     const [minMaxSize, setMinMaxSize] = useState(true)
+    const hasNotification = true;
 
     return (
         <>
@@ -66,32 +67,54 @@ const MainLayout = () => {
                         <SidebarResponsive location={location} />
                         <div className="w-full flex items-center justify-end lg:justify-between">
                             <Button variant="ghost" className="hidden lg:block" onClick={() => setMinMaxSize((prev) => !prev)}><ArrowLeftToLine /></Button>
-                            <DropdownMenu>
-                                <DropdownMenuTrigger asChild>
-                                    <Button variant="ghost" className="flex gap-x-2">
-                                        <span>Hi, {user.name}</span>
-                                        <Avatar>
-                                            <AvatarFallback>B</AvatarFallback>
-                                        </Avatar>
-                                    </Button>
-                                </DropdownMenuTrigger>
-                                <DropdownMenuContent align="end">
-                                    <DropdownMenuLabel>Account</DropdownMenuLabel>
-                                    <DropdownMenuSeparator />
-                                    <DropdownMenuItem>Profile</DropdownMenuItem>
-                                    <DropdownMenuItem asChild>
-                                        <button onClick={handleLogout} className="w-full text-left">
-                                            Logout
-                                        </button>
-                                    </DropdownMenuItem>
-                                </DropdownMenuContent>
-                            </DropdownMenu>
+                            <div className="flex gap-2">
+                                <DropdownMenu>
+                                    <DropdownMenuTrigger asChild>
+                                        <Button variant="ghost" className="relative flex gap-x-2">
+                                            <Bell />
+                                            {hasNotification && (
+                                                <span className="absolute top-2 right-3 h-2 w-2 rounded-full bg-red-500" />
+                                            )}
+                                        </Button>
+                                    </DropdownMenuTrigger>
+                                    <DropdownMenuContent align="end">
+                                        <DropdownMenuLabel>Account</DropdownMenuLabel>
+                                        <DropdownMenuSeparator />
+                                        <DropdownMenuItem>Profile</DropdownMenuItem>
+                                        <DropdownMenuItem asChild>
+                                            <button onClick={handleLogout} className="w-full text-left">
+                                                Logout
+                                            </button>
+                                        </DropdownMenuItem>
+                                    </DropdownMenuContent>
+                                </DropdownMenu>
+                                <DropdownMenu>
+                                    <DropdownMenuTrigger asChild>
+                                        <Button variant="ghost" className="flex gap-x-2">
+                                            <span>Hi, {user.name}</span>
+                                            <Avatar>
+                                                <AvatarFallback>B</AvatarFallback>
+                                            </Avatar>
+                                        </Button>
+                                    </DropdownMenuTrigger>
+                                    <DropdownMenuContent align="end">
+                                        <DropdownMenuLabel>Account</DropdownMenuLabel>
+                                        <DropdownMenuSeparator />
+                                        <DropdownMenuItem>Profile</DropdownMenuItem>
+                                        <DropdownMenuItem asChild>
+                                            <button onClick={handleLogout} className="w-full text-left">
+                                                Logout
+                                            </button>
+                                        </DropdownMenuItem>
+                                    </DropdownMenuContent>
+                                </DropdownMenu>
+                            </div>
                         </div>
                         {/* dropdown */}
 
                     </header>
-                    <main className="w-full">
-                        <div className="gap-4 p-4 lg:gap-6">
+                    <main className="w-full min-h-screen bg-slate-100 p-4 lg:p-8 ">
+                        <div className="gap-4 lg:gap-6 ">
                             <Outlet />
                         </div>
                     </main>

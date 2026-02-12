@@ -1,7 +1,10 @@
+import ComingSoon from "./comingSoon"
+
 const Dashboard = () => {
     return (
         <>
-            <h1>Page Dashboard</h1>
+            {/* <h1>Page Dashboard</h1> */}
+            <ComingSoon />
         </>
     )
 }

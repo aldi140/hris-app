@@ -9,19 +9,21 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "../../ui/co
 import { cn } from "../../../lib/utils";
 const SidebarResponsive = ({ location }) => {
     const sectionMasterDataRoutes = [
-        "/admin/karyawan",
-        "/admin/jabatan",
-        "/admin/departmen",
-        "/admin/shift",
-        "/admin/gapok",
+        "/karyawan",
+        "/jabatan",
+        "/departmen",
+        "/shift",
+        "/gapok",
+        "/jadwal-kerja",
+        "/office",
     ];
     const sectionLeaveRoutes = [
-        "/admin/cuti",
-        "/admin/riwayat-cuti",
+        "/cuti",
+        "/riwayat-cuti",
     ];
     const sectionAttandanceRoutes = [
-        "/admin/absensi",
-        "/admin/kehadiran",
+        "/attendance/list-attendance",
+        "/attendance/list-presence",
     ]
 
     const [openMaster, setOpenMaster] = useState(false);
@@ -75,8 +77,11 @@ const SidebarResponsive = ({ location }) => {
                         <Collapsible open={openAttandance} onOpenChange={setOpenAttandance} >
                             <CollapsibleTrigger
                                 className={cn(
-                                    isAttandanceActive && "bg-indigo-100 text-indigo-500",
-                                    "group flex items-center justify-between w-full p-3 text-sm text-muted-foreground hover:bg-indigo-100 hover:text-indigo-500 rounded-md transition",
+                                    "group flex items-center justify-between w-full p-3 text-sm rounded-md transition",
+                                    isAttandanceActive ?
+                                        'bg-gradient-to-r from-indigo-400 via-indigo-600 to-indigo-500 font-semibold text-white hover:text-white'
+                                        :
+                                        'text-muted-foreground hover:bg-indigo-100 hover:text-indigo-500 '
 
                                 )}
                             >
@@ -90,14 +95,16 @@ const SidebarResponsive = ({ location }) => {
 
                             <CollapsibleContent className="overflow-hidden data-[state=closed]:animate-collapsible-up data-[state=open]:animate-collapsible-down">
                                 <div className="ml-4 border-l-2 border-muted pl-4 flex flex-col gap-1 py-2">
-                                    <NavLinkResponsive
-                                        to="/riwayat-kehadiran"
+                                    {/* <NavLinkResponsive
+                                        to="attendance/list-presence"
                                         icon={Dot}
                                         title="Riwayat Kehadiran"
-                                    />
+                                        active={location.pathname.startsWith("/attendance/list-presence")}
+                                    /> */}
                                     <NavLinkResponsive
-                                        to="/riwayat-kehadiran"
+                                        to="attendance/list-attendance"
                                         icon={Dot}
+                                        active={location.pathname.startsWith("/attendance/list-attendance")}
                                         title="Riwayat Absensi"
                                     />
                                 </div>
@@ -107,8 +114,11 @@ const SidebarResponsive = ({ location }) => {
                         <Collapsible open={openLeave} onOpenChange={setOpenLeave} >
                             <CollapsibleTrigger
                                 className={cn(
-                                    isAttandanceActive && "bg-indigo-100 text-indigo-500",
-                                    "group flex items-center justify-between w-full p-3 text-sm text-muted-foreground hover:bg-indigo-100 hover:text-indigo-500 rounded-md transition",
+                                    "group flex items-center justify-between w-full p-3 text-sm rounded-md transition",
+                                    isLeaveActive ?
+                                        'bg-gradient-to-r from-indigo-400 via-indigo-600 to-indigo-500 font-semibold text-white hover:text-white'
+                                        :
+                                        'text-muted-foreground hover:bg-indigo-100 hover:text-indigo-500 '
 
                                 )}
                             >
@@ -151,40 +161,52 @@ const SidebarResponsive = ({ location }) => {
                             <CollapsibleContent className="max-h-[170px] overflow-y-auto scrollbar-thin data-[state=closed]:animate-collapsible-up data-[state=open]:animate-collapsible-down">
                                 <div className="ml-4 border-l-2 border-muted pl-4 flex flex-col gap-1 py-2">
                                     <NavLinkResponsive
-                                        to="/admin/karyawan"
-                                        active={location.pathname.startsWith("/admin/karyawan")}
+                                        to="karyawan"
+                                        active={location.pathname.startsWith("/karyawan")}
                                         icon={Dot}
                                         title="Karyawan"
                                     />
                                     <NavLinkResponsive
-                                        to="/admin/jabatan"
-                                        active={location.pathname.startsWith("/admin/jabatan")}
+                                        to="jabatan"
+                                        active={location.pathname.startsWith("/jabatan")}
                                         icon={Dot}
                                         title="Jabatan"
                                     />
                                     <NavLinkResponsive
-                                        to="/admin/departmen"
-                                        active={location.pathname.startsWith("/admin/departmen")}
+                                        to="departmen"
+                                        active={location.pathname.startsWith("/departmen")}
                                         icon={Dot}
                                         title="Departmen"
                                     />
                                     <NavLinkResponsive
-                                        to="/admin/shift"
-                                        active={location.pathname.startsWith("/admin/shift")}
+                                        to="shift"
+                                        active={location.pathname.startsWith("/shift")}
                                         icon={Dot}
                                         title="Shift"
                                     />
-                                    <NavLinkResponsive
-                                        to="/admin/tunjaangan"
-                                        active={location.pathname.startsWith("/admin/tunjaangan")}
+                                    {/* <NavLinkResponsive
+                                        to="tunjangan"
+                                        active={location.pathname.startsWith("/tunjangan")}
                                         icon={Dot}
-                                        title="Tunjanagan"
+                                        title="Tunjangan"
                                     />
                                     <NavLinkResponsive
-                                        to="/admin/potongan"
-                                        active={location.pathname.startsWith("/admin/potongan")}
+                                        to="potongan"
+                                        active={location.pathname.startsWith("/potongan")}
                                         icon={Dot}
                                         title="Potongan"
+                                    />
+                                    <NavLinkResponsive
+                                        to="jadwal-kerja"
+                                        active={location.pathname.startsWith("/jadwal-kerja")}
+                                        icon={Dot}
+                                        title="Jadwal Kerja"
+                                    /> */}
+                                    <NavLinkResponsive
+                                        to="office"
+                                        active={location.pathname.startsWith("/office")}
+                                        icon={Dot}
+                                        title="Kantor"
                                     />
                                 </div>
                             </CollapsibleContent>

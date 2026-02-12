@@ -27,7 +27,7 @@ const CreateJabatan = ({ title }) => {
                 toast.success(res.data.message)
 
                 setTimeout(() => {
-                    navigate('/jabatan')
+                    navigate('/admin/jabatan')
                 }, 1500)
             } catch (error) {
                 toast({ title: "Error", description: "Gagal menambahkan" })

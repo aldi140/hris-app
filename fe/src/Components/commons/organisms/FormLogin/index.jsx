@@ -1,14 +1,20 @@
 import { Link } from "react-router-dom"
 import { Button } from "../../../ui/button"
 import InputForm from "../../moleculs/InputForm"
+import { Spinner } from "../../../ui/spinner"
 
-const FormLogin = ({onSubmit}) => {
+const FormLogin = ({ onSubmit, isLoading }) => {
     return (
         <>
             <form onSubmit={onSubmit} className="space-y-4">
-                <InputForm label={"Email"} name={"email"} type={"email"} placeholder={"example@gmail.com"} required={true}/>
-                <InputForm label={"Password"} name={"password"} type={"password"} placeholder={"*********"} required={true}/>
-                <Button variant={"blue"} size={"default"} className={"w-full cursor-pointer"}>Sign In</Button>
+                <InputForm label={"Email"} name={"email"} type={"email"} placeholder={"example@gmail.com"} required={true} />
+                <InputForm label={"Password"} name={"password"} type={"password"} placeholder={"*********"} required={true} />
+                <Button variant={"blue"} size={"default"} className={`w-full cursor-pointer`} disabled={isLoading}>
+                    {isLoading ? (
+                        <>
+                            <Spinner /> Loading...</>
+                    ) : "Sign In"}
+                </Button>
             </form>
             <p className="text-gray-500 text-center mt-4">
                 Don't have an account?{" "}

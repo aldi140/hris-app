@@ -1,8 +1,9 @@
 // apiClient.js
 import axios from "axios";
+import { API_URL } from "../api";
 
 const api = axios.create({
-  baseURL: "https://be.koplink.net/",
+  baseURL: API_URL,
   // headers: {
   //   "Content-Type": "application/json",
   // },

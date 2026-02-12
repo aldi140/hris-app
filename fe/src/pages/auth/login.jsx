@@ -8,32 +8,42 @@ import { useEffect, useState } from "react";
 import { useAuth } from "../../hooks/useAuth";
 import { Alert, AlertTitle } from "../../Components/ui/alert";
 import { Info } from "lucide-react";
+import { useSelector } from "react-redux";
+import { isAuthentication } from "../../features/auth/authSlice";
 // import Image from "next/image"
 
-const PageLogin = ({title}) => {
+const PageLogin = ({ title }) => {
     const location = useLocation();
-    const navigate = useNavigate();
-
+    const isAuth = useSelector(isAuthentication);
     const { handleLogin } = useAuth();
 
     const [messageSuccess, setMessageSuccess] = useState(null);
-    const [error, setError] = useState(null); // Tambah ini
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState(null);
 
     const hanldeOnSubmit = async (e) => {
         e.preventDefault();
         const email = e.target.email.value;
         const password = e.target.password.value;
+
         try {
+            setIsLoading(true);
+            setError(null);
             await handleLogin({ email, password });
-            navigate("/");
-        } catch (error) {
-            console.log(error);
-            setError('Invalid email or password');
+        } catch (err) {
+            setError(err?.message || "Email atau password salah");
+        } finally {
+            setIsLoading(false);
         }
-    }
+    };
+
     useEffect(() => {
         setMessageSuccess(location.state?.message);
     }, [location]);
+
+    if (isAuth) {
+        return <Navigate to="/" replace />;
+    }
 
     // const successMessage = location.state?.success;
 
@@ -72,7 +82,7 @@ const PageLogin = ({title}) => {
                             <AiFillInfoCircle /> {messageSuccess}
                         </div>
                     }
-                    <FormLogin onSubmit={hanldeOnSubmit} />
+                    <FormLogin onSubmit={hanldeOnSubmit} isLoading={isLoading} />
                 </AuthTemplate>
             </div>
         </div>
