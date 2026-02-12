@@ -5,7 +5,7 @@ import { Link, useNavigate } from "react-router-dom"
 import { Card, CardContent } from "../../../Components/ui/card"
 import { Label } from "../../../Components/ui/label"
 import { Input } from "../../../Components/ui/input"
-import { InputGroup } from "../../../Components/ui/InputGroup"
+import { InputGroup } from "../../../Components/ui/inputGroup"
 import { useFormik } from "formik"
 import { addShift } from "../../../service/shiftService"
 

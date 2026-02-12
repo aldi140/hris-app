@@ -14,7 +14,7 @@ import { usePageTitle } from "../../../hooks/usePageTitle";
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "../../../Components/ui/dialog";
 import { Label } from "../../../Components/ui/label";
 import { Input } from "../../../Components/ui/input";
-import { InputGroup } from "../../../Components/ui/InputGroup"
+import { InputGroup } from "../../../Components/ui/inputGroup"
 import { detailGapok, getGapok, updateGapok } from "../../../service/gapokService";
 import * as yup from 'yup'
 import { Formik, useFormik } from "formik";
