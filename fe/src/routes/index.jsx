@@ -6,7 +6,7 @@ import PageRegister from "../pages/auth/register";
 import Dashboard from "../pages/dashboard";
 import DepartmenCreate from "../pages/admin/departmen/Create";
 import DepartmenList from "../pages/admin/departmen/Index";
-import ListJabatan from "../pages/admin/jabatan";
+import ListJabatan from "../pages/admin/jabatan/Index";
 import CreateJabatan from "../pages/admin/jabatan/Create";
 import CreateKaryawan from "../pages/admin/karyawan/Create";
 import { PrivateRoute } from "./privateRoute";
