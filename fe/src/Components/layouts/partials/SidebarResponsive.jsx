@@ -72,7 +72,7 @@ const SidebarResponsive = ({ location }) => {
                     <nav className="grid items-start px-3 text-sm lg:px-4 gap-2">
                         {/* Dashboard */}
                         <NavLinkResponsive to="/" isMasterActive={location.pathname === "/"} title="Dashboard" icon={LayoutDashboard} />
-                        <NavLink
+                        <NavLinkResponsive
                             to="/field-visit"
                             isMasterActive={location.pathname === "/field-visit"}
                             icon={MapPinCheck}
