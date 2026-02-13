@@ -27,7 +27,7 @@ export const routes = [
   },
   {
     path: "/register",
-    element: <PageRegister title={"Absensi"} />,
+    element: <PageRegister title={"Register"} />,
   },
 
   {
