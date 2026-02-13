@@ -1,8 +1,8 @@
 import { LucideFlag, LucideMapPin } from "lucide-react";
 import { MapContainer, TileLayer, Marker, Popup, Polyline } from "react-leaflet";
-import { ImageURL } from "../../../../api";
+import { ImageURL, ImageURLKoplink } from "../../../../api";
 
-const MapSurvey = ({ data, jenis }) => {
+const MapSurvey = ({ data, jenis, typeFile }) => {
     if (!data) return
     // console.log('data', data)
     const mapPinSvg = `
@@ -128,9 +128,9 @@ const MapSurvey = ({ data, jenis }) => {
                         <Popup>
                             <div className="flex flex-col gap-2">
                                 <img
-                                    src={`${ImageURL}${imgArr[0]}`}
+                                    src={`${ImageURLKoplink}${typeFile}/${imgArr[0]}`}
                                     alt="foto lokasi"
-                                    className="w-full rounded"
+                                    className="w-full rounded h-40 object-cover"
                                 />
                                 <div className="text-sm font-semibold">Lokasi {jenis} ke- {index + 1}</div>
                                 <div className="text-xs text-gray-500">{detailData?.nama}</div>

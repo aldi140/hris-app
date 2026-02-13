@@ -343,7 +343,7 @@ const FieldVisit = ({ title }) => {
                                                                     <div className="no-scrollbar -mx-4 max-h-[80vh] overflow-y-auto px-4 flex flex-col gap-4">
 
                                                                         <div className="rounded-md overflow-hidden">
-                                                                            <MapSurvey data={detailSurvey} jenis="Survey" />
+                                                                            <MapSurvey data={detailSurvey} jenis="Survey" typeFile="rumah" />
                                                                         </div>
                                                                         <div className="flex flex-col gap-2">
                                                                             <p className="text-md font-semibold text-muted-foreground">Informasi Survey</p>
