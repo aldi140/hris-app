@@ -1,4 +1,4 @@
-import { BriefcaseBusiness, Building, CalendarArrowUp, CalendarOff, ChevronRight, Database, Dot, History, LayoutDashboard, PanelsLeftBottom, Users } from "lucide-react";
+import { BriefcaseBusiness, Building, CalendarArrowUp, CalendarOff, ChevronRight, Database, Dot, History, LayoutDashboard, MapPinCheck, PanelsLeftBottom, Users } from "lucide-react";
 import { Button } from "../../ui/button"
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "../../ui/sheet"
 
@@ -72,6 +72,12 @@ const SidebarResponsive = ({ location }) => {
                     <nav className="grid items-start px-3 text-sm lg:px-4 gap-2">
                         {/* Dashboard */}
                         <NavLinkResponsive to="/" isMasterActive={location.pathname === "/"} title="Dashboard" icon={LayoutDashboard} />
+                        <NavLink
+                            to="/field-visit"
+                            isMasterActive={location.pathname === "/field-visit"}
+                            icon={MapPinCheck}
+                            {...(minMaxSize && { title: "Survey & Kunjungan" })}
+                        />
 
                         {/* Absensi & Kehadiran */}
                         <Collapsible open={openAttandance} onOpenChange={setOpenAttandance} >
