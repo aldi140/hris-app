@@ -76,7 +76,6 @@ const SidebarResponsive = ({ location }) => {
                             to="/field-visit"
                             isMasterActive={location.pathname === "/field-visit"}
                             icon={MapPinCheck}
-                            {...(minMaxSize && { title: "Survey & Kunjungan" })}
                         />
 
                         {/* Absensi & Kehadiran */}
