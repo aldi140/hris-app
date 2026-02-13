@@ -56,6 +56,7 @@ const PageAbsensi = ({ title }) => {
     // const [jamKeluar, setJamKeluar] = useState(null)
     const [loading, setLoading] = useState(false)
     const [data, setData] = useState();
+    const [jadwal, setJadwal] = useState();
 
     const { departmenList, handleGetDepartmen } = useDepartmen()
     const { officeList, handlegetOfficeAll } = useOffice()
@@ -63,8 +64,11 @@ const PageAbsensi = ({ title }) => {
     const getDataAbsen = async () => {
         const res = await getDetailAttendance()
         setData(res.data.data)
+        setJadwal(res.data.jadwal)
 
     }
+    console.log('data', data)
+    console.log('jadwal', jadwal)
     const time_diff = data
         ? differenceMinutes(data.schedule_in_time, data.check_in_time)
         : null;
@@ -233,13 +237,13 @@ const PageAbsensi = ({ title }) => {
                     <CardContent className="space-y-4">
                         <div className="flex felx-row justify-between">
                             <span className="text-xs font-extralight text-white">Jam Kerja</span>
-                            <span className="text-xs font-extralight text-white">{formatDate(data?.tgl_absensi)}</span>
+                            <span className="text-xs font-extralight text-white">{formatDate(jadwal?.schedule_date)}</span>
                         </div>
                         <div className="flex flex-col items-center space-y-4">
                             <div className="space-y-1">
                                 <div className="flex justify-center gap-3">
                                     <p className="text-emerald-900 font-bold text-2xl">
-                                        {formatTime(data ? data.schedule_in_time : "--:--")} - {formatTime(data?.schedule_out_time)}
+                                        {formatTime(jadwal ? jadwal.shift?.start_time : "--:--")} - {formatTime(jadwal ? jadwal.shift?.end_time : "--:--")}
                                     </p>
 
 
