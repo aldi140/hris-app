@@ -78,13 +78,12 @@ const MainLayout = () => {
                                         </Button>
                                     </DropdownMenuTrigger>
                                     <DropdownMenuContent align="end">
-                                        <DropdownMenuLabel>Account</DropdownMenuLabel>
+                                        <DropdownMenuLabel>Notifications</DropdownMenuLabel>
                                         <DropdownMenuSeparator />
-                                        <DropdownMenuItem>Profile</DropdownMenuItem>
-                                        <DropdownMenuItem asChild>
-                                            <button onClick={handleLogout} className="w-full text-left">
-                                                Logout
-                                            </button>
+                                        <DropdownMenuItem>
+                                            <Link to="/notifications" className="w-full text-left">
+                                                View all
+                                            </Link>
                                         </DropdownMenuItem>
                                     </DropdownMenuContent>
                                 </DropdownMenu>
