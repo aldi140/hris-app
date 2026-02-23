@@ -4,24 +4,24 @@ import {
 } from "lucide-react"
 
 import { FiArrowLeft } from "react-icons/fi";
-import { Card, CardContent } from "../../Components/ui/card"
+import { Card, CardContent } from "../../../Components/ui/card"
 
-import { Button } from "../../Components/ui/button"
-import { Avatar, AvatarFallback, AvatarImage } from "../../Components/ui/avatar"
+import { Button } from "../../../Components/ui/button"
+import { Avatar, AvatarFallback, AvatarImage } from "../../../Components/ui/avatar"
 
 import { useEffect, useState } from "react"
 import { toast, Toaster } from "sonner";
 import { useSelector } from "react-redux";
-import { dataUser } from "../../features/auth/authSlice";
+import { dataUser } from "../../../features/auth/authSlice";
 import { checkin, chekout, getDetailAttendance } from "../../service/AttendanceService";
-import { differenceMinutes, formatDate, formatTime } from "../../lib/utils";
-import { useDepartmen } from "../../hooks/useDepartmen";
-import { ImageURL } from "../../api";
+import { differenceMinutes, formatDate, formatTime } from "../../../lib/utils";
+import { useDepartmen } from "../../../modules/departmen/useDepartmen";
+import { ImageURL } from "../../../api";
 import { HiArrowDownCircle, HiArrowUpCircle } from "react-icons/hi2";
 import karakterImage from "@/assets/img/karakter-1.png";
-import { Badge } from "../../Components/ui/badge";
-import { useOffice } from "../../hooks/useOffice";
-import { usePageTitle } from "../../hooks/usePageTitle";
+import { Badge } from "../../../Components/ui/badge";
+import { usePageTitle } from "../../../hooks/usePageTitle";
+import { useOffice } from "../../../modules/office/useOffice";
 
 
 const RealtimeClock = () => {

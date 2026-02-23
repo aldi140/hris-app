@@ -1,20 +1,16 @@
-import { use, useActionState, useEffect, useRef, useState } from "react";
-import { useDepartmen } from "../../../hooks/useDepartmen";
+import { useEffect, useRef, useState } from "react";
 import HeaderTitle from "../../../Components/commons/atoms/HeaderTitle";
-import { BriefcaseBusiness, Building, Pencil, Plus, Trash } from "lucide-react";
+import { BriefcaseBusiness, Pencil, Plus, Trash } from "lucide-react";
 import { Button } from "../../../Components/ui/button";
 import { Link } from "react-router-dom";
-import { Card, CardContent } from "../../../Components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../../../Components/ui/table";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "../../../Components/ui/alert-dialog";
-import { formatDate } from "../../../lib/utils";
 import { toast } from "sonner";
-import { useShift } from "../../../hooks/useShift";
+import { useShift } from "../../../modules/shift/useShift";
 import { usePageTitle } from "../../../hooks/usePageTitle";
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "../../../Components/ui/dialog";
 import { Label } from "../../../Components/ui/label";
 import { Input } from "../../../Components/ui/input";
-import { detailShift, getShift, updateShift } from "../../../service/shiftService";
 import * as yup from 'yup'
 import { Formik, useFormik } from "formik";
 import { MyInputGroup } from "../../../Components/ui/myInputGroup";
@@ -23,7 +19,7 @@ const ListShift = ({ title }) => {
     usePageTitle(title);
     const closeDialogRef = useRef(null);
     const [shiftById, setShiftById] = useState({});
-    const { shiftList, loading, error, hanldeGetShift, handleDeleteShift } = useShift();
+    const { shiftList, loading, error, hanldeGetShift, handleDetailShift, handleDeleteShift } = useShift();
 
     useEffect(() => {
         hanldeGetShift();
@@ -32,7 +28,7 @@ const ListShift = ({ title }) => {
 
     const getShiftById = async (id) => {
         try {
-            const response = await detailShift({ id });
+            const response = await handleDetailShift({ id });
             setShiftById(response.data.data);
         } catch (error) {
             console.log(error);

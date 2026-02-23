@@ -4,10 +4,17 @@ import { isAuthentication } from "../features/auth/authSlice";
 
 export const PrivateRoute = ({ children }) => {
     const auth = useSelector(isAuthentication);
+    console.log(auth)
 
     if (!auth) {
-        return <Navigate to="/login" replace />;
+        return (
+            <Navigate
+                to="/login"
+                replace
+            />
+        );
     }
+
 
     // support:
     // 1. children (Private + Layout)

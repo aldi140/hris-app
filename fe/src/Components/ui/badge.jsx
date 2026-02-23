@@ -23,12 +23,24 @@ const badgeVariants = cva(
           "bg-yellow-500 text-white shadow-xs hover:bg-yellow-500/90 focus-visible:ring-yellow-500/20 dark:focus-visible:ring-yellow-500/40 dark:bg-yellow-500/60",
         green:
           "bg-green-800 text-white shadow-xs hover:bg-green-800/90 focus-visible:ring-green-500/20 dark:focus-visible:ring-green-500/40 dark:bg-green-500/60",
+        orange:
+          "bg-orange-600 text-white shadow-xs hover:bg-orange-600/90 focus-visible:ring-orange-500/20 dark:focus-visible:ring-orange-500/40 dark:bg-orange-500/60",
+        red:
+          "bg-red-800 text-white shadow-xs hover:bg-red-800/90 focus-visible:ring-red-500/20 dark:focus-visible:ring-red-500/40 dark:bg-red-500/60",
         blueSecondary:
           "bg-indigo-100 text-indigo-800 shadow-xs hover:bg-indigo-600/90 hover:text-white focus-visible:ring-indigo-600/20 dark:focus-visible:ring-indigp/40 dark:bg-indigp/60",
         redSecondary:
           "bg-red-100 text-red-800 shadow-xs hover:bg-red-600/90 hover:text-white focus-visible:ring-red-600/20 dark:focus-visible:ring-red-500/40 dark:bg-red-500/60",
         greenSecondary:
           "bg-green-100 text-green-800 shadow-xs hover:bg-green-600/90 hover:text-white focus-visible:ring-green-600/20 dark:focus-visible:ring-green-500/40 dark:bg-green-500/60",
+        yellowSecondary:
+          "bg-yellow-50 text-yellow-600 shadow-xs hover:bg-yellow-600/90 hover:text-white focus-visible:ring-yellow-600/20 dark:focus-visible:ring-yellow-500/40 dark:bg-yellow-500/60",
+        redSecondary:
+          "bg-red-100 text-red-800 shadow-xs hover:bg-red-600/90 hover:text-white focus-visible:ring-red-600/20 dark:focus-visible:ring-red-500/40 dark:bg-red-500/60",
+        orangeSecondary:
+          "bg-orange-100 text-orange-800 shadow-xs hover:bg-orange-600/90 hover:text-white focus-visible:ring-orange-600/20 dark:focus-visible:ring-orange-500/40 dark:bg-orange-500/60",
+
+
       },
     },
     defaultVariants: {

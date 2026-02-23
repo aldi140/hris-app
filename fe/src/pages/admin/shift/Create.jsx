@@ -6,13 +6,13 @@ import { Card, CardContent } from "../../../Components/ui/card"
 import { Label } from "../../../Components/ui/label"
 import { Input } from "../../../Components/ui/input"
 import { useFormik } from "formik"
-import { addShift } from "../../../service/shiftService"
 
 import * as yup from 'yup'
 import { toast } from "sonner"
-import { useShift } from "../../../hooks/useShift"
+import { useShift } from "../../../modules/shift/useShift"
 import { usePageTitle } from "../../../hooks/usePageTitle"
 import { MyInputGroup } from "../../../Components/ui/myInputGroup"
+import { addShift } from "../../../modules/shift/shiftService"
 
 const CreateShift = ({ title }) => {
     usePageTitle(title)

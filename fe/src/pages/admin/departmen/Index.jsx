@@ -1,10 +1,8 @@
 import { useEffect, useRef, useState } from "react";
-import { useDepartmen } from "../../../hooks/useDepartmen";
 import HeaderTitle from "../../../Components/commons/atoms/HeaderTitle";
 import { Building, Pencil, Plus, SearchIcon, Trash } from "lucide-react";
 import { Button } from "../../../Components/ui/button";
 import { Link } from "react-router-dom";
-import { Card, CardContent } from "../../../Components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../../../Components/ui/table";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "../../../Components/ui/alert-dialog";
 import { formatDate } from "../../../lib/utils";
@@ -13,12 +11,12 @@ import { usePageTitle } from "../../../hooks/usePageTitle";
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "../../../Components/ui/dialog";
 import { Label } from "../../../Components/ui/label";
 import { Input } from "../../../Components/ui/input";
-import { detailDepertmen, updateDepertmen } from "../../../service/departmenService";
 import * as yup from 'yup'
 import { useFormik } from "formik";
 import { InputGroup, InputGroupAddon, InputGroupInput } from "../../../Components/ui/input-group";
 import noDataImg from "@/assets/img/no_data.svg";
-import { HiArrowsUpDown } from "react-icons/hi2";
+import { useApiError } from "../../../hooks/useApiError";
+import { useDepartmen } from "../../../modules/departmen/useDepartmen";
 
 
 
@@ -27,6 +25,7 @@ const DepartmenList = ({ title }) => {
     const closeDialogRef = useRef(null);
     const [data, setData] = useState([]);
     const [search, setSearch] = useState('');
+    const handleApiError = useApiError();
     const [departmenById, setDepartmenById] = useState({});
     const { departmenList, isLoading, error, handleGetDepartmen, handleUpdateDepartmen, getDepartmenById, handleDeleteDepartmen } = useDepartmen();
     const handleSearch = (e) => {
@@ -38,6 +37,13 @@ const DepartmenList = ({ title }) => {
         }, 500);
         return () => clearTimeout(delay);
     }, [search]);
+
+    useEffect(() => {
+        if (error) {
+            console.log(error)
+            handleApiError(error);
+        }
+    }, [error]);
 
     const handleGetDepartmenById = (id) => {
         const data = getDepartmenById(id);
@@ -63,7 +69,10 @@ const DepartmenList = ({ title }) => {
                     closeDialogRef.current?.click()
                 }, 1000)
             } catch (error) {
-                console.log(error);
+                console.log(error)
+                handleApiError(error);
+            } finally {
+                actions.setSubmitting(false);
             }
 
         },
@@ -86,7 +95,7 @@ const DepartmenList = ({ title }) => {
             toast.success(response.data.message);
         } catch (error) {
             toast.error(response.data.message);
-            console.error(error);
+            // console.error(error); 
         }
 
     }
@@ -139,7 +148,7 @@ const DepartmenList = ({ title }) => {
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        {error ? (
+                        {typeof error === 'string' ? (
                             <TableRow>
                                 <TableCell colSpan={5} className="h-24 text-center p-10">
                                     <img src={noDataImg} alt="No Data" className="mx-auto w-20" />
@@ -182,9 +191,9 @@ const DepartmenList = ({ title }) => {
                                                     </div>
                                                     <DialogFooter className='mt-4'>
                                                         <DialogClose asChild >
-                                                            <Button variant="outline" ref={closeDialogRef}>Cancel</Button>
+                                                            <Button variant="outline" ref={closeDialogRef}>Batal</Button>
                                                         </DialogClose>
-                                                        <Button type="submit">Save changes</Button>
+                                                        <Button type="submit" disabled={formik.isSubmitting}>{formik.isSubmitting ? 'Loading...' : 'Simpan'}</Button>
                                                     </DialogFooter>
                                                 </form>
                                             </DialogContent>

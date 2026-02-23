@@ -1,19 +1,59 @@
-import { LucideFlag, LucideMapPin } from "lucide-react";
+
+import L from 'leaflet';
 import { MapContainer, TileLayer, Marker, Popup, Polyline } from "react-leaflet";
 import { ImageURL, ImageURLKoplink } from "../../../../api";
+import { useEffect, useState } from "react";
 
-const MapSurvey = ({ data, jenis, typeFile }) => {
+const Map = ({ data, jenis, typeFile }) => {
+    const [longlat, setLonglat] = useState([]);
+
+    useEffect(() => {
+        if (!data?.length) return;
+
+        if (jenis === "Survey") {
+            const coordinates = data
+                .filter(item =>
+                    item.lat_rumah !== 0 &&
+                    item.lat_rumah !== null &&
+                    item.lat_rumah !== "" &&
+                    item.long_rumah !== 0 &&
+                    item.long_rumah !== null &&
+                    item.long_rumah !== ""
+                )
+                .map(item => ({
+                    lat: item.lat_rumah,
+                    lng: item.long_rumah,
+                    detail: item
+                }));
+
+            setLonglat(coordinates);
+        }
+
+        if (jenis === "Kunjungan") {
+            const coordinates = data
+                .filter(item =>
+                    item.lat_lokasi !== 0 &&
+                    item.lat_lokasi !== null &&
+                    item.lat_lokasi !== "" &&
+                    item.long_lokasi !== 0 &&
+                    item.long_lokasi !== null &&
+                    item.long_lokasi !== ""
+                )
+                .map(item => ({
+                    lat: item.lat_lokasi,
+                    lng: item.long_lokasi,
+                    detail: item
+                }));
+
+            setLonglat(coordinates);
+        }
+
+    }, [data, jenis]);
+
     if (!data) return
-    // console.log('data', data)
-    const mapPinSvg = `
-<svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-white"
-     fill="none" viewBox="0 0 24 24" stroke="currentColor">
-  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-    d="M12 11c1.657 0 3-1.343 3-3S13.657 5 12 5s-3 1.343-3 3 1.343 3 3 3z"/>
-  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-    d="M12 11v10"/>
-</svg>
-`;
+    if (!longlat.length) return <p>Lokasi tidak tersedia</p>;
+    console.log('data', data)
+
     const locationOutlineSvg = `
 <svg xmlns="http://www.w3.org/2000/svg"
   viewBox="0 0 24 24"
@@ -37,16 +77,9 @@ const MapSurvey = ({ data, jenis, typeFile }) => {
 </svg>
 `;
 
-    const longlat = data.map((item) =>
-        item.lat_rumah !== 0 &&
-            item.lat_rumah !== null &&
-            item.lat_rumah !== "" &&
-            item.long_rumah !== 0 &&
-            item.long_rumah !== null &&
-            item.long_rumah !== ""
-            ? { lat: item.lat_rumah, lng: item.long_rumah }
-            : null
-    );
+
+
+    console.log('longlat', longlat)
 
     const pinIcon = (index, type) =>
         L.divIcon({
@@ -104,8 +137,8 @@ const MapSurvey = ({ data, jenis, typeFile }) => {
         // <>
         // </>
         <MapContainer
-            key={longlat.length}
-            center={[Number(longlat[0].lat), Number(longlat[0].lng)]}
+            key={longlat?.length}
+            center={[Number(longlat[0]?.lat), Number(longlat[0]?.lng)]}
             zoom={5}
             style={{ height: "400px", width: "100%" }}
         >
@@ -115,26 +148,38 @@ const MapSurvey = ({ data, jenis, typeFile }) => {
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
             <Polyline pathOptions={limeOptions} positions={longlat} />
-            {longlat.map((item, index) => {
+            {longlat?.map((item, index) => {
+                let imgArr = [];
+                let nama = "";
+                let alamat = "";
                 const isFirst = index === 0;
-                const isLast = index === longlat.length - 1;
+                const isLast = index === longlat?.length - 1;
                 const icon = pinIcon(index, isFirst ? "start" : isLast ? "end" : "middle");
                 const detailData = data[index];
-                const imgArr = detailData?.foto_rumah.split(",");
-                // console.log(imgArr[0])
-
+                if (jenis == 'Survey') {
+                    nama = detailData?.nama
+                    alamat = detailData?.alamat
+                    imgArr = detailData?.foto_rumah.split(",");
+                }
+                if (jenis == 'Kunjungan') {
+                    nama = detailData?.nama_nasabah
+                    alamat = detailData?.alamat
+                    // console.log(imgArr[0])
+                    imgArr = detailData?.foto_lokasi.split(",");
+                }
                 return (
                     <Marker key={index} position={[item.lat, item.lng]} icon={icon}>
                         <Popup>
-                            <div className="flex flex-col gap-2">
+                            <div className="flex flex-col gap-2 max-w-40">
                                 <img
                                     src={`${ImageURLKoplink}${typeFile}/${imgArr[0]}`}
+                                    // src=""
                                     alt="foto lokasi"
-                                    className="w-full rounded h-40 object-cover"
+                                    className="w-40 rounded h-40 object-cover mx-auto"
                                 />
                                 <div className="text-sm font-semibold">Lokasi {jenis} ke- {index + 1}</div>
-                                <div className="text-xs text-gray-500">{detailData?.nama}</div>
-                                <div className="text-xs text-gray-500">{detailData?.alamat}</div>
+                                <div className="text-xs text-gray-500">{nama}</div>
+                                <div className="text-xs text-gray-500">{alamat}</div>
                             </div>
                         </Popup>
                     </Marker>
@@ -144,4 +189,4 @@ const MapSurvey = ({ data, jenis, typeFile }) => {
     );
 };
 
-export default MapSurvey;
+export default Map;

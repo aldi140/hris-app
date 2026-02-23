@@ -9,8 +9,8 @@ import { useFormik } from "formik"
 
 import * as yup from 'yup'
 import { toast } from "sonner"
-import { useJabatan } from "../../../hooks/useJabatan"
 import { usePageTitle } from "../../../hooks/usePageTitle"
+import { useJabatan } from "../../../modules/jabatan/useJabatan"
 
 const CreateJabatan = ({ title }) => {
     usePageTitle(title)

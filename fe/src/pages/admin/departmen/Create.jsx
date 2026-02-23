@@ -8,8 +8,8 @@ import { Input } from "../../../Components/ui/input"
 import { useFormik } from "formik"
 
 import * as yup from 'yup'
-import { useDepartmen } from "../../../hooks/useDepartmen"
 import { toast } from "sonner"
+import { useDepartmen } from "../../../modules/departmen/useDepartmen"
 
 const DepartmenCreate = () => {
     const navigate = useNavigate()

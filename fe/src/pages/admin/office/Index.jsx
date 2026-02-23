@@ -6,9 +6,9 @@ import { Link } from "react-router-dom";
 import { Card, CardContent, CardHeader } from "../../../Components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../../../Components/ui/table";
 import { BriefcaseBusiness, Building2Icon, LucideEllipsis, LucideSend, PencilIcon, Plus, TrashIcon } from "lucide-react";
-import { useOffice } from "../../../hooks/useOffice";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuRadioGroup, DropdownMenuRadioItem, DropdownMenuSeparator, DropdownMenuTrigger } from "../../../Components/ui/dropdown-menu";
 import Paginations from "../../../Components/commons/moleculs/Pagination";
+import { useOffice } from "../../../modules/office/useOffice";
 
 const ListOffice = ({ title }) => {
     usePageTitle(title);

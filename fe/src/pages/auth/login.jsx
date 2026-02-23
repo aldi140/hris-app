@@ -3,7 +3,7 @@ import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import FormLogin from "../../Components/commons/organisms/FormLogin";
 import AuthTemplate from "../../Components/commons/template/AuthTemplate";
 // import { AspectRatio } from "@/components/ui/aspect-ratio"
-import { Toaster } from "sonner";
+import { toast, Toaster } from "sonner";
 import { useEffect, useState } from "react";
 import { useAuth } from "../../hooks/useAuth";
 import { Alert, AlertTitle } from "../../Components/ui/alert";
@@ -22,6 +22,14 @@ const PageLogin = ({ title }) => {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
 
+    useEffect(() => {
+        if (location.state?.reason === "SESSION_EXPIRED") {
+            toast.error("Session expired, please login again");
+            window.history.replaceState({}, document.title);
+        }
+    }, []);
+
+
     const hanldeOnSubmit = async (e) => {
         e.preventDefault();
         const email = e.target.email.value;
@@ -38,9 +46,6 @@ const PageLogin = ({ title }) => {
         }
     };
 
-    useEffect(() => {
-        setMessageSuccess(location.state?.message);
-    }, [location]);
 
     if (isAuth) {
         return <Navigate to="/" replace />;

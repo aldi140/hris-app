@@ -1,6 +1,5 @@
-import MainLayout from "../Components/layouts/main.layout";
 import Home from "../pages";
-import PageAbsensi from "../pages/absensi/index";
+import MainLayout from "../Components/layouts/admin/main.layout";
 import PageLogin from "../pages/auth/login";
 import PageRegister from "../pages/auth/register";
 import Dashboard from "../pages/dashboard";
@@ -8,17 +7,21 @@ import DepartmenCreate from "../pages/admin/departmen/Create";
 import DepartmenList from "../pages/admin/departmen/Index";
 import ListJabatan from "../pages/admin/jabatan/Index";
 import CreateJabatan from "../pages/admin/jabatan/Create";
-import CreateKaryawan from "../pages/admin/karyawan/Create";
 import { PrivateRoute } from "./privateRoute";
-import PageKaryawan from "../pages/admin/karyawan/Index";
 import ListShift from "../pages/admin/shift/Index";
 import CreateShift from "../pages/admin/shift/Create";
-
 import ListGapok from "../pages/admin/gapok/Index";
-import ListJadwalKerja from "../pages/admin/jadwal-kerja/Index";
 import ListAttendance from "../pages/admin/attendance/ListAttendance";
-import FieldVisit from "../pages/admin/survey-kunjungan/Index";
+import FieldVisit from "../pages/admin/survey-visit/Index";
 import ListOffice from "../pages/admin/office/Index";
+import PageEmployee from "../pages/admin/employee/Index";
+import CreateEmployee from "../pages/admin/employee/Create";
+import ScheduleList from "../pages/admin/schedule-work/Index";
+import PageAttendance from "../pages/users/attendance/index";
+import MainLayoutUser from "../Components/layouts/users/main.layout";
+import PageHome from "../pages/users/home";
+import PageNotification from "../pages/users/notif";
+import PageProfile from "../pages/users/profile";
 
 export const routes = [
   {
@@ -30,16 +33,34 @@ export const routes = [
     element: <PageRegister title={"Register"} />,
   },
 
+  // user
   {
-    element: <PrivateRoute />,
+    element: (
+      <PrivateRoute>
+        <MainLayoutUser />
+      </PrivateRoute>
+    ),
     children: [
       {
-        path: "/absensi",
-        element: <PageAbsensi title="Absensi" />,
+        path: "/home",
+        element: <PageHome title="Home" />,
+      },
+      {
+        path: "/attendance",
+        element: <PageAttendance title="Absensi" />,
+      },
+      {
+        path: "/notification",
+        element: <PageNotification title="Notifikasi" />,
+      },
+      {
+        path: "/profile",
+        element: <PageProfile title="Profil" />,
       },
     ],
   },
 
+  // admin
   {
     element: (
       <PrivateRoute>
@@ -60,24 +81,19 @@ export const routes = [
       { path: 'jabatan/create', element: <CreateJabatan title={"Tambah Jabatan"} /> },
 
       // Karyawan
-      { path: 'karyawan', element: <PageKaryawan title={"Karyawan"} /> },
-      { path: 'karyawan/create', element: <CreateKaryawan title={"Tambah Karyawan"} /> },
+      { path: 'employee', element: <PageEmployee title={"Karyawan"} /> },
+      { path: 'employee/create', element: <CreateEmployee title={"Tambah Karyawan"} /> },
 
       // Gapok
-      { path: 'gapok', element: <ListGapok title={"Karyawan"} /> },
-      { path: 'karyawan/create', element: <CreateKaryawan title={"Tambah Karyawan"} /> },
+      { path: 'base-salary', element: <ListGapok title={"Gaji Pokok"} /> },
+      { path: 'employee/create', element: <CreateEmployee title={"Gaji Pokok"} /> },
 
       // Shift
-      { path: 'karyawan', element: <PageKaryawan title={"Karyawan"} /> },
-      { path: 'karyawan/create', element: <CreateKaryawan title={"Tambah Karyawan"} /> },
-
-      // Karyawan
       { path: 'shift', element: <ListShift title={"Shift"} /> },
       { path: 'shift/create', element: <CreateShift title={"Tambah Shift"} /> },
 
       // Jadwal Kerja
-      { path: 'jadwal-kerja', element: <ListJadwalKerja title={"Jadwal Kerja"} /> },
-      // { path: '/admin/jadwal-kerja/create', element: <CreateJadwalKerja title={"Tambah Jadwal Kerja"} /> },
+      { path: 'schedule-work', element: <ScheduleList title={"Jadwal Kerja"} /> },
 
       // Absensi
       { path: 'attendance/list-attendance', element: <ListAttendance title={"List Absensi"} /> },

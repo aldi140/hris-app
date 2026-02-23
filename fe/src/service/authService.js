@@ -19,3 +19,8 @@ export const register = async (name, email, password) => {
   });
   return response.data;
 };
+
+export const verifyToken = async () => {
+  const response = await api.get("/me");
+  return response.data;
+};

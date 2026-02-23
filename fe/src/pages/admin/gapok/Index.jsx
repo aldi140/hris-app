@@ -1,5 +1,4 @@
-import { use, useActionState, useEffect, useRef, useState } from "react";
-import { useDepartmen } from "../../../hooks/useDepartmen";
+import { useEffect, useRef, useState } from "react";
 import HeaderTitle from "../../../Components/commons/atoms/HeaderTitle";
 import { BriefcaseBusiness, Building, Pencil, Plus, Trash } from "lucide-react";
 import { Button } from "../../../Components/ui/button";
@@ -9,34 +8,30 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from ".
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "../../../Components/ui/alert-dialog";
 import { formatDate } from "../../../lib/utils";
 import { toast } from "sonner";
-import { useGapok } from "../../../hooks/useGapok";
+import { useSallary } from "../../../modules/sallary/useSalary";
 import { usePageTitle } from "../../../hooks/usePageTitle";
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "../../../Components/ui/dialog";
 import { Label } from "../../../Components/ui/label";
 import { Input } from "../../../Components/ui/input";
-import { detailGapok, getGapok, updateGapok } from "../../../service/gapokService";
 import * as yup from 'yup'
 import { Formik, useFormik } from "formik";
 import { MyInputGroup } from "../../../Components/ui/myInputGroup";
+import { updateSalary } from "../../../modules/sallary/salaryService";
 
-const ListGapok = ({ title }) => {
+const ListSalary = ({ title }) => {
     usePageTitle(title);
     const closeDialogRef = useRef(null);
     const [data, setData] = useState([]);
     const [gapokById, setGapokById] = useState({});
-    const { hanldeGetGapok, handleDeleteGapok } = useGapok();
+    const { salaryList, handleGetSalary, handleDetailSalary, handleDeleteSalary } = useSallary();
     useEffect(() => {
-
-        const fetchDepartmen = async () => {
-            const response = await getGapok();
-            setData(response.data.data);
-        }
-        fetchDepartmen();
+        handleGetSalary();
     }, []);
+
 
     const getGapokById = async (id) => {
         try {
-            const response = await detailGapok({ id });
+            const response = await handleDetailSalary({ id });
             setGapokById(response.data.data);
         } catch (error) {
             console.log(error);
@@ -68,7 +63,7 @@ const ListGapok = ({ title }) => {
             }
 
             try {
-                const response = await updateGapok({
+                const response = await updateSalary({
                     id: gapokById.id,
                     data: formData
                 })
@@ -99,7 +94,7 @@ const ListGapok = ({ title }) => {
 
     const onDelete = async (id) => {
         try {
-            const response = await handleDeleteGapok({ id });
+            const response = await handleDeleteSalary({ id });
             setData(prev => prev.filter(item => item.id !== id));
             // console.log(response)
             toast.success(response.data.message);
@@ -246,4 +241,4 @@ const ListGapok = ({ title }) => {
     )
 }
 
-export default ListGapok
+export default ListSalary

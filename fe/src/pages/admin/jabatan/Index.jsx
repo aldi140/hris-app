@@ -8,7 +8,6 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from ".
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "../../../Components/ui/alert-dialog";
 import { formatDate } from "../../../lib/utils";
 import { toast } from "sonner";
-import { useJabatan } from "../../../hooks/useJabatan";
 import { usePageTitle } from "../../../hooks/usePageTitle";
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "../../../Components/ui/dialog";
 import { Label } from "../../../Components/ui/label";
@@ -18,13 +17,17 @@ import { InputGroup, InputGroupAddon, InputGroupInput } from "../../../Component
 import noDataImg from "@/assets/img/no_data.svg";
 import { useEffect, useRef, useState } from "react";
 import { useFormik } from "formik";
+import { useApiError } from "../../../hooks/useApiError";
+import { useJabatan } from "../../../modules/jabatan/useJabatan";
 
 const ListJabatan = ({ title }) => {
     usePageTitle(title);
     const closeDialogRef = useRef(null);
     const [search, setSearch] = useState("");
+    const handleApiError = useApiError();
+
     const [jabatanById, setJabatanById] = useState({});
-    const { jabatanList, isLoading, error, getJabatanById, handleGetJabatan, handleDeleteJabatan, handleUpdateJabatan } = useJabatan();
+    const { jabatanList, setJabatanList, isLoading, error, getJabatanById, handleGetJabatan, handleDeleteJabatan, handleUpdateJabatan } = useJabatan();
 
     const handleSearch = (e) => {
         setSearch(e.target.value);
@@ -35,6 +38,12 @@ const ListJabatan = ({ title }) => {
         }, 500);
         return () => clearTimeout(delay);
     }, [search]);
+
+    useEffect(() => {
+        if (error) {
+            handleApiError(error);
+        }
+    }, [error]);
 
 
 
@@ -50,26 +59,48 @@ const ListJabatan = ({ title }) => {
             nama: jabatanById?.nama || '',
         },
         onSubmit: async (values, actions) => {
+            console.log('🔵 [SUBMIT START]', {
+                timestamp: new Date().toISOString(),
+                jabatanId: jabatanById.id,
+                oldNama: jabatanById.nama,
+                newNama: values.nama
+            });
+
             try {
+                console.log('🟡 [CALLING API]', { id: jabatanById.id, nama: values.nama });
+
                 const response = await handleUpdateJabatan({
                     id: jabatanById.id,
                     ...values
-                })
+                });
+
+                console.log('🟢 [API SUCCESS]', response);
+
+                if (!response || !response.data) {
+                    throw new Error('Update gagal');
+                }
 
                 toast.success(response.data.message);
-                console.log(response);
 
                 setTimeout(() => {
-                    closeDialogRef.current?.click()
+                    console.log('🔵 [CLOSING DIALOG]');
+                    closeDialogRef.current?.click();
                 }, 1000);
-            } catch (error) {
-                console.log(error);
+
+            } catch (err) {
+                console.error('🔴 [API ERROR]', {
+                    error: err,
+                    type: err.type,
+                    message: err.message,
+                    timestamp: new Date().toISOString()
+                });
+                handleApiError(err);
             }
         },
         validationSchema: yup.object().shape({
             nama: yup.string().required('Nama Jabatan wajib diisi'),
         })
-    })
+    });
 
     const handleForm = (e) => {
         const { name, value } = e.target;
@@ -144,7 +175,7 @@ const ListJabatan = ({ title }) => {
                     <TableBody>
 
 
-                        {error ? (
+                        {typeof error === 'string' ? (
                             <TableRow>
                                 <TableCell colSpan={5} className="h-24 text-center p-10">
                                     <img src={noDataImg} alt="No Data" className="mx-auto w-20" />
@@ -188,8 +219,8 @@ const ListJabatan = ({ title }) => {
                                                         <DialogClose asChild >
                                                             <Button variant="outline" ref={closeDialogRef}>Kembali</Button>
                                                         </DialogClose>
-                                                        <Button type="submit">
-                                                            {isLoading ? "Loading..." : "Simpan"}
+                                                        <Button type="submit" disabled={formik.isSubmitting}>
+                                                            {formik.isSubmitting ? "Loading..." : "Simpan"}
                                                         </Button>
                                                     </DialogFooter>
                                                 </form>

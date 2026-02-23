@@ -1,9 +1,10 @@
 // apiClient.js
 import axios from "axios";
-import { API_URL } from "../api";
+import { API_URL } from "./api";
 
 const api = axios.create({
   baseURL: API_URL,
+  timeout: 10000,
   headers: {
     "Content-Type": "application/json",
   },
@@ -27,14 +28,30 @@ api.interceptors.request.use(
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    // Kalau error 401 (Unauthorized) = token invalid/expired
-    if (error.response?.status === 401) {
-      // Clear localStorage
-      localStorage.removeItem("user");
-      localStorage.removeItem("token");
+    // jika jaringan error
+    console.log("error", error);
+    if (!error.response) {
+      return Promise.reject({
+        type: "NETWORK_ERROR",
+        message: "Jaringan bermasalah, coba lagi!",
+      });
+    }
 
-      // Redirect ke login
-      window.location.href = "/login";
+    if (error.response?.status === 401 && error.response?.data?.message) {
+      // tampung error nya
+      return Promise.reject({
+        type: "INVALID_CREDENTIALS",
+        message: error.response.data?.message || "Unauthorized",
+      });
+    }
+
+    // Kalau error 401 (Unauthorized) = token invalid/expired
+    if (error.response?.status === 401 && !error.response?.data?.message) {
+      // tampung error nya
+      return Promise.reject({
+        type: "SESSION_EXPIRED",
+        message: "Session habis, silakan login ulang",
+      });
     }
 
     return Promise.reject(error);

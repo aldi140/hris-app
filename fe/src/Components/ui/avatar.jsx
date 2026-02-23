@@ -4,15 +4,23 @@ import * as React from "react"
 import * as AvatarPrimitive from "@radix-ui/react-avatar"
 
 import { cn } from "@/lib/utils"
-
+const sizeMap = {
+  sm: "size-6",
+  md: "size-8",
+  lg: "size-12",
+  xl: "size-16",
+}
 function Avatar({
   className,
+  size = "md",
   ...props
 }) {
   return (
     <AvatarPrimitive.Root
       data-slot="avatar"
-      className={cn("relative flex size-8 shrink-0 overflow-hidden rounded-full", className)}
+      className={cn("relative flex size-8 shrink-0 overflow-hidden rounded-full",
+        sizeMap[size],
+        className)}
       {...props} />
   );
 }

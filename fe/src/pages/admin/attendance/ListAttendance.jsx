@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { useAttendance } from "../../../hooks/useAttendance";
+import { useAttendance } from "../../../modules/attendance/useAttendance";
 import { usePageTitle } from "../../../hooks/usePageTitle"
 import HeaderTitle from "../../../Components/commons/atoms/HeaderTitle";
 import { Card, CardContent, CardHeader, CardTitle } from "../../../Components/ui/card";
@@ -17,8 +17,8 @@ import * as yup from 'yup'
 import { Field, FieldContent, FieldGroup } from "../../../Components/ui/field";
 import { Label } from "../../../Components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../../Components/ui/select";
-import { useDepartmen } from "../../../hooks/useDepartmen";
-import { useOffice } from "../../../hooks/useOffice";
+import { useDepartmen } from "../../../modules/departmen/useDepartmen";
+import { useOffice } from "../../../modules/office/useOffice";
 import Paginations from "../../../Components/commons/moleculs/Pagination";
 import { Avatar, AvatarFallback, AvatarImage } from "../../../Components/ui/avatar";
 import { HiOutlineChartBar, HiOutlineUsers } from "react-icons/hi2";
@@ -29,11 +29,14 @@ import { FILTER_CONFIG } from "../../../constants/filterConfig";
 import { Calendar } from "../../../Components/ui/calendar";
 import { ImageURL } from "../../../api";
 import { format } from "date-fns"
+import { useApiError } from "../../../hooks/useApiError";
+
 
 
 
 const ListAttendance = ({ title }) => {
     usePageTitle(title)
+    const handleApiError = useApiError();
 
     const initialFilterUI = {
         id_departemen: "",
@@ -55,7 +58,6 @@ const ListAttendance = ({ title }) => {
     const { officeList, handlegetOfficeAll } = useOffice();
 
     const { listAttendances, isLoading, error, page, setPage, lastPage, totalData, handleGetAttendance } = useAttendance();
-
     useEffect(() => {
         const delay = setTimeout(() => {
             handleGetAttendance({
@@ -67,12 +69,20 @@ const ListAttendance = ({ title }) => {
         return () => clearTimeout(delay);
     }, [search, serializedFilters, tglAbsen, page]);
 
-    useEffect(() => {
-        handleGetDepartmen();
-    }, []);
+    // console.log('error', error)
 
     useEffect(() => {
-        handlegetOfficeAll();
+        const loadInitialData = async () => {
+            try {
+                await Promise.all([
+                    handleGetDepartmen(),
+                    handlegetOfficeAll(),
+                ]);
+            } catch (err) {
+                handleApiError(err);
+            }
+        };
+        loadInitialData();
     }, []);
 
 
@@ -378,7 +388,7 @@ const ListAttendance = ({ title }) => {
 
                         </TableRow>
                     )) :
-                        error ? (
+                        typeof error === "string" ? (
                             <TableRow>
                                 <TableCell colSpan={5} className="h-24 text-center p-10">
                                     <img src={noDataImg} alt="No Data" className="mx-auto w-20" />
@@ -409,7 +419,7 @@ const ListAttendance = ({ title }) => {
                                         </TableCell>
                                         <TableCell className="border-r border-neutral-200">
                                             <div className="w-full flex flex-row gap-x-4 items-baseline-last justify-between">
-                                                <p className="text-md text-neutral-700 font-semibold">{item.check_in_time ? formatTime(item.check_in_time) : "-"}</p>
+                                                <p className="text-md text-neutral-700 font-semibold">{item.absensi?.check_in_time ? formatTime(item.absensi.check_in_time) : "-"}</p>
 
                                                 <div className="w-full flex flex-col">
                                                     <div className="w-full text-center">
@@ -421,14 +431,14 @@ const ListAttendance = ({ title }) => {
                                                         <div className="w-2 h-2 rounded-full bg-gray-400"></div>
                                                     </div>
                                                 </div>
-                                                <p className="text-md text-neutral-700 font-semibold">{item.check_out_time ? formatTime(item.check_out_time) : "-"}</p>
+                                                <p className="text-md text-neutral-700 font-semibold">{item.absensi?.check_out_time ? formatTime(item.absensi?.check_out_time) : "-"}</p>
                                             </div>
                                         </TableCell>
-                                        <TableCell className="border-r border-neutral-200 text-neutral-600">{formatDate(item.created_at)}</TableCell>
+                                        <TableCell className="border-r border-neutral-200 text-neutral-600">{formatDate(item.tgl_absensi)}</TableCell>
                                         <TableCell className="border-r border-neutral-200">
-                                            {item.check_in_longitude ? (
+                                            {item.absensi?.check_in_longitude ? (
                                                 <a
-                                                    href={locationMapUrl(item.check_in_longitude, item.check_in_latitude)}
+                                                    href={locationMapUrl(item.absensi?.check_in_longitude, item.absensi?.check_in_latitude)}
                                                     target="_blank"
                                                     rel="noopener noreferrer"
 
@@ -436,7 +446,7 @@ const ListAttendance = ({ title }) => {
                                                 >
                                                     <Button
                                                         variant="outline"
-                                                        size="xs"
+                                                        size="sm"
                                                         className="text-sm text-muted-foreground">
                                                         <LucideMapPin />
                                                         Lihat Lokasi
@@ -447,19 +457,15 @@ const ListAttendance = ({ title }) => {
 
                                         <TableCell>
                                             <div className="flex flex-row gap-x-2">
-                                                {item.check_in_time ? (
+                                                {item.absensi?.check_in_time ? (
                                                     <Badge variant="secondary">Masuk</Badge>
                                                 ) :
                                                     <Badge variant="destructive">Tidak Masuk</Badge>}
-                                                {time_diff !== null ? (
-                                                    time_diff > 0 ? (
-                                                        <Badge variant="redSecondary">Terlambat</Badge>
-                                                    ) : time_diff < 0 ? (
-                                                        <Badge variant="blueSecondary">Lebih Awal</Badge>
-                                                    ) : (
-                                                        <Badge variant="greenSecondary">Tepat Waktu</Badge>
-                                                    )
-                                                ) : null}
+                                                {item.absensi?.check_in_time && item.status_absensi !== 'Tidak Masuk' ? (
+                                                    <Badge variant="secondary">{item.status_absensi}</Badge>
+                                                ) :
+                                                    null
+                                                }
                                             </div>
                                         </TableCell>
                                     </TableRow>

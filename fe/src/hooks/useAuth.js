@@ -6,22 +6,10 @@ import { useNavigate } from "react-router-dom";
 export const useAuth = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const handleLogin = async ({ email, password }) => {
-    try {
-      const response = await dispatch(loginUser({ email, password }));
-      if (loginUser.fulfilled.match(response)) {
-        navigate("/");
-      } else {
-        throw {
-          success: false,
-          message: response.payload?.message || "Login failed",
-        };
-      }
-      return response;
-    } catch (error) {
-      console.log(error);
-      throw error;
-    }
+
+  const handleLogin = async (data) => {
+    await dispatch(loginUser(data)).unwrap();
+    navigate("/");
   };
 
   const handleRegister = async ({ name, email, password }) => {
@@ -35,8 +23,6 @@ export const useAuth = () => {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem("user");
-    localStorage.removeItem("token");
     dispatch(logout());
     navigate("/login");
   };
