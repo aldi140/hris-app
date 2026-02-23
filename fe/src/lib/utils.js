@@ -146,3 +146,6 @@ export const formatNominal = (value) => {
     currency: "IDR",
   }).format(value);
 };
+
+export const toTitleCase = (str) =>
+  str?.toLowerCase().replace(/\b\w/g, (c) => c.toUpperCase()) ?? "";

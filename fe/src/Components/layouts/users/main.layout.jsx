@@ -8,7 +8,7 @@ const MainLayoutUser = () => {
     return (
         <>
             <Toaster position="top-center" richColors />
-            <div className="relative min-h-screen pb-20 bg-slate-100">
+            <div className="w-full lg:max-w-2xl mx-auto relative min-h-screen pb-20 bg-slate-100">
                 <Outlet />
                 <NavLayoutMobile location={location} />
             </div>
