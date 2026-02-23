@@ -2,8 +2,7 @@ import { useSelector } from "react-redux";
 import { dataUser } from "../../../features/auth/authSlice";
 import { useDepartmen } from "../../../modules/departmen/useDepartmen";
 import { useOffice } from "../../../modules/office/useOffice";
-import QrCodeImg from "@/assets/img/qr-code.svg";
-import { FiArrowLeft } from "react-icons/fi";
+import karakterImage from "@/assets/img/karakter-1.png";
 import { Avatar, AvatarFallback, AvatarImage } from "../../../Components/ui/avatar";
 import { ImageURL } from "../../../api";
 import { useEffect, useMemo, useState } from "react";
@@ -112,8 +111,12 @@ const PageHome = () => {
                             }
 
                             <div className="flex flex-col ">
-                                <span className="text-sm text-emerald-50/70">Selamat Datang </span>
-                                <p className="font-clock text-xl font-semibold text-white">
+                                <div className="flex flex-row gap-x-1 items-center">
+                                    <span className="text-sm text-emerald-50/70">Selamat Datang </span>
+                                    <img src={karakterImage} className="size-6" />
+                                </div>
+
+                                <p className="text-xl font-semibold text-white">
                                     {user?.name
                                         ?.toLowerCase()
                                         .replace(/\b\w/g, (char) => char.toUpperCase())}
@@ -179,9 +182,9 @@ const PageHome = () => {
                         {
                             !jadwal?.schedule_date
                                 ? null
-                                : <LucideScanQrCode className={`size-14 ${!data?.check_in_time ? 'text-amber-600' : 'text-emerald-600'}`} />
+                                : <LucideScanQrCode className={`size-10 shrink-0 ${!data?.check_in_time ? 'text-amber-600' : 'text-emerald-600'}`} />
                         }
-                        <p className="text-sm text-neutral-700">
+                        <p className="text-sm text-neutral-600">
                             {
                                 !jadwal?.schedule_date
                                     ? 'Tidak ada jadwal hari ini, selamat beristirahat!'
@@ -209,28 +212,28 @@ const PageHome = () => {
                 <p className="text-sm text-gray-800 font-bold mb-4">Menu</p>
                 <div className="grid grid-cols-4 gap-4">
                     <div className="flex flex-col gap-2 text-center">
-                        <div className="p-4 mx-auto bg-indigo-50 rounded-xl text-indigo-600">
+                        <div className="p-3 mx-auto bg-indigo-50 rounded-xl text-indigo-600">
                             <LucideCalendarArrowUp />
                         </div>
-                        <p className="text-sm text-gray-600 ">Absensi</p>
+                        <p className="text-xs text-gray-600 ">Absensi</p>
                     </div>
                     <div className="flex flex-col gap-2 text-center">
-                        <div className="p-4 mx-auto bg-purple-50 rounded-xl text-purple-600">
+                        <div className="p-3 mx-auto bg-purple-50 rounded-xl text-purple-600">
                             <LucideCloudSun />
                         </div>
-                        <p className="text-sm text-gray-500">Cuti</p>
+                        <p className="text-xs text-gray-500">Cuti</p>
                     </div>
                     <div className="flex flex-col gap-2 text-center">
-                        <div className="p-4 mx-auto bg-orange-50 rounded-xl text-orange-600">
+                        <div className="p-3 mx-auto bg-orange-50 rounded-xl text-orange-600">
                             <LucideClock />
                         </div>
-                        <p className="text-sm text-gray-500">Izin</p>
+                        <p className="text-xs text-gray-500">Izin</p>
                     </div>
                     <div className="flex flex-col gap-2 text-center">
-                        <div className="p-4 mx-auto bg-rose-50 rounded-xl text-rose-600">
+                        <div className="p-3 mx-auto bg-rose-50 rounded-xl text-rose-600">
                             <LucideWallet />
                         </div>
-                        <p className="text-sm text-gray-500">Slip Gaji</p>
+                        <p className="text-xs text-gray-500">Slip Gaji</p>
                     </div>
                 </div>
             </div>

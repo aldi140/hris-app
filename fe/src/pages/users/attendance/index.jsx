@@ -232,8 +232,8 @@ const PageAttendance = ({ title }) => {
     return (
 
         <div className="w-full lg:max-w-2xl mx-auto relative">
-            <div className="absolute w-full lg:min-w-xl top-1/10 lg:top-1/4 left-1/2 transform z-20 -translate-x-1/2 translate-y-1/2 px-6">
-                <Card className=" shadow-2xl py-3 bg-white/40 backdrop-blur-lg border border-white/30 rounded-2xl">
+            <div className="absolute w-full lg:min-w-xl top-1/5 lg:top-1/4 left-1/2 transform z-20 -translate-x-1/2 px-6">
+                <Card className=" shadow-2xl py-3 bg-white/40 backdrop-blur-lg border border-white/30 ">
                     <CardContent className="space-y-4">
                         <div className="flex felx-row justify-between">
                             <span className="text-xs font-extralight text-white">Jam Kerja</span>
@@ -273,7 +273,7 @@ const PageAttendance = ({ title }) => {
             <div className="flex flex-col w-full gap-16 ">
 
                 {/* Header */}
-                <div className="bg-linear-to-r from-green-900 to-teal-700 relative pt-6 pb-12 lg:pb-24 px-6 rounded-b-4xl mb-4 overflow-hidden">
+                <div className="bg-linear-to-r from-green-900 to-teal-700 relative pt-4 pb-16 lg:pb-24 px-6 rounded-b-xl mb-4 overflow-hidden">
                     <div className="flex flex-col items-start justify-between mb-4 gap-y-4 lg:flex-row lg:items-center ">
                         <div className="flex flex-col w-full">
                             <div className="flex flex-col gap-3 ">
@@ -288,10 +288,7 @@ const PageAttendance = ({ title }) => {
 
                                 </div>
                                 <div className="flex flex-col w-full mb-3">
-                                    <div className="flex flex-row gap-x-1 items-center">
-                                        <p className="text-sm font-medium text-emerald-100"> Selamat Datang</p>
-                                        <img src={karakterImage} className="size-10" />
-                                    </div>
+
                                     <p className="text-xs font-medium text-emerald-100">Jangan lupa catat kehadiranmu hari ini.</p>
                                 </div>
 
@@ -308,7 +305,7 @@ const PageAttendance = ({ title }) => {
 
 
                 {/* Tabel */}
-                <div className="flex flex-col gap-4 lg:pt-12 py-10 px-4">
+                <div className="flex flex-col gap-4 lg:pt-12  px-4">
                     <p className="text-sm font-semibold text-neutral-700">Histori absensi hari ini</p>
                     <Card className="w-full">
                         <CardContent >
