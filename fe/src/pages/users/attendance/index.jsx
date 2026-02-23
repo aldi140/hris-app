@@ -305,7 +305,7 @@ const PageAttendance = ({ title }) => {
 
 
                 {/* Tabel */}
-                <div className="flex flex-col gap-4 lg:pt-12  px-4">
+                <div className="flex flex-col gap-4 lg:pt-12 mt-4 px-4">
                     <p className="text-sm font-semibold text-neutral-700">Histori absensi hari ini</p>
                     <Card className="w-full">
                         <CardContent >

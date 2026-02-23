@@ -113,7 +113,7 @@ const PageHome = () => {
                             <div className="flex flex-col ">
                                 <div className="flex flex-row gap-x-1 items-center">
                                     <span className="text-sm text-emerald-50/70">Selamat Datang </span>
-                                    <img src={karakterImage} className="size-6" />
+                                    <img src={karakterImage} className="size-7" />
                                 </div>
 
                                 <p className="text-xl font-semibold text-white">
@@ -139,13 +139,13 @@ const PageHome = () => {
                     <div className="w-full bg-white/10 backdrop-blur-sm rounded-xl px-6 py-2 z-10">
                         <div className="flex justify-between">
                             <div className="flex flex-col">
-                                <span className="text-sm text-white/50">Senin</span>
+                                <span className="text-xs text-white/50">Senin</span>
                                 <p className="text-lg font-bold text-white">25 Januari 2025</p>
                             </div>
                             <div className="flex flex-col items-end justify-end">
                                 <div className="flex items-center gap-2">
 
-                                    <p className="text-sm  text-white/70">{toTitleCase(getOfficeName(user?.id_kantor))}</p>
+                                    <p className="text-xs  text-white/70">{toTitleCase(getOfficeName(user?.id_kantor))}</p>
                                 </div>
                                 <p className="text-lg font-semibold text-white">{getDepartmenName(user?.id_departemen)}</p>
                             </div>
@@ -153,8 +153,8 @@ const PageHome = () => {
                     </div>
                 </div>
 
-                <div className="absolute bg-white/10 w-45 h-45 rounded-full -top-24 transform -right-14 backdrop-blur-sm"></div>
-                <div className="absolute bg-white/15 w-25 h-25 rounded-full -top-12 transform -right-7 backdrop-blur-sm"></div>
+                <div className="absolute bg-white/10 w-45 h-45 rounded-full -top-24 transform -right-16 backdrop-blur-sm"></div>
+                <div className="absolute bg-white/15 w-25 h-25 rounded-full -top-12 transform -right-8 backdrop-blur-sm"></div>
                 <div className="absolute bg-white/5 w-45 h-45 rounded-full -bottom-22 transform -left-11 backdrop-blur-xs"></div>
             </div>
             <div className="flex flex-col gap-2 p-4 bg-white">
