@@ -50,9 +50,9 @@ const FieldVisit = ({ title }) => {
     const { departmenList, handleGetDepartmen } = useDepartmen()
     const { surveyVisitList, handleGetSurveyVisit, handleGetDetailSurvey, detailSurvey, detailVisit, handleGetdetailVisit, setPage, page, lastPage, loadingDetail, isLoading, error } = useSurveyVisit()
     const { ruteInfo: ruteInfoSurvey, isLoadingRute: loadingRuteSurvey, errorRute: errorRuteSurvey } = useRuteInfo(detailSurvey, "survey")
-
+    console.log('detailVisit', detailVisit)
     // Untuk detail kunjungan
-    const { ruteInfo: ruteInfoKunjungan, loadingRute: loadingRuteKunjungan, errorRute: errorRuteKunjungan } = useRuteInfo(detailVisit, "kunjungan")
+    const { ruteInfo: ruteInfoKunjungan, isLoadingRute: loadingRuteKunjungan, errorRute: errorRuteKunjungan } = useRuteInfo(detailVisit, "kunjungan")
     // console.log('ruteInfoSurvey', ruteInfoSurvey)
 
     const handleSearch = (e) => {
@@ -224,236 +224,334 @@ const FieldVisit = ({ title }) => {
                                                     {/* KUNJUNGAN */}
                                                     {kunjungan && (
                                                         <>
-
                                                             <Dialog>
-                                                                <DialogTrigger
-                                                                    asChild
-                                                                    onClick={() =>
+                                                                <DialogTrigger asChild>
+                                                                    <Button className="w-full bg-red-100 text-red-600 hover:bg-red-100/60 font-semibold" onClick={() =>
                                                                         handleGetdetailVisit({
                                                                             id_karyawan: item.id_karyawan,
                                                                             tanggal: date,
                                                                             id_kantor: item.id_kantor,
                                                                         })}>
-                                                                    <Button className="w-full bg-red-100 text-red-600 hover:bg-red-100/60 font-semibold" > {kunjungan}</Button>
+                                                                        {kunjungan}
+                                                                    </Button>
                                                                 </DialogTrigger>
-                                                                <DialogContent className="sm:max-w-sm lg:max-w-4xl">
+                                                                <DialogContent className="w-full lg:max-w-4xl">
                                                                     <DialogHeader>
                                                                         <DialogTitle>Detail Kunjungan</DialogTitle>
+
                                                                     </DialogHeader>
                                                                     <div className="no-scrollbar -mx-4 max-h-[80vh] overflow-y-auto px-4 flex flex-col gap-4">
-                                                                        <div className="rounded-md overflow-hidden">
-                                                                            <Map data={detailVisit} jenis="Kunjungan" typeFile="kunjungan" />
-                                                                        </div>
-                                                                        <div className="w-full flex justify-center">
-                                                                            <Card className="w-md border border-gray-300 shadow-none">
-                                                                                <CardContent>
-                                                                                    <div className="flex flex-row gap-2 justify-evenly text-center">
-                                                                                        <div className="flex flex-col gap-2">
-                                                                                            <p className="text-xs text-muted-foreground">Total Kunjungan</p>
-                                                                                            <h1 className="text-lg font-bold">{detailVisit?.length}</h1>
+                                                                        {loadingDetail
+                                                                            ?
+                                                                            (
+                                                                                <>
+                                                                                    <div className="flex justify-center items-center">
+                                                                                        <BarLoading />
+                                                                                    </div>
+
+                                                                                </>
+                                                                            )
+                                                                            : (
+                                                                                <>
+                                                                                    <div className="rounded-md p-2 border border-gray-300">
+                                                                                        <Map data={detailVisit} jenis="Kunjungan" typeFile="kunjungan" />
+                                                                                    </div>
+                                                                                    <div className="flex flex-row gap-4 justify-center">
+                                                                                        <div className="flex flex-row items-center">
+                                                                                            <div className="w-2 h-2 bg-linear-to-t from-emerald-800 to-emerald-500 rounded-full"></div>
+                                                                                            <p className="text-xs font-medium text-muted-foreground ml-2">start</p>
                                                                                         </div>
-                                                                                        <div className="w-px border border-gray-300 "></div>
-                                                                                        <div className="flex flex-col gap-2">
-                                                                                            <p className="text-xs text-muted-foreground">Total Jarak Tempuh</p>
-                                                                                            <h1 className="text-lg font-bold"></h1>
+                                                                                        <div className="flex flex-row items-center">
+                                                                                            <div className="w-2 h-2 bg-linear-to-t from-indigo-800 to-indigo-500 rounded-full"></div>
+                                                                                            <p className="text-xs font-medium text-muted-foreground ml-2">middle</p>
+                                                                                        </div>
+                                                                                        <div className="flex flex-row items-center">
+                                                                                            <div className="w-2 h-2 bg-linear-to-t from-red-800 to-red-500 rounded-full"></div>
+                                                                                            <p className="text-xs font-medium text-muted-foreground ml-2">end</p>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div className="w-full flex justify-center">
+                                                                                        <Card className="w-md border border-indigo-700 bg-linear-to-r from-indigo-200/30 via-indigo-100/30 to-indigo-300/30 shadow-none">
+                                                                                            <CardContent>
+                                                                                                <div className="flex flex-row gap-2 justify-evenly text-center">
+                                                                                                    <div className="flex flex-col gap-1">
+                                                                                                        <p className="text-sm font-bold text-muted-foreground/70">Total Kunjungan</p>
+                                                                                                        <h1 className="text-2xl text-indigo-500 font-bold">{detailVisit?.length}</h1>
+                                                                                                        <p className="text-xs  text-muted-foreground/70">lokasi dikunjungi</p>
+                                                                                                    </div>
+                                                                                                    <div className="w-px border border-gray-300"></div>
+                                                                                                    <div className="flex flex-col gap-1">
+                                                                                                        <p className="text-sm font-bold text-muted-foreground/70">Total Jarak</p>
+                                                                                                        <h1 className="text-2xl text-indigo-500 font-bold">{ruteInfoKunjungan?.total_jarakKm || 0} Km</h1>
+                                                                                                        <p className="text-xs text-muted-foreground/70">kilometer ditempuh</p>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </CardContent>
+                                                                                        </Card>
+                                                                                    </div>
+                                                                                    <div className="flex flex-col gap-4">
+                                                                                        <p className="text-sm  text-neutral-400">Informasi Karyawan</p>
+                                                                                        <div className="w-full flex border p-4  bg-gray-100 rounded-md">
+                                                                                            <Avatar size="xl">
+                                                                                                <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
+                                                                                                <AvatarFallback>CN</AvatarFallback>
+                                                                                            </Avatar>
+                                                                                            <div className="flex flex-col ml-4 gap-1">
+                                                                                                <p className="text-md font-semibold text-slate-600">{detailVisit && detailVisit[0].karyawan.nama_karyawan}</p>
+                                                                                                <div className="flex flex-col">
+                                                                                                    <p className="text-sm font-medium text-muted-foreground">{detailVisit && detailVisit[0].karyawan.jabatan}</p>
+                                                                                                    <p className="text-sm font-medium text-muted-foreground">{detailVisit && detailVisit[0].karyawan.kantor_nama}</p>
+                                                                                                    {/* <Badge variant="blueSecondary" className="text-xs text-indigo-700">{detailSurvey && detailSurvey[0].karyawan1.jabatan}</Badge>
+                                                                                        <Badge variant="yellowSecondary" className="text-xs text-yellow-700">{detailSurvey && detailSurvey[0].karyawan1.kantor_nama}</Badge> */}
+                                                                                                </div>
+                                                                                            </div>
                                                                                         </div>
 
                                                                                     </div>
-                                                                                </CardContent>
-                                                                            </Card>
-                                                                        </div>
-                                                                        <div className="flex flex-col gap-2">
-                                                                            <p className="text-md font-semibold text-muted-foreground">Informasi Kunjungan</p>
-                                                                            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                                                                                {detailVisit && detailVisit.map((item, index) => {
-                                                                                    let divRoute = null;
-                                                                                    // Cek apakah ada data rute dari index sebelumnya
-                                                                                    const prevRouteInfo = index > 0 ? ruteInfoKunjungan[index - 1] : null;
-                                                                                    const images = item.foto_lokasi.split(",");
-                                                                                    // Tampilkan divRoute di card saat ini jika bukan card pertama
-                                                                                    if (index > 0 && prevRouteInfo) {
-                                                                                        divRoute = (
-                                                                                            <div className="w-full flex flex-row lg:justify-between gap-2">
-                                                                                                <div className="w-full flex gap-2">
-                                                                                                    {loadingRuteKunjungan ? (
-                                                                                                        <>
-                                                                                                            <Label className="text-sm font-semibold text-muted-foreground">
-                                                                                                                Jarak Tempuh
-                                                                                                            </Label>
-                                                                                                            <p className="mt-1 text-center text-xs text-neutral-400">Menghitung...</p>
-                                                                                                        </>
-
-                                                                                                    ) : (
-                                                                                                        <>
-                                                                                                            <LucideMapPinned size={17} className="text-muted-foreground" />
-                                                                                                            <div className="w-full">
-                                                                                                                <Label className="text-sm font-semibold text-muted-foreground">
-                                                                                                                    Jarak Tempuh
-                                                                                                                </Label>
-                                                                                                                <p className="text-sm font-medium text-muted-foreground break-all">{prevRouteInfo.jarakKm}</p>
-                                                                                                            </div>
-                                                                                                        </>
-                                                                                                    )}
+                                                                                    <div className="w-full flex flex-col gap-4">
+                                                                                        <p className="text-sm text-neutral-400">Informasi Kunjungan</p>
+                                                                                        <Separator />
+                                                                                        <div className="w-full grid grid-cols-1 gap-4">
+                                                                                            <div className="w-full flex flex-row  lg:gap-8 gap-4 min-h-20">
+                                                                                                <div className="flex flex-col items-center gap-2">
+                                                                                                    <LucideMapPinCheck className="text-muted-foreground shrink-0" />
+                                                                                                    <div className="relative flex flex-col items-center self-start h-full w-full">
+                                                                                                        <div className="h-full border border-dashed  border-muted-foreground"></div>
+                                                                                                        <div className="absolute top-1/2 -translate-y-1/2 bg-white px-1">
+                                                                                                            <p className="text-xs text-muted-foreground lg:whitespace-nowrap">{
+                                                                                                                loadingRuteKunjungan ? 'menghitung jarak...' : ruteInfoKunjungan.dataRuteInfo?.[0]?.jarakKm || 0
+                                                                                                            } Km</p>
+                                                                                                        </div>
+                                                                                                    </div>
                                                                                                 </div>
-                                                                                                <div className="w-full flex gap-2">
-                                                                                                    <LucideTimer size={17} className="text-muted-foreground" />
-                                                                                                    <div className="w-full">
-                                                                                                        <Label className="text-sm font-semibold text-muted-foreground">
-                                                                                                            Total Waktu
-                                                                                                        </Label>
-                                                                                                        <p className="text-sm font-medium text-muted-foreground break-all">
-                                                                                                            {prevRouteInfo.waktuMenit ? `${Math.floor(prevRouteInfo.waktuMenit / 60)} jam ${prevRouteInfo.waktuMenit % 60} menit` : '-'}
+                                                                                                <div className="w-full flex flex-row items-center justify-between px-4 py-2 h-full border border-emerald-400 rounded-md bg-emerald-50">
+                                                                                                    <div className="">
+                                                                                                        <p className="text-md font-bold text-emerald-600">
+                                                                                                            Titik Awal
+                                                                                                        </p>
+                                                                                                        <p className="text-xs text-neutral-600">
+                                                                                                            {
+                                                                                                                detailVisit &&
+                                                                                                                    detailVisit[0]?.absensi?.check_in_latitude !== ''
+                                                                                                                    &&
+                                                                                                                    detailVisit[0]?.absensi?.check_in_longitude !== ''
+                                                                                                                    ? detailVisit[0]?.absensi?.check_in_latitude + ', ' + detailVisit[0]?.absensi?.check_in_longitude
+                                                                                                                    : 'Karyawan Belum Absen'
+                                                                                                            }
                                                                                                         </p>
                                                                                                     </div>
-                                                                                                </div>
-                                                                                            </div>
-                                                                                        );
-                                                                                    }
-
-                                                                                    return (
-                                                                                        <div div className="w-full" key={index} >
-                                                                                            <Collapsible className="data-[state=open]:bg-white border rounded-md w-full col-span-6">
-                                                                                                <CollapsibleTrigger asChild>
-                                                                                                    <Button variant="ghost" className="group w-full text-wrap">
-                                                                                                        <LucideMapPinCheck />
-                                                                                                        <p className="text-sm font-bold text-slate-700"> Kunjungan {index + 1} ({item.no_transaksi})</p>
-                                                                                                        <ChevronDownIcon className="ml-auto group-data-[state=open]:rotate-180" />
-                                                                                                    </Button>
-                                                                                                </CollapsibleTrigger>
-                                                                                                <CollapsibleContent className="flex flex-col items-start gap-2 p-2.5 pt-0 text-sm data-[state=closed]:animate-collapsible-up data-[state=open]:animate-collapsible-down overflow-hidden">
-                                                                                                    <Separator />
-                                                                                                    <div className="w-full flex flex-col gap-4">
-                                                                                                        <div className="w-full flex flex-col lg:flex-row lg:justify-between gap-2">
-                                                                                                            <div className="w-full flex gap-2">
-                                                                                                                <LucideUserRound size={17} className="text-muted-foreground" />
-                                                                                                                <div className="w-full">
-                                                                                                                    <Label className="text-sm font-semibold text-muted-foreground">
-                                                                                                                        Nasabah
-                                                                                                                    </Label>
-                                                                                                                    <p className="text-sm font-medium text-muted-foreground break-all">{item.nama_nasabah}</p>
-                                                                                                                </div>
-                                                                                                            </div>
-                                                                                                            <div className="w-full flex gap-2 items-start">
-                                                                                                                <LucideWallet size={17} className="text-muted-foreground" />
-                                                                                                                <div className="w-full">
-                                                                                                                    <Label className="text-sm font-semibold text-muted-foreground">
-                                                                                                                        Nominal Pinjaman
-                                                                                                                    </Label>
-                                                                                                                    <p className="text-sm font-medium text-muted-foreground break-all">{formatNominal(item.nominal)}</p>
-                                                                                                                </div>
-                                                                                                            </div>
-                                                                                                        </div>
-                                                                                                        <Separator />
-                                                                                                        <div className="w-full flex gap-2 ">
-                                                                                                            <LucideMapPinHouse size={17} className="text-muted-foreground" />
-                                                                                                            <div className="w-full">
-                                                                                                                <Label className="text-sm font-semibold text-muted-foreground">
-                                                                                                                    Alamat
-                                                                                                                </Label>
-                                                                                                                <p className="text-sm font-medium text-muted-foreground break-all">{item.alamat}</p>
-                                                                                                            </div>
-                                                                                                        </div>
-                                                                                                        <Separator />
-                                                                                                        <div className="w-full flex gap-2">
-
-                                                                                                            <LucideCamera size={17} className="text-muted-foreground" />
-                                                                                                            <div className="w-full">
-                                                                                                                <Label className="text-sm font-semibold text-muted-foreground">
-                                                                                                                    Foto Kunjungan
-                                                                                                                </Label>
-                                                                                                                <div className="w-full flex flex-row gap-2 justify-between">
-                                                                                                                    {images.map((image, index) => (
-                                                                                                                        <ImagePreview key={index}
-                                                                                                                            src={`${ImageURLKoplink}kunjungan/${image}`} alt="Foto Kunjungan" className="w-50 h-30 object-cover rounded-md" />
-                                                                                                                    ))}
-
-                                                                                                                    {/* <img className="w-50 h-30 object-cover rounded-md" src={`${ImageURLKoplink}rumah/${image1[0]}`} alt="Foto Rumah" /> */}
-                                                                                                                    {/* <img className="w-50 h-30 object-cover rounded-md" src={`${ImageURLKoplink}rumah/${image1[1]}`} alt="Foto Rumah" /> */}
-                                                                                                                </div>
-                                                                                                            </div>
-                                                                                                        </div>
-                                                                                                        <Separator />
-                                                                                                        <Label className="text-sm font-semibold text-muted-foreground">
-                                                                                                            Informasi Tunggakan
-                                                                                                        </Label>
-                                                                                                        <div className="w-full flex flex-row lg:justify-between gap-2">
-                                                                                                            <div className="w-full flex gap-2">
-                                                                                                                <LucideFileChartLine size={17} className="text-muted-foreground" />
-                                                                                                                <div className="w-full">
-                                                                                                                    <Label className="text-sm font-semibold text-muted-foreground">
-                                                                                                                        Kriteria
-                                                                                                                    </Label>
-                                                                                                                    <p className="text-sm font-medium text-muted-foreground break-all">{item.status_tunggakan.kriteria}</p>
-                                                                                                                </div>
-                                                                                                            </div>
-                                                                                                            <div className="w-full flex gap-2">
-                                                                                                                <LucideFileChartLine size={17} className="text-muted-foreground" />
-                                                                                                                <div className="w-full">
-                                                                                                                    <Label className="text-sm font-semibold text-muted-foreground">
-                                                                                                                        Selisih Hari Terlama
-                                                                                                                    </Label>
-                                                                                                                    <p className="text-sm font-medium text-muted-foreground break-all">{item.status_tunggakan.selisih_hari_terlama}</p>
-                                                                                                                </div>
-                                                                                                            </div>
-                                                                                                        </div>
-                                                                                                        <div className="w-full flex flex-row lg:justify-between gap-2">
-                                                                                                            <div className="w-full flex gap-2">
-                                                                                                                <LucideFileChartLine size={17} className="text-muted-foreground" />
-                                                                                                                <div className="w-full">
-                                                                                                                    <Label className="text-sm font-semibold text-muted-foreground">
-                                                                                                                        Jumlah Angsuran Tertunggak
-                                                                                                                    </Label>
-                                                                                                                    <p className="text-sm font-medium text-muted-foreground break-all">{item.status_tunggakan.jumlah_angsuran_tertunggak}</p>
-                                                                                                                </div>
-                                                                                                            </div>
-                                                                                                            <div className="w-full flex gap-2">
-                                                                                                                <LucideFileChartLine size={17} className="text-muted-foreground" />
-                                                                                                                <div className="w-full">
-                                                                                                                    <Label className="text-sm font-semibold text-muted-foreground">
-                                                                                                                        Total Nominal Tertunggak
-                                                                                                                    </Label>
-                                                                                                                    <p className="text-sm font-medium text-muted-foreground break-all">{formatNominal(item.status_tunggakan.total_nominal_tertunggak)}</p>
-                                                                                                                </div>
-                                                                                                            </div>
-                                                                                                        </div>
-                                                                                                        <div className="w-full flex flex-row lg:justify-between gap-2">
-                                                                                                            <div className="w-full flex gap-2">
-                                                                                                                <LucideFileChartLine size={17} className="text-muted-foreground" />
-                                                                                                                <div className="w-full">
-                                                                                                                    <Label className="text-sm font-semibold text-muted-foreground">
-                                                                                                                        Angsuran Pertama Macet
-                                                                                                                    </Label>
-                                                                                                                    <p className="text-sm font-medium text-muted-foreground break-all">{formatDate(item.status_tunggakan.angsuran_pertama_macet)}</p>
-                                                                                                                </div>
-                                                                                                            </div>
-                                                                                                        </div>
-                                                                                                        <Separator />
-                                                                                                        {index > 0 && (
-                                                                                                            <>
-                                                                                                                {divRoute}
-                                                                                                                <Separator />
-                                                                                                            </>
-                                                                                                        )}
-                                                                                                    </div>
                                                                                                     <a
-                                                                                                        href={locationMapUrl(item.long_lokasi, item.lat_lokasi)}
+                                                                                                        href=""
                                                                                                         target="_blank"
                                                                                                         rel="noopener noreferrer"
-                                                                                                        className="place-self-end mt-4"
                                                                                                     >
-                                                                                                        <Button size="sm" variant="blue" > <LucideSend className="mr-1" />Lokasi</Button>
-                                                                                                    </a>
+                                                                                                        {
+                                                                                                            detailVisit &&
+                                                                                                                detailVisit[0]?.absensi?.check_in_latitude !== ''
+                                                                                                                &&
+                                                                                                                detailVisit[0]?.absensi?.check_in_longitude !== ''
+                                                                                                                ? <Button size="sm" className="bg-emerald-600 hover:bg-emerald-700" > <LucideSend className="mr-1" />Lokasi</Button>
+                                                                                                                : null
+                                                                                                        }
 
-                                                                                                </CollapsibleContent>
-                                                                                            </Collapsible>
+                                                                                                    </a>
+                                                                                                </div>
+                                                                                            </div>
+
+                                                                                            {detailVisit && detailVisit.map((item, index) => {
+                                                                                                const tgl_kunjungan = item.waktu_kunjungan.split(" ")[0];
+                                                                                                const jam_kunjungan = item.waktu_kunjungan.split(" ")[1];
+                                                                                                let jenis_tenor = null;
+                                                                                                let jenis_trx = item.no_transaksi.substring(0, 1);
+                                                                                                if (jenis_trx === "T" || jenis_trx === "M") {
+                                                                                                    jenis_tenor = "Minggu"
+                                                                                                } else {
+                                                                                                    jenis_tenor = "Bulan"
+                                                                                                }
+                                                                                                // console.log('jenis_trx', jenis_trx)
+                                                                                                let divRoute = null;
+                                                                                                // Cek apakah ada data rute dari index sebelumnya
+                                                                                                const lastIndex = detailVisit.length > 0 ? detailVisit.length - 1 : null
+                                                                                                // console.log('index', index)
+                                                                                                // console.log('lastIndex', lastIndex)
+                                                                                                const images = item.foto_lokasi.split(",");
+                                                                                                // Tampilkan divRoute di card saat ini jika bukan card pertama
+                                                                                                if (index !== lastIndex) {
+                                                                                                    divRoute = (
+                                                                                                        <>
+                                                                                                            {loadingRuteKunjungan ? (
+                                                                                                                <div className="relative flex flex-col items-center self-start h-full w-full">
+                                                                                                                    <div className="h-full border border-dashed border-muted-foreground"></div>
+                                                                                                                    <div className="absolute top-1/2 -translate-y-1/2 bg-white px-1">
+                                                                                                                        <p className="text-xs text-muted-foreground lg:whitespace-nowrap">Loading...</p>
+                                                                                                                    </div>
+                                                                                                                </div>
+
+                                                                                                            ) : (
+                                                                                                                <div className="relative flex flex-col items-center self-start h-full w-full">
+                                                                                                                    <div className="h-full border border-dashed border-muted-foreground"></div>
+                                                                                                                    <div className="absolute top-1/2 -translate-y-1/2 bg-white px-1">
+                                                                                                                        <p className="text-xs text-muted-foreground lg:whitespace-nowrap">
+                                                                                                                            {ruteInfoKunjungan?.dataRuteInfo?.[index + 1]?.jarakKm} km</p>
+                                                                                                                    </div>
+                                                                                                                </div>
+                                                                                                            )}
+                                                                                                        </>
+                                                                                                    );
+                                                                                                }
+
+                                                                                                return (
+                                                                                                    <div className="w-full flex flex-row lg:gap-8 gap-4" key={index}>
+                                                                                                        <div className="flex flex-col items-center gap-2">
+                                                                                                            <LucideMapPinCheck className="text-muted-foreground shrink-0" />
+                                                                                                            {divRoute}
+                                                                                                        </div>
+                                                                                                        <div className="w-full flex flex-col  border border-indigo-300 rounded-md ">
+                                                                                                            <div className="flex flex-row items-center justify-between px-4 py-2 ">
+                                                                                                                <div className="">
+                                                                                                                    <p className="text-md font-bold text-gray-700">Kunjungan {index + 1}</p>
+                                                                                                                    <p className="text-xs font-medium text-neutral-600">{formatDate(tgl_kunjungan)} - {jam_kunjungan}</p>
+                                                                                                                    <p className="text-xs font-medium text-neutral-600"> </p>
+                                                                                                                </div>
+
+                                                                                                                <a
+                                                                                                                    href={locationMapUrl(item.long_lokasi, item.lat_lokasi)}
+                                                                                                                    target="_blank"
+                                                                                                                    rel="noopener noreferrer"
+
+                                                                                                                >
+                                                                                                                    <Button size="sm" className="bg-indigo-500 hover:bg-indigo-600" > <LucideSend className="mr-1" />Lokasi</Button>
+                                                                                                                </a>
+                                                                                                            </div>
+                                                                                                            <Collapsible className="data-[state=open]:bg-white border rounded-md ">
+                                                                                                                <CollapsibleTrigger asChild className="bg-indigo-50/70 hover:bg-indigo-50/50">
+                                                                                                                    <Button variant="ghost" className="group w-full text-wrap">
+                                                                                                                        {/* <LucideMapPinCheck /> */}
+                                                                                                                        <p className="text-sm font-bold text-indigo-500"> Detail  ({item.no_transaksi})</p>
+                                                                                                                        <ChevronDownIcon className="ml-auto group-data-[state=open]:rotate-180" />
+                                                                                                                    </Button>
+                                                                                                                </CollapsibleTrigger>
+                                                                                                                <CollapsibleContent className="w-full items-start gap-4 p-4 text-sm data-[state=closed]:animate-collapsible-up data-[state=open]:animate-collapsible-down overflow-hidden">
+                                                                                                                    <div className="w-full flex flex-col gap-4">
+                                                                                                                        <div className="w-full flex flex-col lg:flex-row lg:justify-between gap-4">
+                                                                                                                            <div className="w-full flex gap-2">
+                                                                                                                                {/* <LucideUserRound size={17} className="text-muted-foreground" /> */}
+                                                                                                                                <div className="w-full flex flex-col gap-2">
+                                                                                                                                    <Label className="text-sm font-semibold text-neutral-500">
+                                                                                                                                        Nasabah
+                                                                                                                                    </Label>
+                                                                                                                                    <p className="text-md font-bold text-neutral-700 break-all">{item.nama_nasabah}</p>
+                                                                                                                                </div>
+                                                                                                                            </div>
+                                                                                                                            <div className="w-full flex gap-2 items-start">
+                                                                                                                                {/* <LucideWallet size={17} className="text-neutral-500" /> */}
+                                                                                                                                <div className="w-full flex flex-col gap-2">
+                                                                                                                                    <Label className="text-sm font-semibold text-neutral-500">
+                                                                                                                                        Nominal Pinjaman
+                                                                                                                                    </Label>
+                                                                                                                                    <p className="text-md font-bold text-neutral-700  break-all">{formatNominal(item.nominal)}</p>
+                                                                                                                                </div>
+                                                                                                                            </div>
+                                                                                                                        </div>
+                                                                                                                        <Separator />
+                                                                                                                        <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-2">
+                                                                                                                            <div className="w-full flex gap-2">
+                                                                                                                                {/* <LucideMapPinHouse size={17} className="text-neutral-500" /> */}
+                                                                                                                                <div className="w-full flex flex-col gap-2">
+                                                                                                                                    <Label className="text-sm font-semibold text-neutral-500">
+                                                                                                                                        Alamat
+                                                                                                                                    </Label>
+                                                                                                                                    <p className="text-md font-bold text-neutral-700  break-all">{item.alamat}</p>
+                                                                                                                                </div>
+                                                                                                                            </div>
+                                                                                                                            <div className="w-full flex gap-2">
+                                                                                                                                {/* <LucideCalendarClock size={17} className="text-neutral-500" /> */}
+                                                                                                                                <div className="w-full flex flex-col gap-2">
+                                                                                                                                    <Label className="text-sm font-semibold text-neutral-500">
+                                                                                                                                        Tenor
+                                                                                                                                    </Label>
+                                                                                                                                    <p className="text-md font-bold text-neutral-700  break-all">{item.tenor} {jenis_tenor}</p>
+                                                                                                                                </div>
+                                                                                                                            </div>
+                                                                                                                        </div>
+
+                                                                                                                        <Separator />
+                                                                                                                        <h5 className="text-md font-bold text-neutral-600">Informasi Tunggakan</h5>
+                                                                                                                        <div className="w-full grid grid-cols-2 lg:grid-cols-3 gap-2">
+                                                                                                                            <Field className="w-full max-w-sm">
+                                                                                                                                <FieldLabel htmlFor="progress-upload">
+                                                                                                                                    <span className="text-neutral-500 font-bold">Kriteria</span>
+                                                                                                                                </FieldLabel>
+                                                                                                                                <FieldContent>
+                                                                                                                                    <span className="font-bold">{item.status_tunggakan.kriteria}</span>
+                                                                                                                                </FieldContent>
+                                                                                                                            </Field>
+                                                                                                                            <Field className="w-full max-w-sm">
+                                                                                                                                <FieldLabel htmlFor="progress-upload">
+                                                                                                                                    <span className="text-neutral-500 font-bold">Selisih Hari Terlama</span>
+                                                                                                                                </FieldLabel>
+                                                                                                                                <FieldContent>
+                                                                                                                                    <span className="font-bold">{item.status_tunggakan.selisih_hari_terlama}</span>
+                                                                                                                                </FieldContent>
+                                                                                                                            </Field>
+                                                                                                                            <Field className="w-full max-w-sm">
+                                                                                                                                <FieldLabel htmlFor="progress-upload">
+                                                                                                                                    <span className="text-neutral-500 font-bold">Jumlah Angsuran Tertunggak</span>
+                                                                                                                                </FieldLabel>
+                                                                                                                                <FieldContent>
+                                                                                                                                    <span className="font-bold">{item.status_tunggakan.jumlah_angsuran_tertunggak}</span>
+                                                                                                                                </FieldContent>
+                                                                                                                            </Field>
+                                                                                                                            <Field className="w-full max-w-sm">
+                                                                                                                                <FieldLabel htmlFor="progress-upload">
+                                                                                                                                    <span className="text-neutral-500 font-bold">Total Nominal Tertunggak</span>
+                                                                                                                                </FieldLabel>
+                                                                                                                                <FieldContent>
+                                                                                                                                    <span className="font-bold">{formatNominal(item.status_tunggakan.total_nominal_tertunggak)}</span>
+                                                                                                                                </FieldContent>
+                                                                                                                            </Field>
+                                                                                                                            <Field className="w-full max-w-sm">
+                                                                                                                                <FieldLabel htmlFor="progress-upload">
+                                                                                                                                    <span className="text-neutral-500 font-bold">Angsuran Pertama Macet</span>
+                                                                                                                                </FieldLabel>
+                                                                                                                                <FieldContent>
+                                                                                                                                    <span className="font-bold">{formatDate(item.status_tunggakan.angsuran_pertama_macet)}</span>
+                                                                                                                                </FieldContent>
+                                                                                                                            </Field>
+                                                                                                                        </div>
+
+                                                                                                                        <div className="w-full flex gap-2">
+                                                                                                                            {/* <LucideCamera size={17} className="text-neutral-500" /> */}
+                                                                                                                            <div className="w-full flex flex-col gap-2">
+                                                                                                                                <Label className="text-sm font-semibold text-neutral-500">
+                                                                                                                                    Foto Rumah
+                                                                                                                                </Label>
+                                                                                                                                <div className="w-full flex flex-row gap-2">
+                                                                                                                                    {images.map((image, index) => (
+                                                                                                                                        <ImagePreview key={index}
+                                                                                                                                            src={`${ImageURLKoplink}kunjungan/${image}`} alt="Foto Rumah" className="w-full h-20 lg:w-50 lg:h-30 object-cover rounded-md" />
+                                                                                                                                    ))}
+
+                                                                                                                                    {/* <img className="w-50 h-30 object-cover rounded-md" src={`${ImageURLKoplink}rumah/${image1[0]}`} alt="Foto Rumah" /> */}
+                                                                                                                                    {/* <img className="w-50 h-30 object-cover rounded-md" src={`${ImageURLKoplink}rumah/${image1[1]}`} alt="Foto Rumah" /> */}
+                                                                                                                                </div>
+                                                                                                                            </div>
+                                                                                                                        </div>
+                                                                                                                    </div>
+                                                                                                                </CollapsibleContent>
+                                                                                                            </Collapsible>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                );
+                                                                                            })}
                                                                                         </div>
-                                                                                    )
-                                                                                })}
-                                                                            </div>
-                                                                        </div>
+                                                                                    </div>
+                                                                                </>
+                                                                            )}
                                                                     </div>
                                                                 </DialogContent>
                                                             </Dialog>
+
                                                         </>
 
                                                     )}
@@ -669,7 +767,7 @@ const FieldVisit = ({ title }) => {
                                                                                                                     <CollapsibleTrigger asChild className="bg-indigo-50/70 hover:bg-indigo-50/50">
                                                                                                                         <Button variant="ghost" className="group w-full text-wrap">
                                                                                                                             {/* <LucideMapPinCheck /> */}
-                                                                                                                            <p className="text-sm font-bold text-indigo-500"> Detail Survey ({item.no_transaksi})</p>
+                                                                                                                            <p className="text-sm font-bold text-indigo-500"> Detail ({item.no_transaksi})</p>
                                                                                                                             <ChevronDownIcon className="ml-auto group-data-[state=open]:rotate-180" />
                                                                                                                         </Button>
                                                                                                                     </CollapsibleTrigger>

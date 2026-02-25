@@ -16,33 +16,30 @@ const Map = ({ data, jenis, typeFile }) => {
         const dataLonglat = []
         const detailAbsen = []
 
-        if (
-            firstData?.absensi?.check_in_latitude &&
-            firstData?.absensi?.check_in_latitude !== 0 &&
-            firstData?.absensi?.check_in_latitude !== "" &&
-            firstData?.absensi?.check_in_longitude &&
-            firstData?.absensi?.check_in_longitude !== 0 &&
-            firstData?.absensi?.check_in_longitude !== ""
-        ) {
-            let tglAbsen = firstData.tgl_survei.split(" ")[0];
-            let jamAbsen = firstData.tgl_survei.split(" ")[1];
-
-
-            detailAbsen.push({
-                tglAbsen,
-                jamAbsen,
-            })
-            dataLonglat.push({
-                lat: firstData?.absensi?.check_in_latitude,
-                lng: firstData?.absensi?.check_in_longitude,
-                detail: detailAbsen[0]
-            });
-        }
-
-
-
 
         if (jenis === "Survey") {
+            if (
+                firstData?.absensi?.check_in_latitude &&
+                firstData?.absensi?.check_in_latitude !== 0 &&
+                firstData?.absensi?.check_in_latitude !== "" &&
+                firstData?.absensi?.check_in_longitude &&
+                firstData?.absensi?.check_in_longitude !== 0 &&
+                firstData?.absensi?.check_in_longitude !== ""
+            ) {
+                let tglAbsen = firstData.tgl_survei.split(" ")[0];
+                let jamAbsen = firstData.tgl_survei.split(" ")[1];
+
+
+                detailAbsen.push({
+                    tglAbsen,
+                    jamAbsen,
+                })
+                dataLonglat.push({
+                    lat: firstData?.absensi?.check_in_latitude,
+                    lng: firstData?.absensi?.check_in_longitude,
+                    detail: detailAbsen[0]
+                });
+            }
             const coordinates = data
                 .filter(item =>
                     item.lat_rumah !== 0 &&
@@ -64,6 +61,28 @@ const Map = ({ data, jenis, typeFile }) => {
         }
 
         if (jenis === "Kunjungan") {
+            if (
+                firstData?.absensi?.check_in_latitude &&
+                firstData?.absensi?.check_in_latitude !== 0 &&
+                firstData?.absensi?.check_in_latitude !== "" &&
+                firstData?.absensi?.check_in_longitude &&
+                firstData?.absensi?.check_in_longitude !== 0 &&
+                firstData?.absensi?.check_in_longitude !== ""
+            ) {
+                let tglAbsen = firstData.waktu_kunjungan.split(" ")[0];
+                let jamAbsen = firstData.waktu_kunjungan.split(" ")[1];
+
+
+                detailAbsen.push({
+                    tglAbsen,
+                    jamAbsen,
+                })
+                dataLonglat.push({
+                    lat: firstData?.absensi?.check_in_latitude,
+                    lng: firstData?.absensi?.check_in_longitude,
+                    detail: detailAbsen[0]
+                });
+            }
             const coordinates = data
                 .filter(item =>
                     item.lat_lokasi !== 0 &&
@@ -210,7 +229,7 @@ const Map = ({ data, jenis, typeFile }) => {
                     alamat = item?.detail.alamat
                     // console.log(imgArr[0])
                     if (!isFirst) {
-                        imgArr = item?.detail.foto_nasabah.split(",");
+                        imgArr = item?.detail.foto_lokasi.split(",");
                     }
                 }
                 return (

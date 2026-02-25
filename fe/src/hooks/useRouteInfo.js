@@ -36,28 +36,28 @@ export const useRuteInfo = (detailData, type = "survey") => {
             lat2 =
               type === "survey"
                 ? detailData[i].lat_rumah
-                : detailData[i].latitude;
+                : detailData[i].lat_lokasi;
             lng2 =
               type === "survey"
                 ? detailData[i].long_rumah
-                : detailData[i].long_rumah;
+                : detailData[i].long_lokasi;
           } else {
             lat1 =
               type === "survey"
                 ? detailData[i - 1].lat_rumah
-                : detailData[i - 1].latitude;
+                : detailData[i - 1].lat_lokasi;
             lng1 =
               type === "survey"
                 ? detailData[i - 1].long_rumah
-                : detailData[i - 1].long_rumah;
+                : detailData[i - 1].long_lokasi;
             lat2 =
               type === "survey"
                 ? detailData[i].lat_rumah
-                : detailData[i].latitude;
+                : detailData[i].lat_lokasi;
             lng2 =
               type === "survey"
                 ? detailData[i].long_rumah
-                : detailData[i].long_rumah;
+                : detailData[i].long_lokasi;
           }
           const info = await hitungRuteDanWaktuMap(lat1, lng1, lat2, lng2);
           const { jarakKm } = info;
