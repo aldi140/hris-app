@@ -6,7 +6,7 @@ import { ChevronDownIcon, LucideCalendarClock, LucideCamera, LucideChevronLeft, 
 import { cn, formatDate, formatNominal, getDateOfWeek, getDayOfWeek, hitungJarak, locationMapUrl } from "../../../lib/utils"
 import { Avatar, AvatarFallback, AvatarImage } from "../../../Components/ui/avatar"
 import { InputGroup, InputGroupAddon, InputGroupInput } from "../../../Components/ui/input-group"
-import { Field, FieldContent } from "../../../Components/ui/field"
+import { Field, FieldContent, FieldLabel } from "../../../Components/ui/field"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../../Components/ui/select"
 import { useDepartmen } from "../../../modules/departmen/useDepartmen"
 import { useEffect, useMemo, useState } from "react"
@@ -25,6 +25,10 @@ import "yet-another-react-lightbox/styles.css";
 import Map from "../../../Components/commons/organisms/Map"
 import { useApiError } from "../../../hooks/useApiError"
 import { useSurveyVisit } from "../../../modules/surveyVisit/useSurveyVisit"
+import { Spinner } from "../../../Components/ui/spinner"
+import BarLoading from "../../../Components/commons/atoms/BarLoading"
+import { Progress } from "../../../Components/ui/progress"
+// import { BarLoading } from "../../../Components/commons/atoms/BarLoading"
 
 
 const FieldVisit = ({ title }) => {
@@ -45,11 +49,11 @@ const FieldVisit = ({ title }) => {
     const { officeList, handlegetOfficeAll } = useOffice();
     const { departmenList, handleGetDepartmen } = useDepartmen()
     const { surveyVisitList, handleGetSurveyVisit, handleGetDetailSurvey, detailSurvey, detailVisit, handleGetdetailVisit, setPage, page, lastPage, loadingDetail, isLoading, error } = useSurveyVisit()
-    const { ruteInfo: ruteInfoSurvey, loadingRute: loadingRuteSurvey, errorRute: errorRuteSurvey } = useRuteInfo(detailSurvey)
+    const { ruteInfo: ruteInfoSurvey, isLoadingRute: loadingRuteSurvey, errorRute: errorRuteSurvey } = useRuteInfo(detailSurvey, "survey")
 
     // Untuk detail kunjungan
-    const { ruteInfo: ruteInfoKunjungan, loadingRute: loadingRuteKunjungan, errorRute: errorRuteKunjungan } = useRuteInfo(detailVisit)
-    console.log('ruteInfoSurvey', ruteInfoSurvey)
+    const { ruteInfo: ruteInfoKunjungan, loadingRute: loadingRuteKunjungan, errorRute: errorRuteKunjungan } = useRuteInfo(detailVisit, "kunjungan")
+    // console.log('ruteInfoSurvey', ruteInfoSurvey)
 
     const handleSearch = (e) => {
         setSearch(e.target.value);
@@ -190,7 +194,7 @@ const FieldVisit = ({ title }) => {
                             </TableRow>
                         </TableHeader>
                         <TableBody>
-                            {surveyVisitList.map((item, rowIndex) => (
+                            {surveyVisitList && surveyVisitList.map((item, rowIndex) => (
                                 <TableRow key={rowIndex}>
                                     <TableCell className="font-medium sticky z-20 left-0 bg-white drop-shadow-[1px_0_rgba(0,0,0,0.1)] px-4">
                                         <div className="flex flex-row items-center gap-4">
@@ -437,7 +441,7 @@ const FieldVisit = ({ title }) => {
                                                                                                         rel="noopener noreferrer"
                                                                                                         className="place-self-end mt-4"
                                                                                                     >
-                                                                                                        <Button size="sm" variant="blue" > <LucideSend className="mr-2" /> Lihat Lokasi</Button>
+                                                                                                        <Button size="sm" variant="blue" > <LucideSend className="mr-1" />Lokasi</Button>
                                                                                                     </a>
 
                                                                                                 </CollapsibleContent>
@@ -476,270 +480,334 @@ const FieldVisit = ({ title }) => {
                                                                         </DialogDescription>
                                                                     </DialogHeader>
                                                                     <div className="no-scrollbar -mx-4 max-h-[80vh] overflow-y-auto px-4 flex flex-col gap-4">
+                                                                        {loadingDetail
+                                                                            ?
+                                                                            (
+                                                                                <>
+                                                                                    <div className="flex justify-center items-center">
+                                                                                        <BarLoading />
+                                                                                    </div>
 
-                                                                        <div className="rounded-md p-2 border border-gray-300">
-                                                                            <Map data={detailSurvey} jenis="Survey" typeFile="rumah" />
-                                                                        </div>
-                                                                        <div className="flex flex-col gap-4">
-                                                                            <p className="text-sm  text-neutral-400">Informasi Karyawan</p>
-                                                                            <div className="w-full flex border p-4  bg-gray-100 rounded-md">
-                                                                                <Avatar size="xl">
-                                                                                    <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
-                                                                                    <AvatarFallback>CN</AvatarFallback>
-                                                                                </Avatar>
-                                                                                <div className="flex flex-col ml-4 gap-1">
-                                                                                    <p className="text-md font-semibold text-slate-600">{detailSurvey && detailSurvey[0].karyawan1.nama_karyawan}</p>
-                                                                                    <div className="flex flex-col">
-                                                                                        <p className="text-sm font-medium text-muted-foreground">{detailSurvey && detailSurvey[0].karyawan1.jabatan}</p>
-                                                                                        <p className="text-sm font-medium text-muted-foreground">{detailSurvey && detailSurvey[0].karyawan1.kantor_nama}</p>
-                                                                                        {/* <Badge variant="blueSecondary" className="text-xs text-indigo-700">{detailSurvey && detailSurvey[0].karyawan1.jabatan}</Badge>
+                                                                                </>
+                                                                            )
+                                                                            : (
+                                                                                <>
+                                                                                    <div className="rounded-md p-2 border border-gray-300">
+                                                                                        <Map data={detailSurvey} jenis="Survey" typeFile="rumah" />
+                                                                                    </div>
+                                                                                    <div className="flex flex-row gap-4 justify-center">
+                                                                                        <div className="flex flex-row items-center">
+                                                                                            <div className="w-2 h-2 bg-linear-to-t from-emerald-800 to-emerald-500 rounded-full"></div>
+                                                                                            <p className="text-xs font-medium text-muted-foreground ml-2">start</p>
+                                                                                        </div>
+                                                                                        <div className="flex flex-row items-center">
+                                                                                            <div className="w-2 h-2 bg-linear-to-t from-indigo-800 to-indigo-500 rounded-full"></div>
+                                                                                            <p className="text-xs font-medium text-muted-foreground ml-2">middle</p>
+                                                                                        </div>
+                                                                                        <div className="flex flex-row items-center">
+                                                                                            <div className="w-2 h-2 bg-linear-to-t from-red-800 to-red-500 rounded-full"></div>
+                                                                                            <p className="text-xs font-medium text-muted-foreground ml-2">end</p>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div className="w-full flex justify-center">
+                                                                                        <Card className="w-md border border-indigo-700 bg-linear-to-r from-indigo-200/30 via-indigo-100/30 to-indigo-300/30 shadow-none">
+                                                                                            <CardContent>
+                                                                                                <div className="flex flex-row gap-2 justify-evenly text-center">
+                                                                                                    <div className="flex flex-col gap-1">
+                                                                                                        <p className="text-sm font-bold text-muted-foreground/70">Total Survey</p>
+                                                                                                        <h1 className="text-2xl text-indigo-500 font-bold">{detailSurvey?.length}</h1>
+                                                                                                        <p className="text-xs  text-muted-foreground/70">lokasi dikunjungi</p>
+                                                                                                    </div>
+                                                                                                    <div className="w-px border border-gray-300"></div>
+                                                                                                    <div className="flex flex-col gap-1">
+                                                                                                        <p className="text-sm font-bold text-muted-foreground/70">Total Jarak</p>
+                                                                                                        <h1 className="text-2xl text-indigo-500 font-bold">{ruteInfoSurvey?.total_jarakKm || 0} Km</h1>
+                                                                                                        <p className="text-xs text-muted-foreground/70">kilometer ditempuh</p>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </CardContent>
+                                                                                        </Card>
+                                                                                    </div>
+                                                                                    <div className="flex flex-col gap-4">
+                                                                                        <p className="text-sm  text-neutral-400">Informasi Karyawan</p>
+                                                                                        <div className="w-full flex border p-4  bg-gray-100 rounded-md">
+                                                                                            <Avatar size="xl">
+                                                                                                <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
+                                                                                                <AvatarFallback>CN</AvatarFallback>
+                                                                                            </Avatar>
+                                                                                            <div className="flex flex-col ml-4 gap-1">
+                                                                                                <p className="text-md font-semibold text-slate-600">{detailSurvey && detailSurvey[0].karyawan1.nama_karyawan}</p>
+                                                                                                <div className="flex flex-col">
+                                                                                                    <p className="text-sm font-medium text-muted-foreground">{detailSurvey && detailSurvey[0].karyawan1.jabatan}</p>
+                                                                                                    <p className="text-sm font-medium text-muted-foreground">{detailSurvey && detailSurvey[0].karyawan1.kantor_nama}</p>
+                                                                                                    {/* <Badge variant="blueSecondary" className="text-xs text-indigo-700">{detailSurvey && detailSurvey[0].karyawan1.jabatan}</Badge>
                                                                                         <Badge variant="yellowSecondary" className="text-xs text-yellow-700">{detailSurvey && detailSurvey[0].karyawan1.kantor_nama}</Badge> */}
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-
-                                                                        </div>
-
-                                                                        <div className="flex flex-col gap-4">
-                                                                            <p className="text-sm text-neutral-400">Informasi Survey</p>
-                                                                            <Separator />
-                                                                            <div className="grid grid-cols-1 gap-4">
-                                                                                <div className="w-full">
-                                                                                    <div className="flex flex-row  lg:gap-8 gap-4 min-h-25">
-                                                                                        <div className="flex flex-col items-center gap-2">
-                                                                                            <LucideMapPinCheck className="text-muted-foreground shrink-0" />
-                                                                                            <div className="relative flex flex-col items-center self-start h-full w-full">
-                                                                                                <div className="h-full border border-dashed border-muted-foreground"></div>
-                                                                                                <div className="absolute top-1/2 -translate-y-1/2 bg-white px-1">
-                                                                                                    <p className="text-xs text-muted-foreground lg:whitespace-nowrap">10 km</p>
                                                                                                 </div>
                                                                                             </div>
                                                                                         </div>
-                                                                                        <div className="w-full flex flex-row justify-between">
-                                                                                            <div className="">
-                                                                                                <p className="text-md font-bold text-slate-600">Titik Awal (3.366702, 101.389403)</p>
-                                                                                                <p className="text-sm font-medium text-neutral-500">25 Januari 2025</p>
-                                                                                                <p className="text-sm font-medium text-neutral-500">09:00:00</p>
-                                                                                            </div>
-                                                                                            <a
-                                                                                                href=""
-                                                                                                target="_blank"
-                                                                                                rel="noopener noreferrer"
-                                                                                            >
-                                                                                                <Button size="sm" className="bg-slate-600 hover:bg-slate-700" > <LucideSend className="mr-2" /> Lihat Lokasi</Button>
-                                                                                            </a>
-                                                                                        </div>
+
                                                                                     </div>
-
-                                                                                </div>
-                                                                                {detailSurvey && detailSurvey.map((item, index) => {
-                                                                                    const tgl_survey = item.tgl_survei.split(" ")[0];
-                                                                                    const jam_survey = item.tgl_survei.split(" ")[1];
-                                                                                    let jenis_tenor = null;
-                                                                                    let jenis_trx = item.no_transaksi.substring(0, 1);
-                                                                                    if (jenis_trx === "T" || jenis_trx === "M") {
-                                                                                        jenis_tenor = "Minggu"
-                                                                                    } else {
-                                                                                        jenis_tenor = "Bulan"
-                                                                                    }
-                                                                                    console.log('jenis_trx', jenis_trx)
-                                                                                    let divRoute = null;
-                                                                                    // Cek apakah ada data rute dari index sebelumnya
-                                                                                    const lastIndex = detailSurvey.length > 0 ? detailSurvey.length - 1 : null
-                                                                                    console.log('index', index)
-                                                                                    console.log('lastIndex', lastIndex)
-                                                                                    const images = item.foto_rumah.split(",");
-                                                                                    // Tampilkan divRoute di card saat ini jika bukan card pertama
-                                                                                    if (index !== lastIndex) {
-                                                                                        divRoute = (
-                                                                                            <>
-                                                                                                {loadingRuteSurvey ? (
-                                                                                                    <div className="relative flex flex-col items-center self-start h-full w-full">
-                                                                                                        <div className="h-full border border-dashed border-muted-foreground"></div>
-                                                                                                        <div className="absolute top-1/2 -translate-y-1/2 bg-white px-1">
-                                                                                                            <p className="text-xs text-muted-foreground lg:whitespace-nowrap">Loading...</p>
+                                                                                    <div className="flex flex-col gap-4">
+                                                                                        <p className="text-sm text-neutral-400">Informasi Survey</p>
+                                                                                        <Separator />
+                                                                                        <div className="grid grid-cols-1 gap-4">
+                                                                                            <div className="w-full">
+                                                                                                <div className="flex flex-row  lg:gap-8 gap-4 min-h-20">
+                                                                                                    <div className="flex flex-col items-center gap-2">
+                                                                                                        <LucideMapPinCheck className="text-muted-foreground shrink-0" />
+                                                                                                        <div className="relative flex flex-col items-center self-start h-full w-full">
+                                                                                                            <div className="h-full border border-dashed  border-muted-foreground"></div>
+                                                                                                            <div className="absolute top-1/2 -translate-y-1/2 bg-white px-1">
+                                                                                                                <p className="text-xs text-muted-foreground lg:whitespace-nowrap">{
+                                                                                                                    loadingRuteSurvey ? 'menghitung jarak...' : ruteInfoSurvey.dataRuteInfo?.[0]?.jarakKm || 0
+                                                                                                                } Km</p>
+                                                                                                            </div>
                                                                                                         </div>
                                                                                                     </div>
-
-                                                                                                ) : (
-                                                                                                    <div className="relative flex flex-col items-center self-start h-full w-full">
-                                                                                                        <div className="h-full border border-dashed border-muted-foreground"></div>
-                                                                                                        <div className="absolute top-1/2 -translate-y-1/2 bg-white px-1">
-                                                                                                            <p className="text-xs text-muted-foreground lg:whitespace-nowrap">{ruteInfoSurvey[index]?.jarakKm} km</p>
-                                                                                                        </div>
-                                                                                                    </div>
-                                                                                                )}
-                                                                                            </>
-                                                                                        );
-                                                                                    }
-
-                                                                                    return (
-                                                                                        <div div className="w-full" key={index} >
-                                                                                            <div className="flex flex-row lg:gap-8 gap-4 min-h-25">
-                                                                                                <div className="flex flex-col items-center gap-2">
-                                                                                                    <LucideMapPinCheck className="text-muted-foreground shrink-0" />
-                                                                                                    {divRoute}
-                                                                                                </div>
-                                                                                                <div className="w-full flex flex-col gap-2">
-                                                                                                    <div className="flex flex-row justify-between">
+                                                                                                    <div className="w-full flex flex-row items-center justify-between px-4 py-2 h-full border border-emerald-400 rounded-md bg-emerald-50">
                                                                                                         <div className="">
-                                                                                                            <p className="text-md font-bold text-slate-600">Survey {index + 1}</p>
-                                                                                                            <p className="text-sm font-medium text-neutral-500">{formatDate(tgl_survey)}</p>
-                                                                                                            <p className="text-sm font-medium text-neutral-500">{jam_survey} </p>
+                                                                                                            <p className="text-md font-bold text-emerald-600">
+                                                                                                                Titik Awal
+                                                                                                            </p>
+                                                                                                            <p className="text-xs text-neutral-600">
+                                                                                                                {
+                                                                                                                    detailSurvey &&
+                                                                                                                        detailSurvey[0]?.absensi?.check_in_latitude !== ''
+                                                                                                                        &&
+                                                                                                                        detailSurvey[0]?.absensi?.check_in_longitude !== ''
+                                                                                                                        ? detailSurvey[0]?.absensi?.check_in_latitude + ', ' + detailSurvey[0]?.absensi?.check_in_longitude
+                                                                                                                        : 'Karyawan Belum Absen'
+                                                                                                                }
+                                                                                                            </p>
                                                                                                         </div>
-
                                                                                                         <a
-                                                                                                            href={locationMapUrl(item.long_rumah, item.lat_rumah)}
+                                                                                                            href=""
                                                                                                             target="_blank"
                                                                                                             rel="noopener noreferrer"
-
                                                                                                         >
-                                                                                                            <Button size="sm" className="bg-slate-600 hover:bg-slate-700" > <LucideSend className="mr-2" /> Lihat Lokasi</Button>
+                                                                                                            {
+                                                                                                                detailSurvey &&
+                                                                                                                    detailSurvey[0]?.absensi?.check_in_latitude !== ''
+                                                                                                                    &&
+                                                                                                                    detailSurvey[0]?.absensi?.check_in_longitude !== ''
+                                                                                                                    ? <Button size="sm" className="bg-emerald-600 hover:bg-emerald-700" > <LucideSend className="mr-1" />Lokasi</Button>
+                                                                                                                    : null
+                                                                                                            }
+
                                                                                                         </a>
                                                                                                     </div>
-                                                                                                    <Collapsible className="data-[state=open]:bg-white border rounded-md w-full">
-                                                                                                        <CollapsibleTrigger asChild>
-                                                                                                            <Button variant="ghost" className="group w-full text-wrap">
-                                                                                                                {/* <LucideMapPinCheck /> */}
-                                                                                                                <p className="text-sm font-bold text-slate-700"> Detail Survey ({item.no_transaksi})</p>
-                                                                                                                <ChevronDownIcon className="ml-auto group-data-[state=open]:rotate-180" />
-                                                                                                            </Button>
-                                                                                                        </CollapsibleTrigger>
-                                                                                                        <CollapsibleContent className="flex flex-col items-start gap-4 p-2.5 pt-0 text-sm data-[state=closed]:animate-collapsible-up data-[state=open]:animate-collapsible-down overflow-hidden">
-                                                                                                            <Separator />
-                                                                                                            <div className="w-full flex flex-col gap-4">
-                                                                                                                <div className="w-full flex flex-col lg:flex-row lg:justify-between gap-4">
-                                                                                                                    <div className="w-full flex gap-2">
-                                                                                                                        <LucideUserRound size={17} className="text-muted-foreground" />
-                                                                                                                        <div className="w-full flex flex-col gap-2">
-                                                                                                                            <Label className="text-xs font-semibold text-muted-foreground">
-                                                                                                                                Nasabah
-                                                                                                                            </Label>
-                                                                                                                            <p className="text-sm font-medium text-muted-foreground break-all">{item.nama}</p>
-                                                                                                                        </div>
-                                                                                                                    </div>
-                                                                                                                    <div className="w-full flex gap-2 items-start">
-                                                                                                                        <LucideWallet size={17} className="text-muted-foreground" />
-                                                                                                                        <div className="w-full flex flex-col gap-2">
-                                                                                                                            <Label className="text-xs font-semibold text-muted-foreground">
-                                                                                                                                Nominal Pinjaman
-                                                                                                                            </Label>
-                                                                                                                            <p className="text-sm font-medium text-muted-foreground break-all">{formatNominal(item.nominal)}</p>
-                                                                                                                        </div>
-                                                                                                                    </div>
-                                                                                                                </div>
-                                                                                                                <Separator />
-                                                                                                                <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-2">
-                                                                                                                    <div className="w-full flex gap-2">
-                                                                                                                        <LucideMapPinHouse size={17} className="text-muted-foreground" />
-                                                                                                                        <div className="w-full flex flex-col gap-2">
-                                                                                                                            <Label className="text-xs font-semibold text-muted-foreground">
-                                                                                                                                Alamat
-                                                                                                                            </Label>
-                                                                                                                            <p className="text-sm font-medium text-muted-foreground break-all">{item.alamat}</p>
-                                                                                                                        </div>
-                                                                                                                    </div>
-                                                                                                                    <div className="w-full flex gap-2">
-                                                                                                                        <LucideCalendarClock size={17} className="text-muted-foreground" />
-                                                                                                                        <div className="w-full flex flex-col gap-2">
-                                                                                                                            <Label className="text-xs font-semibold text-muted-foreground">
-                                                                                                                                Tenor
-                                                                                                                            </Label>
-                                                                                                                            <p className="text-sm font-medium text-muted-foreground break-all">{item.tenor} {jenis_tenor}</p>
-                                                                                                                        </div>
-                                                                                                                    </div>
-                                                                                                                </div>
-
-                                                                                                                <Separator />
-                                                                                                                <div className="w-full grid grid-cols-2 lg:grid-cols-3 gap-2">
-                                                                                                                    <div className="flex gap-2">
-                                                                                                                        <LucideFileChartLine size={17} className="text-muted-foreground shrink-0" />
-                                                                                                                        <div className="w-full flex flex-col gap-2">
-                                                                                                                            <Label className="text-xs font-semibold text-muted-foreground">Skor Capacity</Label>
-                                                                                                                            <p className="text-sm font-medium text-muted-foreground break-all">{item.skor_capacity}</p>
-                                                                                                                        </div>
-                                                                                                                    </div>
-                                                                                                                    <div className="flex gap-2">
-                                                                                                                        <LucideFileChartLine size={17} className="text-muted-foreground shrink-0" />
-                                                                                                                        <div className="w-full flex flex-col gap-2">
-                                                                                                                            <Label className="text-xs font-semibold text-muted-foreground">Skor Capital</Label>
-                                                                                                                            <p className="text-sm font-medium text-muted-foreground break-all">{item.skor_capital}</p>
-                                                                                                                        </div>
-                                                                                                                    </div>
-                                                                                                                    <div className="flex gap-2">
-                                                                                                                        <LucideFileChartLine size={17} className="text-muted-foreground shrink-0" />
-                                                                                                                        <div className="w-full flex flex-col gap-2">
-                                                                                                                            <Label className="text-xs font-semibold text-muted-foreground">Skor Character</Label>
-                                                                                                                            <p className="text-sm font-medium text-muted-foreground break-all">{item.skor_character}</p>
-                                                                                                                        </div>
-                                                                                                                    </div>
-                                                                                                                    <div className="flex gap-2">
-                                                                                                                        <LucideFileChartLine size={17} className="text-muted-foreground shrink-0" />
-                                                                                                                        <div className="w-full flex flex-col gap-2">
-                                                                                                                            <Label className="text-xs font-semibold text-muted-foreground">Skor Collateral</Label>
-                                                                                                                            <p className="text-sm font-medium text-muted-foreground break-all">{item.skor_collateral}</p>
-                                                                                                                        </div>
-                                                                                                                    </div>
-                                                                                                                    <div className="flex gap-2">
-                                                                                                                        <LucideFileChartLine size={17} className="text-muted-foreground shrink-0" />
-                                                                                                                        <div className="w-full flex flex-col gap-2">
-                                                                                                                            <Label className="text-xs font-semibold text-muted-foreground">Skor Condition</Label>
-                                                                                                                            <p className="text-sm font-medium text-muted-foreground break-all">{item.skor_condition}</p>
-                                                                                                                        </div>
-                                                                                                                    </div>
-                                                                                                                    <div className="flex gap-2">
-                                                                                                                        <LucideFileChartLine size={17} className="text-muted-foreground shrink-0" />
-                                                                                                                        <div className="w-full flex flex-col gap-2">
-                                                                                                                            <Label className="text-xs font-semibold text-muted-foreground">Skor Purpose</Label>
-                                                                                                                            <p className="text-sm font-medium text-muted-foreground break-all">{item.skor_purpose}</p>
-                                                                                                                        </div>
-                                                                                                                    </div>
-                                                                                                                </div>
-                                                                                                                <div className="w-full flex gap-2">
-
-                                                                                                                    <LucideCamera size={17} className="text-muted-foreground" />
-                                                                                                                    <div className="w-full flex flex-col gap-2">
-                                                                                                                        <Label className="text-xs font-semibold text-muted-foreground">
-                                                                                                                            Foto Rumah
-                                                                                                                        </Label>
-                                                                                                                        <div className="w-full flex flex-row gap-2">
-                                                                                                                            {images.map((image, index) => (
-                                                                                                                                <ImagePreview key={index}
-                                                                                                                                    src={`${ImageURLKoplink}rumah/${image}`} alt="Foto Rumah" className="w-full h-20 lg:w-50 lg:h-30 object-cover rounded-md" />
-                                                                                                                            ))}
-
-                                                                                                                            {/* <img className="w-50 h-30 object-cover rounded-md" src={`${ImageURLKoplink}rumah/${image1[0]}`} alt="Foto Rumah" /> */}
-                                                                                                                            {/* <img className="w-50 h-30 object-cover rounded-md" src={`${ImageURLKoplink}rumah/${image1[1]}`} alt="Foto Rumah" /> */}
-                                                                                                                        </div>
-                                                                                                                    </div>
-                                                                                                                </div>
-                                                                                                            </div>
-                                                                                                        </CollapsibleContent>
-                                                                                                    </Collapsible>
                                                                                                 </div>
+
                                                                                             </div>
-                                                                                        </div>
-                                                                                    );
-                                                                                })}
-                                                                            </div>
-                                                                        </div>
-                                                                        <div className="w-full flex justify-center">
-                                                                            <Card className="w-md border border-gray-300 shadow-none">
-                                                                                <CardContent>
-                                                                                    <div className="flex flex-row gap-2 justify-evenly text-center">
-                                                                                        <div className="flex flex-col gap-2">
-                                                                                            <p className="text-xs text-muted-foreground">Total Survey</p>
-                                                                                            <h1 className="text-lg font-bold">{detailSurvey?.length}</h1>
-                                                                                        </div>
-                                                                                        <div className="w-px border border-gray-300 "></div>
-                                                                                        <div className="flex flex-col gap-2">
-                                                                                            <p className="text-xs text-muted-foreground">Total Jarak Tempuh</p>
-                                                                                            <h1 className="text-lg font-bold"></h1>
+                                                                                            {detailSurvey && detailSurvey.map((item, index) => {
+                                                                                                const tgl_survey = item.tgl_survei.split(" ")[0];
+                                                                                                const jam_survey = item.tgl_survei.split(" ")[1];
+                                                                                                let jenis_tenor = null;
+                                                                                                let jenis_trx = item.no_transaksi.substring(0, 1);
+                                                                                                if (jenis_trx === "T" || jenis_trx === "M") {
+                                                                                                    jenis_tenor = "Minggu"
+                                                                                                } else {
+                                                                                                    jenis_tenor = "Bulan"
+                                                                                                }
+                                                                                                // console.log('jenis_trx', jenis_trx)
+                                                                                                let divRoute = null;
+                                                                                                // Cek apakah ada data rute dari index sebelumnya
+                                                                                                const lastIndex = detailSurvey.length > 0 ? detailSurvey.length - 1 : null
+                                                                                                // console.log('index', index)
+                                                                                                // console.log('lastIndex', lastIndex)
+                                                                                                const images = item.foto_rumah.split(",");
+                                                                                                // Tampilkan divRoute di card saat ini jika bukan card pertama
+                                                                                                if (index !== lastIndex) {
+                                                                                                    divRoute = (
+                                                                                                        <>
+                                                                                                            {loadingRuteSurvey ? (
+                                                                                                                <div className="relative flex flex-col items-center self-start h-full w-full">
+                                                                                                                    <div className="h-full border border-dashed border-muted-foreground"></div>
+                                                                                                                    <div className="absolute top-1/2 -translate-y-1/2 bg-white px-1">
+                                                                                                                        <p className="text-xs text-muted-foreground lg:whitespace-nowrap">Loading...</p>
+                                                                                                                    </div>
+                                                                                                                </div>
+
+                                                                                                            ) : (
+                                                                                                                <div className="relative flex flex-col items-center self-start h-full w-full">
+                                                                                                                    <div className="h-full border border-dashed border-muted-foreground"></div>
+                                                                                                                    <div className="absolute top-1/2 -translate-y-1/2 bg-white px-1">
+                                                                                                                        <p className="text-xs text-muted-foreground lg:whitespace-nowrap">
+                                                                                                                            {ruteInfoSurvey?.dataRuteInfo?.[index + 1]?.jarakKm} km</p>
+                                                                                                                    </div>
+                                                                                                                </div>
+                                                                                                            )}
+                                                                                                        </>
+                                                                                                    );
+                                                                                                }
+
+                                                                                                return (
+                                                                                                    <div div className="w-full" key={index} >
+                                                                                                        <div className="flex flex-row lg:gap-8 gap-4">
+                                                                                                            <div className="flex flex-col items-center gap-2">
+                                                                                                                <LucideMapPinCheck className="text-muted-foreground shrink-0" />
+                                                                                                                {divRoute}
+                                                                                                            </div>
+                                                                                                            <div className="w-full flex flex-col  border border-indigo-300 rounded-md ">
+                                                                                                                <div className="flex flex-row items-center justify-between px-4 py-2 ">
+                                                                                                                    <div className="">
+                                                                                                                        <p className="text-md font-bold text-gray-700">Survey {index + 1}</p>
+                                                                                                                        <p className="text-xs font-medium text-neutral-600">{formatDate(tgl_survey)} - {jam_survey}</p>
+                                                                                                                        <p className="text-xs font-medium text-neutral-600"> </p>
+                                                                                                                    </div>
+
+                                                                                                                    <a
+                                                                                                                        href={locationMapUrl(item.long_rumah, item.lat_rumah)}
+                                                                                                                        target="_blank"
+                                                                                                                        rel="noopener noreferrer"
+
+                                                                                                                    >
+                                                                                                                        <Button size="sm" className="bg-indigo-500 hover:bg-indigo-600" > <LucideSend className="mr-1" />Lokasi</Button>
+                                                                                                                    </a>
+                                                                                                                </div>
+                                                                                                                <Collapsible className="data-[state=open]:bg-white border rounded-md w-full">
+                                                                                                                    <CollapsibleTrigger asChild className="bg-indigo-50/70 hover:bg-indigo-50/50">
+                                                                                                                        <Button variant="ghost" className="group w-full text-wrap">
+                                                                                                                            {/* <LucideMapPinCheck /> */}
+                                                                                                                            <p className="text-sm font-bold text-indigo-500"> Detail Survey ({item.no_transaksi})</p>
+                                                                                                                            <ChevronDownIcon className="ml-auto group-data-[state=open]:rotate-180" />
+                                                                                                                        </Button>
+                                                                                                                    </CollapsibleTrigger>
+                                                                                                                    <CollapsibleContent className="flex flex-col items-start gap-4 p-4  text-sm data-[state=closed]:animate-collapsible-up data-[state=open]:animate-collapsible-down overflow-hidden">
+                                                                                                                        <div className="w-full flex flex-col gap-4">
+                                                                                                                            <div className="w-full flex flex-col lg:flex-row lg:justify-between gap-4">
+                                                                                                                                <div className="w-full flex gap-2">
+                                                                                                                                    {/* <LucideUserRound size={17} className="text-muted-foreground" /> */}
+                                                                                                                                    <div className="w-full flex flex-col gap-2">
+                                                                                                                                        <Label className="text-sm font-semibold text-neutral-500">
+                                                                                                                                            Nasabah
+                                                                                                                                        </Label>
+                                                                                                                                        <p className="text-md font-bold text-neutral-700 break-all">{item.nama}</p>
+                                                                                                                                    </div>
+                                                                                                                                </div>
+                                                                                                                                <div className="w-full flex gap-2 items-start">
+                                                                                                                                    {/* <LucideWallet size={17} className="text-neutral-500" /> */}
+                                                                                                                                    <div className="w-full flex flex-col gap-2">
+                                                                                                                                        <Label className="text-sm font-semibold text-neutral-500">
+                                                                                                                                            Nominal Pinjaman
+                                                                                                                                        </Label>
+                                                                                                                                        <p className="text-md font-bold text-neutral-700  break-all">{formatNominal(item.nominal)}</p>
+                                                                                                                                    </div>
+                                                                                                                                </div>
+                                                                                                                            </div>
+                                                                                                                            <Separator />
+                                                                                                                            <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-2">
+                                                                                                                                <div className="w-full flex gap-2">
+                                                                                                                                    {/* <LucideMapPinHouse size={17} className="text-neutral-500" /> */}
+                                                                                                                                    <div className="w-full flex flex-col gap-2">
+                                                                                                                                        <Label className="text-sm font-semibold text-neutral-500">
+                                                                                                                                            Alamat
+                                                                                                                                        </Label>
+                                                                                                                                        <p className="text-md font-bold text-neutral-700  break-all">{item.alamat}</p>
+                                                                                                                                    </div>
+                                                                                                                                </div>
+                                                                                                                                <div className="w-full flex gap-2">
+                                                                                                                                    {/* <LucideCalendarClock size={17} className="text-neutral-500" /> */}
+                                                                                                                                    <div className="w-full flex flex-col gap-2">
+                                                                                                                                        <Label className="text-sm font-semibold text-neutral-500">
+                                                                                                                                            Tenor
+                                                                                                                                        </Label>
+                                                                                                                                        <p className="text-md font-bold text-neutral-700  break-all">{item.tenor} {jenis_tenor}</p>
+                                                                                                                                    </div>
+                                                                                                                                </div>
+                                                                                                                            </div>
+
+                                                                                                                            <Separator />
+                                                                                                                            <h5 className="text-md font-bold text-neutral-600">Analisa 5C+P</h5>
+                                                                                                                            <div className="w-full grid grid-cols-2 lg:grid-cols-3 gap-2">
+                                                                                                                                <div className="flex">
+
+                                                                                                                                    <Field className="w-full max-w-sm">
+                                                                                                                                        <FieldLabel htmlFor="progress-upload">
+                                                                                                                                            <span className="text-neutral-500 font-bold">Capacity</span>
+                                                                                                                                            <span className="font-bold ml-auto text-indigo-500">{item.skor_capacity}</span>
+                                                                                                                                        </FieldLabel>
+                                                                                                                                        <Progress value={(item.skor_capacity / 10) * 100} id="progress-upload" variantIndicator="bg-indigo-500" />
+                                                                                                                                    </Field>
+                                                                                                                                </div>
+                                                                                                                                <div className="flex">
+                                                                                                                                    <Field className="w-full max-w-sm">
+                                                                                                                                        <FieldLabel htmlFor="progress-upload">
+                                                                                                                                            <span className="text-neutral-500 font-bold">Capital</span>
+                                                                                                                                            <span className="font-bold ml-auto text-indigo-500">{item.skor_capital}</span>
+                                                                                                                                        </FieldLabel>
+                                                                                                                                        <Progress value={(item.skor_capital / 10) * 100} id="progress-upload" variantIndicator="bg-indigo-500" />
+                                                                                                                                    </Field>
+                                                                                                                                </div>
+                                                                                                                                <div className="flex">
+                                                                                                                                    <Field className="w-full max-w-sm">
+                                                                                                                                        <FieldLabel htmlFor="progress-upload">
+                                                                                                                                            <span className="text-neutral-500 font-bold">Character</span>
+                                                                                                                                            <span className="font-bold ml-auto text-indigo-500">{item.skor_character}</span>
+                                                                                                                                        </FieldLabel>
+                                                                                                                                        <Progress value={(item.skor_character / 10) * 100} id="progress-upload" variantIndicator="bg-indigo-500" />
+                                                                                                                                    </Field>
+                                                                                                                                </div>
+                                                                                                                                <div className="flex">
+                                                                                                                                    <Field className="w-full max-w-sm">
+                                                                                                                                        <FieldLabel htmlFor="progress-upload">
+                                                                                                                                            <span className="text-neutral-500 font-bold">Collateral</span>
+                                                                                                                                            <span className="font-bold ml-auto text-indigo-500">{item.skor_collateral}</span>
+                                                                                                                                        </FieldLabel>
+                                                                                                                                        <Progress value={(item.skor_collateral / 10) * 100} id="progress-upload" variantIndicator="bg-indigo-500" />
+                                                                                                                                    </Field>
+                                                                                                                                </div>
+                                                                                                                                <div className="flex">
+                                                                                                                                    <Field className="w-full max-w-sm">
+                                                                                                                                        <FieldLabel htmlFor="progress-upload">
+                                                                                                                                            <span className="text-neutral-500 font-bold">Condition</span>
+                                                                                                                                            <span className="font-bold ml-auto text-indigo-500">{item.skor_condition}</span>
+                                                                                                                                        </FieldLabel>
+                                                                                                                                        <Progress value={(item.skor_condition / 10) * 100} id="progress-upload" variantIndicator="bg-indigo-500" />
+                                                                                                                                    </Field>
+                                                                                                                                </div>
+                                                                                                                                <div className="flex">
+                                                                                                                                    <Field className="w-full max-w-sm">
+                                                                                                                                        <FieldLabel htmlFor="progress-upload">
+                                                                                                                                            <span className="text-neutral-500 font-bold">Purpose</span>
+                                                                                                                                            <span className="font-bold ml-auto text-indigo-500">{item.skor_purpose}</span>
+                                                                                                                                        </FieldLabel>
+                                                                                                                                        <Progress value={(item.skor_purpose / 10) * 100} id="progress-upload" variantIndicator="bg-indigo-500" />
+                                                                                                                                    </Field>
+                                                                                                                                </div>
+                                                                                                                            </div>
+                                                                                                                            <div className="w-full flex gap-2">
+
+                                                                                                                                {/* <LucideCamera size={17} className="text-neutral-500" /> */}
+                                                                                                                                <div className="w-full flex flex-col gap-2">
+                                                                                                                                    <Label className="text-sm font-semibold text-neutral-500">
+                                                                                                                                        Foto Rumah
+                                                                                                                                    </Label>
+                                                                                                                                    <div className="w-full flex flex-row gap-2">
+                                                                                                                                        {images.map((image, index) => (
+                                                                                                                                            <ImagePreview key={index}
+                                                                                                                                                src={`${ImageURLKoplink}rumah/${image}`} alt="Foto Rumah" className="w-full h-20 lg:w-50 lg:h-30 object-cover rounded-md" />
+                                                                                                                                        ))}
+
+                                                                                                                                        {/* <img className="w-50 h-30 object-cover rounded-md" src={`${ImageURLKoplink}rumah/${image1[0]}`} alt="Foto Rumah" /> */}
+                                                                                                                                        {/* <img className="w-50 h-30 object-cover rounded-md" src={`${ImageURLKoplink}rumah/${image1[1]}`} alt="Foto Rumah" /> */}
+                                                                                                                                    </div>
+                                                                                                                                </div>
+                                                                                                                            </div>
+                                                                                                                        </div>
+                                                                                                                    </CollapsibleContent>
+                                                                                                                </Collapsible>
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                );
+                                                                                            })}
                                                                                         </div>
                                                                                     </div>
-                                                                                </CardContent>
-                                                                            </Card>
-                                                                        </div>
+
+                                                                                </>
+                                                                            )}
+
 
                                                                     </div>
                                                                 </DialogContent>

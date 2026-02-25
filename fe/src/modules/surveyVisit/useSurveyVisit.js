@@ -52,7 +52,7 @@ export const useSurveyVisit = () => {
 
   // GET DETAIL SURVEY
   const handleGetDetailSurvey = async (params = {}) => {
-    console.log("params", params);
+    // console.log("params", params);
     try {
       setLoadingDetail(true);
       const res = await getDetailSurvey(params);

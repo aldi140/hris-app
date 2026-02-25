@@ -273,15 +273,15 @@ const PageAttendance = ({ title }) => {
             <div className="flex flex-col w-full gap-16 ">
 
                 {/* Header */}
-                <div className="bg-linear-to-r from-green-900 to-teal-700 relative pt-4 pb-16 lg:pb-24 px-6 rounded-b-xl mb-4 overflow-hidden">
+                <div className="bg-linear-to-r from-green-900 to-teal-700 relative pt-4 pb-14 lg:pb-24 px-6 rounded-b-4xl mb-4 overflow-hidden">
                     <div className="flex flex-col items-start justify-between mb-4 gap-y-4 lg:flex-row lg:items-center ">
                         <div className="flex flex-col w-full">
-                            <div className="flex flex-col gap-3 ">
+                            <div className="flex flex-col gap-2 ">
                                 {/* <Icon className="size-6" /> */}
                                 <div className="flex flex-row gap-x-2 justify-between w-full">
                                     <div className="flex flex-row gap-x-2 items-center">
 
-                                        <p className="text-md text-emerald-100 font-bold">Absensi</p>
+                                        <p className="text-xl text-emerald-100 font-bold">Absensi</p>
 
                                     </div>
                                     <RealtimeClock />
@@ -311,8 +311,8 @@ const PageAttendance = ({ title }) => {
                         <CardContent >
                             <div className="flex flex-row items-center justify-between">
                                 <div className="flex flex-row items-center gap-4">
-                                    <div className="p-4 bg-emerald-50 rounded-2xl">
-                                        <HiArrowDownCircle className="text-2xl text-green-800" />
+                                    <div className="p-4 bg-indigo-50 rounded-2xl">
+                                        <HiArrowDownCircle className="text-2xl text-indigo-700" />
                                     </div>
                                     <div className="flex flex-col gap-1">
                                         <p className="text-sm font-semibold text-neutral-700">Check In</p>

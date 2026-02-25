@@ -3,12 +3,44 @@ import L from 'leaflet';
 import { MapContainer, TileLayer, Marker, Popup, Polyline } from "react-leaflet";
 import { ImageURL, ImageURLKoplink } from "../../../../api";
 import { useEffect, useState } from "react";
+import { Alert, AlertDescription, AlertTitle } from '../../../ui/alert';
+import { AlertTriangleIcon } from 'lucide-react';
 
 const Map = ({ data, jenis, typeFile }) => {
     const [longlat, setLonglat] = useState([]);
 
     useEffect(() => {
         if (!data?.length) return;
+
+        const firstData = data[0];
+        const dataLonglat = []
+        const detailAbsen = []
+
+        if (
+            firstData?.absensi?.check_in_latitude &&
+            firstData?.absensi?.check_in_latitude !== 0 &&
+            firstData?.absensi?.check_in_latitude !== "" &&
+            firstData?.absensi?.check_in_longitude &&
+            firstData?.absensi?.check_in_longitude !== 0 &&
+            firstData?.absensi?.check_in_longitude !== ""
+        ) {
+            let tglAbsen = firstData.tgl_survei.split(" ")[0];
+            let jamAbsen = firstData.tgl_survei.split(" ")[1];
+
+
+            detailAbsen.push({
+                tglAbsen,
+                jamAbsen,
+            })
+            dataLonglat.push({
+                lat: firstData?.absensi?.check_in_latitude,
+                lng: firstData?.absensi?.check_in_longitude,
+                detail: detailAbsen[0]
+            });
+        }
+
+
+
 
         if (jenis === "Survey") {
             const coordinates = data
@@ -20,13 +52,15 @@ const Map = ({ data, jenis, typeFile }) => {
                     item.long_rumah !== null &&
                     item.long_rumah !== ""
                 )
-                .map(item => ({
-                    lat: item.lat_rumah,
-                    lng: item.long_rumah,
-                    detail: item
-                }));
+                .map(item => {
+                    return {
+                        lat: item.lat_rumah,
+                        lng: item.long_rumah,
+                        detail: item
+                    };
+                })
 
-            setLonglat(coordinates);
+            dataLonglat.push(...coordinates);
         }
 
         if (jenis === "Kunjungan") {
@@ -45,18 +79,31 @@ const Map = ({ data, jenis, typeFile }) => {
                     detail: item
                 }));
 
-            setLonglat(coordinates);
+            dataLonglat.push(...coordinates);
         }
+
+        setLonglat(dataLonglat);
 
     }, [data, jenis]);
 
     if (!data) return
+    if (data[0]?.absensi.check_in_latitude === '' || data[0]?.absensi.check_in_longitude === '') return (
+        <>
+            <Alert className="w-full border-amber-200 bg-amber-50 text-amber-900 dark:border-amber-900 dark:bg-amber-950 dark:text-amber-50">
+                <AlertTriangleIcon />
+                <AlertTitle>Tidak dapat menemukan lokasi.</AlertTitle>
+                <AlertDescription>
+                    <p>Pastikan karyawan sudah melakukan absensi terlebih dahulu.</p>
+                </AlertDescription>
+            </Alert>
+        </>
+    );
     if (!longlat.length) return <p>Lokasi tidak tersedia</p>;
-    console.log('data', data)
+    // console.log('data', data)
 
     const locationOutlineSvg = `
 <svg xmlns="http://www.w3.org/2000/svg"
-  viewBox="0 0 24 24"
+  viewBox="0 1 24 24"
   class="w-4 h-4 block"
   fill="none"
   stroke="currentColor"
@@ -77,10 +124,6 @@ const Map = ({ data, jenis, typeFile }) => {
 </svg>
 `;
 
-
-
-    console.log('longlat', longlat)
-
     const pinIcon = (index, type) =>
         L.divIcon({
             html: `
@@ -89,7 +132,7 @@ const Map = ({ data, jenis, typeFile }) => {
                     ? "bg-linear-to-t from-emerald-800 to-emerald-600 w-8 h-8"
                     : type === "end"
                         ? "bg-linear-to-t from-red-800 to-red-600 w-8 h-8"
-                        : "bg-linear-to-t from-indigo-800 to-indigo-600 w-6 h-6"
+                        : "bg-linear-to-t from-indigo-800 to-indigo-600 w-7 h-7"
                 }
             rounded-full border-2 border-white shadow
             relative flex items-center justify-center">
@@ -154,34 +197,49 @@ const Map = ({ data, jenis, typeFile }) => {
                 let alamat = "";
                 const isFirst = index === 0;
                 const isLast = index === longlat?.length - 1;
-                const icon = pinIcon(index, isFirst ? "start" : isLast ? "end" : "middle");
-                const detailData = data[index];
+                const icon = pinIcon(index - 1, isFirst ? "start" : isLast ? "end" : "middle");
                 if (jenis == 'Survey') {
-                    nama = detailData?.nama
-                    alamat = detailData?.alamat
-                    imgArr = detailData?.foto_rumah.split(",");
+                    nama = item?.detail.nama
+                    alamat = item?.detail.alamat
+                    if (!isFirst) {
+                        imgArr = item?.detail.foto_rumah.split(",");
+                    }
                 }
                 if (jenis == 'Kunjungan') {
-                    nama = detailData?.nama_nasabah
-                    alamat = detailData?.alamat
+                    nama = item?.detail.nama_nasabah
+                    alamat = item?.detail.alamat
                     // console.log(imgArr[0])
-                    imgArr = detailData?.foto_lokasi.split(",");
+                    if (!isFirst) {
+                        imgArr = item?.detail.foto_nasabah.split(",");
+                    }
                 }
                 return (
                     <Marker key={index} position={[item.lat, item.lng]} icon={icon}>
-                        <Popup>
-                            <div className="flex flex-col gap-2 max-w-40">
-                                <img
-                                    src={`${ImageURLKoplink}${typeFile}/${imgArr[0]}`}
-                                    // src=""
-                                    alt="foto lokasi"
-                                    className="w-40 rounded h-40 object-cover mx-auto"
-                                />
-                                <div className="text-sm font-semibold">Lokasi {jenis} ke- {index + 1}</div>
-                                <div className="text-xs text-gray-500">{nama}</div>
-                                <div className="text-xs text-gray-500">{alamat}</div>
-                            </div>
-                        </Popup>
+                        {index === 0 ?
+                            <Popup>
+                                <div className="flex flex-col gap-2 max-w-40">
+                                    <div className="text-sm font-semibold">Titik Awal Karyawan</div>
+                                    <div className="text-xs text-gray-500">Longtitude : {item.lat}</div>
+                                    <div className="text-xs text-gray-500">Latitude   : {item.lng}</div>
+                                    <div className="text-xs text-gray-500">Jam Absen : {item.detail.jamAbsen}</div>
+                                    <div className="text-xs text-gray-500">Tgl  Absen : {item.detail.tglAbsen}</div>
+                                </div>
+                            </Popup>
+                            : (
+                                <Popup>
+                                    <div className="flex flex-col gap-2 max-w-40">
+                                        <img
+                                            src={`${ImageURLKoplink}${typeFile}/${imgArr[0]}`}
+                                            // src=""
+                                            alt="foto lokasi"
+                                            className="w-40 rounded h-40 object-cover mx-auto"
+                                        />
+                                        <div className="text-sm font-semibold">Lokasi {jenis} ke- {index}</div>
+                                        <div className="text-xs text-gray-500">{nama}</div>
+                                        <div className="text-xs text-gray-500">{alamat}</div>
+                                    </div>
+                                </Popup>
+                            )}
                     </Marker>
                 );
             })}
