@@ -10,7 +10,7 @@ import { cn } from "../../../../lib/utils";
 
 const SidebarResponsive = ({ location }) => {
     const sectionMasterDataRoutes = [
-        "/karyawan",
+        "/employee",
         "/jabatan",
         "/departmen",
         "/shift",
@@ -168,10 +168,10 @@ const SidebarResponsive = ({ location }) => {
                             <CollapsibleContent className="max-h-[170px] overflow-y-auto scrollbar-thin data-[state=closed]:animate-collapsible-up data-[state=open]:animate-collapsible-down">
                                 <div className="ml-4 border-l-2 border-muted pl-4 flex flex-col gap-1 py-2">
                                     <NavLinkResponsive
-                                        to="karyawan"
-                                        active={location.pathname.startsWith("/karyawan")}
+                                        to="employee"
+                                        active={location.pathname.startsWith("/employee")}
                                         icon={Dot}
-                                        title="Karyawan"
+                                        title="employee"
                                     />
                                     <NavLinkResponsive
                                         to="jabatan"
