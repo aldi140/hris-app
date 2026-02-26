@@ -171,7 +171,7 @@ const SidebarResponsive = ({ location }) => {
                                         to="employee"
                                         active={location.pathname.startsWith("/employee")}
                                         icon={Dot}
-                                        title="employee"
+                                        title="Karyawan"
                                     />
                                     <NavLinkResponsive
                                         to="jabatan"
