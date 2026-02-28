@@ -7,11 +7,12 @@ import { Avatar, AvatarFallback, AvatarImage } from "../../../Components/ui/avat
 import { ImageURL } from "../../../api";
 import { useEffect, useMemo, useState } from "react";
 import { Button } from "../../../Components/ui/button";
-import { LucideCalendarArrowUp, LucideCircleAlert, LucideClock, LucideCloudSun, LucideMapPin, LucideScanQrCode, LucideWallet } from "lucide-react";
+import { LucideCalendarArrowUp, LucideClock, LucideScanQrCode, LucideWallet } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useApiError } from "../../../hooks/useApiError";
 import { getDetailAttendance } from "../../../modules/attendance/AttendanceService";
 import { toTitleCase } from "../../../lib/utils";
+import { IoNotifications } from "react-icons/io5";
 
 const RealtimeClock = () => {
     const [time, setTime] = useState("");
@@ -85,6 +86,7 @@ const PageHome = () => {
 
     const getDepartmenName = (id) => departmenMap[id]
     const getOfficeName = (id_kantor) => officeMap[id_kantor]
+    const notifCount = 10
 
     // console.log('data', data)
 
@@ -134,7 +136,19 @@ const PageHome = () => {
 
 
                         </div>
-                        <RealtimeClock />
+                        <div className="flex items-center gap-4">
+                            <div className="relative z-10">
+                                <IoNotifications className="size-5 shrink-0 text-white" />
+                                {notifCount > 0 && (
+                                    <div className="absolute -top-1 -right-1 min-w-4 h-4 px-1 bg-red-500 rounded-full flex items-center justify-center">
+                                        <span className="text-[8px] text-white font-bold leading-none">
+                                            {notifCount > 99 ? '99+' : notifCount}
+                                        </span>
+                                    </div>
+                                )}
+                            </div>
+                            <RealtimeClock />
+                        </div>
                     </div>
                     <div className="w-full bg-white/10 backdrop-blur-sm rounded-xl px-6 py-2 z-10">
                         <div className="flex justify-between">
@@ -211,30 +225,31 @@ const PageHome = () => {
             <div className="p-4 bg-white">
                 <p className="text-sm text-gray-800 font-bold mb-4">Menu</p>
                 <div className="grid grid-cols-4 gap-4">
-                    <div className="flex flex-col gap-2 text-center">
+                    <Link to="/attendance" className="flex flex-col gap-2 text-center">
                         <div className="p-3 mx-auto bg-indigo-50 rounded-xl text-indigo-600">
                             <LucideCalendarArrowUp />
                         </div>
                         <p className="text-xs text-gray-600 ">Absensi</p>
-                    </div>
-                    <div className="flex flex-col gap-2 text-center">
+                    </Link>
+                    {/* <Link to="/leave" className="flex flex-col gap-2 text-center">
                         <div className="p-3 mx-auto bg-purple-50 rounded-xl text-purple-600">
                             <LucideCloudSun />
                         </div>
-                        <p className="text-xs text-gray-500">Cuti</p>
-                    </div>
-                    <div className="flex flex-col gap-2 text-center">
+                        <p className="text-xs text-gray-600 ">Cuti</p>
+                    </Link> */}
+                    <Link to="/permission" className="flex flex-col gap-2 text-center">
                         <div className="p-3 mx-auto bg-orange-50 rounded-xl text-orange-600">
                             <LucideClock />
                         </div>
-                        <p className="text-xs text-gray-500">Izin</p>
-                    </div>
-                    <div className="flex flex-col gap-2 text-center">
+                        <p className="text-xs text-gray-600 ">Pengajuan Izin</p>
+                    </Link>
+                    <Link to="/salary" className="flex flex-col gap-2 text-center">
                         <div className="p-3 mx-auto bg-rose-50 rounded-xl text-rose-600">
                             <LucideWallet />
                         </div>
-                        <p className="text-xs text-gray-500">Slip Gaji</p>
-                    </div>
+                        <p className="text-xs text-gray-600 ">Slip Gaji</p>
+                    </Link>
+
                 </div>
             </div>
         </div>

@@ -9,7 +9,7 @@ export const useApiError = () => {
 
   return (error) => {
     if (error?.type === "SESSION_EXPIRED") {
-      console.log("SESSION_EXPIRED" + error.type);
+      // console.log("SESSION_EXPIRED" + error.type);
       toast.error("Session habis, silakan login ulang");
       setTimeout(() => {
         dispatch(logout());

@@ -22,6 +22,12 @@ import MainLayoutUser from "../Components/layouts/users/main.layout";
 import PageHome from "../pages/users/home";
 import PageNotification from "../pages/users/notif";
 import PageProfile from "../pages/users/profile";
+import PageLeave from "../pages/users/leave";
+import PagePermission from "../pages/users/permission";
+import PageSalary from "../pages/users/salary";
+import PagePermissionLeave from "../pages/users/permission/permission_leave";
+import PagePermissionSick from "../pages/users/permission/permission_sick";
+import PagePermissionAbsent from "../pages/users/permission/permission_absent";
 
 export const routes = [
   {
@@ -41,22 +47,25 @@ export const routes = [
       </PrivateRoute>
     ),
     children: [
-      {
-        path: "/home",
-        element: <PageHome title="Home" />,
-      },
-      {
-        path: "/attendance",
-        element: <PageAttendance title="Absensi" />,
-      },
-      {
-        path: "/notification",
-        element: <PageNotification title="Notifikasi" />,
-      },
-      {
-        path: "/profile",
-        element: <PageProfile title="Profil" />,
-      },
+      { path: "/home", element: <PageHome title="Home" /> },
+
+      { path: "/attendance", element: <PageAttendance title="Absensi" /> },
+
+      { path: "/notification", element: <PageNotification title="Notifikasi" /> },
+
+      { path: "/leave", element: <PageLeave title="Cuti" /> },
+
+      { path: "/permission", element: <PagePermission title="Pengajuan Izin" /> },
+      { path: "/permission/leave", element: <PagePermissionLeave title="Izin Cuti" /> },
+      { path: "/permission/sick", element: <PagePermissionSick title="Izin Sakit" /> },
+      { path: "/permission/absent", element: <PagePermissionAbsent title="Izin Absen" /> },
+
+
+      { path: "/salary", element: <PageSalary title="Slip Gaji" /> },
+
+      { path: "/profile", element: <PageProfile title="Profile" /> },
+
+
     ],
   },
 
