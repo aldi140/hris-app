@@ -195,7 +195,7 @@ const PagePermissionLeave = ({ title }) => {
                             </div>
                             <Field>
                                 <FieldLabel htmlFor="checkout-7j9-optional-comments">
-                                    Keterngan
+                                    Keterangan
                                 </FieldLabel>
                                 <FieldContent>
                                     <Textarea

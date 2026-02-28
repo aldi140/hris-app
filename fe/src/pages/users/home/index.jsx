@@ -154,7 +154,7 @@ const PageHome = () => {
                         <div className="flex justify-between">
                             <div className="flex flex-col">
                                 <span className="text-xs text-white/50">Senin</span>
-                                <p className="text-lg font-bold text-white">25 Januari 2025</p>
+                                <p className="text-lg font-semibold text-white">25 Januari 2025</p>
                             </div>
                             <div className="flex flex-col items-end justify-end">
                                 <div className="flex items-center gap-2">
