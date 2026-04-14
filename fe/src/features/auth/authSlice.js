@@ -16,7 +16,6 @@ export const loginUser = createAsyncThunk(
         const msg = err.message || "Login failed";
         return rejectWithValue({ message: msg });
       }
-
       // return rejectWithValue({
       //   message: "Network error",
       //   type: "NETWORK_ERROR",

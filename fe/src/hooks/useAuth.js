@@ -1,6 +1,6 @@
 import { useDispatch } from "react-redux";
 import { login, register } from "../service/authService";
-import { loginUser, logout } from "../features/auth/authSlice";
+import { loginUser, logout, setAuthFromUrl } from "../features/auth/authSlice";
 import { useNavigate } from "react-router-dom";
 
 export const useAuth = () => {
@@ -28,6 +28,8 @@ export const useAuth = () => {
   };
 
   const handleAuthFromUrl = () => {
+    console.log("Full URL:", window.location.href);
+    console.log("Search:", window.location.search);
     const params = new URLSearchParams(window.location.search);
     // console.log("params", params);
     const token = params.get("token");
