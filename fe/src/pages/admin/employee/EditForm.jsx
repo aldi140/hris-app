@@ -69,7 +69,6 @@ export const EditForm = ({ data, jabatanList, departmenList, onClose, onSubmit }
                     data.id,
                     formData,
                     values
-
                 )
                 console.log(res);
                 toast.success(res.data.message)

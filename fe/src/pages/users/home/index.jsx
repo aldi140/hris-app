@@ -154,14 +154,14 @@ const PageHome = () => {
                         <div className="flex justify-between">
                             <div className="flex flex-col">
                                 <span className="text-xs text-white/50">Senin</span>
-                                <p className="text-lg font-semibold text-white">25 Januari 2025</p>
+                                <p className="text-md font-semibold text-white">25 Januari 2025</p>
                             </div>
                             <div className="flex flex-col items-end justify-end">
                                 <div className="flex items-center gap-2">
 
                                     <p className="text-xs  text-white/70">{toTitleCase(getOfficeName(user?.id_kantor))}</p>
                                 </div>
-                                <p className="text-lg font-semibold text-white">{getDepartmenName(user?.id_departemen)}</p>
+                                <p className="text-md font-semibold text-white">{getDepartmenName(user?.id_departemen)}</p>
                             </div>
                         </div>
                     </div>
@@ -186,8 +186,8 @@ const PageHome = () => {
                             !jadwal?.schedule_date
                                 ? 'Tidak ada jadwal hari ini!'
                                 : !data?.check_in_time
-                                    ? 'Kamu belum melakukan absen hari ini'
-                                    : 'Sudah melakukan absen hari ini'
+                                    ? 'Kamu belum melakukan presensi hari ini'
+                                    : 'Sudah melakukan presensi hari ini'
                         }
                     </p>
                 </div>
@@ -203,8 +203,8 @@ const PageHome = () => {
                                 !jadwal?.schedule_date
                                     ? 'Tidak ada jadwal hari ini, selamat beristirahat!'
                                     : !data?.check_in_time
-                                        ? 'Check in untuk memulai absen hari ini'
-                                        : 'Jangan lupa check out untuk menyelesaikan absen hari ini'
+                                        ? 'Check in untuk memulai presensi hari ini'
+                                        : 'Jangan lupa check out untuk menyelesaikan presensi hari ini'
                             }
                         </p>
                         {

@@ -1,4 +1,4 @@
-import { CalendarArrowUp, CalendarOff, ChevronRight, Database, Dot, LayoutDashboard, MapPinCheck, PanelsLeftBottom } from "lucide-react";
+import { CalendarArrowUp, CalendarOff, ChevronRight, Database, Dot, LayoutDashboard, LucideFolderInput, MapPinCheck, PanelsLeftBottom } from "lucide-react";
 import { Button } from "../../../ui/button"
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "../../../ui/sheet"
 
@@ -117,8 +117,9 @@ const SidebarResponsive = ({ location }) => {
                                 </div>
                             </CollapsibleContent>
                         </Collapsible>
+
                         {/* Cuti */}
-                        <Collapsible open={openLeave} onOpenChange={setOpenLeave} >
+                        {/* <Collapsible open={openLeave} onOpenChange={setOpenLeave} >
                             <CollapsibleTrigger
                                 className={cn(
                                     "group flex items-center justify-between w-full p-3 text-sm rounded-md transition",
@@ -143,7 +144,14 @@ const SidebarResponsive = ({ location }) => {
                                     <NavLinkResponsive to="/riwayat-cuti" icon={Dot} title="Riwayat Pengajuan" />
                                 </div>
                             </CollapsibleContent>
-                        </Collapsible>
+                        </Collapsible> */}
+
+                        <NavLinkResponsive
+                            to="/submission"
+                            isMasterActive={location.pathname === "/submission"}
+                            icon={LucideFolderInput}
+                            title="Pengajuan Izin"
+                        />
 
                         {/* Master Data */}
                         <Collapsible open={openMaster} onOpenChange={setOpenMaster}>

@@ -20,7 +20,7 @@ const NavLinkResponsive = ({ isMasterActive = false, active = false, to = "#", t
                         :
                         'text-muted-foreground hover:text-indigo-500 hover:bg-indigo-100',
 
-                'flex items-center gap-3 rounded-lg p-2 font-medium transition-all',
+                'flex items-center gap-3 rounded-lg p-3 font-medium transition-all',
 
             )}
         >

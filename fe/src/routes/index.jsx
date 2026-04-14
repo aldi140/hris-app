@@ -28,6 +28,7 @@ import PageSalary from "../pages/users/salary";
 import PagePermissionLeave from "../pages/users/permission/permission_leave";
 import PagePermissionSick from "../pages/users/permission/permission_sick";
 import PagePermissionAbsent from "../pages/users/permission/permission_absent";
+import PageSubmission from "../pages/admin/submission";
 
 export const routes = [
   {
@@ -111,9 +112,11 @@ export const routes = [
       // Survey-kunjungan
       { path: 'field-visit', element: <FieldVisit title={"List Survey & Kunjungan"} /> },
 
-
       // Kantor
       { path: 'office', element: <ListOffice title={"List Kantor"} /> },
+
+      // Pengajuan Izin
+      { path: 'submission', element: <PageSubmission title={"List Pengajuan Izin"} /> },
 
       // // Tunjangan
       // { path: '/tunjangan', element: <PageKaryawan title={"Karyawan"} /> },

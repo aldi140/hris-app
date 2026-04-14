@@ -43,9 +43,16 @@ export const formatTimeToMinutes = (time) => {
   return parseInt(hours) * 60 + parseInt(minutes);
 };
 
-export const locationMapUrl = (long, lat) => {
+export const locationMapUrl = (lat, long) => {
   if (!lat || !long) return "-";
   return `https://www.google.com/maps/search/?api=1&query=${lat},${long}`;
+};
+export const locationMapUrlOffice = (lat, long, name) => {
+  if (!lat || !long) return "-";
+
+  const query = name ? `${name} ${lat},${long}` : `${lat},${long}`;
+
+  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
 };
 
 export const getDateOfWeek = (baseDate) => {

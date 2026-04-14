@@ -15,3 +15,13 @@ export const getOfficeAll = async () => {
   const response = await api.get("/v1/kantor");
   return response;
 };
+
+export const updateOffice = async ({ id, data }) => {
+  const response = await api.post(`/v1/kantor/update/${id}`, data);
+  return response;
+};
+
+// export const getOfficeById = async ({ id }) => {
+//   const response = await api.get(`/v1/kantor/show/${id}`);
+//   return response;
+// };

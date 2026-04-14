@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { getOffice, getOfficeAll } from "./officeService";
+import { getOffice, getOfficeAll, updateOffice } from "./officeService";
 
 export const useOffice = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -75,16 +75,21 @@ export const useOffice = () => {
     }
   };
 
-  const handleUpdateOffice = async ({ id, nama }) => {
+  const handleUpdateOffice = async (id, data, values) => {
+    // console.log('data', data)
     try {
       setIsLoading(true);
       setError(null);
-      const response = await updateOffice({ id, nama });
-      return response;
-    } catch {
-      setError(
-        error?.response?.data?.message || error?.message || "Terjadi kesalahan",
+      const response = await updateOffice({ id, data });
+      setOfficeList((prev) =>
+        prev.map((item) => (item.id === id ? { ...item, ...values } : item)),
       );
+      return response;
+    } catch (error) {
+      const message =
+        error?.response?.data?.message || error?.message || "Terjadi kesalahan";
+      setError(message);
+      throw error; //
     } finally {
       setIsLoading(false);
     }

@@ -63,6 +63,13 @@ export const authSlice = createSlice({
       localStorage.removeItem("user");
       localStorage.removeItem("token");
     },
+    setAuthFromUrl: (state, action) => {
+      state.user = action.payload.user;
+      state.token = action.payload.token;
+      state.isAuthenticated = true;
+      localStorage.setItem("user", JSON.stringify(action.payload.user));
+      localStorage.setItem("token", action.payload.token);
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -101,28 +108,11 @@ export const authSlice = createSlice({
         state.isLoading = false;
         state.isError = action.payload.message;
       });
-    // .addCase(checkAuth.pending, (state) => {
-    //   state.isLoading = true;
-    // })
-    // .addCase(checkAuth.fulfilled, (state, action) => {
-    //   state.isLoading = false;
-    //   state.user = action.payload.user;
-    //   state.isAuthenticated = true;
-    // })
-    // .addCase(checkAuth.rejected, (state) => {
-    //   state.isLoading = false;
-    //   state.user = null;
-    //   state.token = null;
-    //   state.isAuthenticated = false;
-
-    //   localStorage.removeItem("user");
-    //   localStorage.removeItem("token");
-    // });
   },
 });
 
 export const authReducer = authSlice.reducer;
-export const { logout } = authSlice.actions;
+export const { logout, setAuthFromUrl } = authSlice.actions;
 
 export const isAuthentication = (state) => state.auth.isAuthenticated;
 // export const dataToken = (state) => state.auth.token

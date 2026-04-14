@@ -1,4 +1,4 @@
-import { BriefcaseBusiness, Building, CalendarArrowUp, CalendarClock, CalendarOff, ChevronRight, Database, Dot, LayoutDashboard, MapPinCheck } from "lucide-react";
+import { BriefcaseBusiness, Building, CalendarArrowUp, CalendarClock, CalendarOff, ChevronRight, Database, Dot, LayoutDashboard, LucideFolderInput, MapPinCheck } from "lucide-react";
 import NavLink from "../../../commons/atoms/NavLink";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "../../../ui/collapsible";
 import { cn } from "../../../../lib/utils";
@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 
 const Sidebar = ({ location, minMaxSize }) => {
     const sectionMasterDataRoutes = [
-        "/karyawan",
+        "/employee",
         "/jabatan",
         "/departmen",
         "/shift",
@@ -107,7 +107,7 @@ const Sidebar = ({ location, minMaxSize }) => {
             </Collapsible>
 
             {/* Cuti & Izin */}
-            <Collapsible open={openLeave} onOpenChange={setOpenLeave} >
+            {/* <Collapsible open={openLeave} onOpenChange={setOpenLeave} >
                 <CollapsibleTrigger
                     className={cn(
                         "group flex items-center justify-between w-full p-3 text-sm rounded-md transition",
@@ -140,7 +140,14 @@ const Sidebar = ({ location, minMaxSize }) => {
                         </div>
                     </CollapsibleContent>
                 )}
-            </Collapsible>
+            </Collapsible> */}
+
+            <NavLink
+                to="/submission"
+                isMasterActive={location.pathname === "/submission"}
+                icon={LucideFolderInput}
+                {...(minMaxSize && { title: "Pengajuan Izin" })}
+            />
 
             {/* Cuti */}
             {/* <Collapsible open={open}>
