@@ -16,11 +16,15 @@ import { AspectRatio } from "../../Components/ui/aspect-ratio";
 const PageLogin = ({ title }) => {
     const location = useLocation();
     const isAuth = useSelector(isAuthentication);
-    const { handleLogin } = useAuth();
+    const { handleLogin, handleAuthFromUrl } = useAuth();
 
     const [messageSuccess, setMessageSuccess] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
+
+    useEffect(() => {
+        handleAuthFromUrl(); // ← tambah ini
+    }, []);
 
     useEffect(() => {
         if (location.state?.reason === "SESSION_EXPIRED") {
