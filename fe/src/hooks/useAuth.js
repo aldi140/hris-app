@@ -29,9 +29,11 @@ export const useAuth = () => {
 
   const handleAuthFromUrl = () => {
     const params = new URLSearchParams(window.location.search);
-    console.log("params", params);
+    // console.log("params", params);
     const token = params.get("token");
     const userParam = params.get("user");
+    console.log("token", token);
+    console.log("user", userParam);
 
     if (token && userParam) {
       try {
