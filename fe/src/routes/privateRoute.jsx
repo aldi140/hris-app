@@ -6,14 +6,14 @@ export const PrivateRoute = ({ children }) => {
     const auth = useSelector(isAuthentication);
     // console.log(auth)
 
-    // if (!auth) {
-    //     return (
-    //         <Navigate
-    //             to="/login"
-    //             replace
-    //         />
-    //     );
-    // }
+    if (!auth) {
+        return (
+            <Navigate
+                to="/login"
+                replace
+            />
+        );
+    }
 
 
     // support:
