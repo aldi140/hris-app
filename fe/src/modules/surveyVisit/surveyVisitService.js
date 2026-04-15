@@ -13,7 +13,7 @@ export const getSurveyVisit = async ({
   if (start_date) params.start_date = start_date;
   if (end_date) params.end_date = end_date;
   if (page) params.page = page;
-  const response = await api.get("/v1/survei/listdata", { params });
+  const response = await api.get("/survei/listdata", { params });
   return response;
 };
 
@@ -22,7 +22,7 @@ export const getDetailSurvey = async ({ id_karyawan, tanggal, id_kantor }) => {
   if (id_karyawan) params.id_karyawan = id_karyawan;
   if (tanggal) params.tanggal = tanggal;
   if (id_kantor) params.id_kantor = id_kantor;
-  const response = await api.get("/v1/survei/listdata/survei", { params });
+  const response = await api.get("/survei/listdata/survei", { params });
   return response;
 };
 
@@ -31,6 +31,6 @@ export const getDetailVisit = async ({ id_karyawan, tanggal, id_kantor }) => {
   if (id_karyawan) params.id_karyawan = id_karyawan;
   if (tanggal) params.tanggal = tanggal;
   if (id_kantor) params.id_kantor = id_kantor;
-  const response = await api.get("/v1/survei/listdata/kunjungan", { params });
+  const response = await api.get("/survei/listdata/kunjungan", { params });
   return response;
 };
