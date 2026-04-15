@@ -44,11 +44,14 @@ export const useAuth = () => {
     if (token && userParam) {
       try {
         const user = JSON.parse(decodeURIComponent(userParam));
-        console.log("user", user);
-        console.log("token", token);
-        // dispatch(setAuthFromUrl({ user, token }));
-        // window.history.replaceState({}, "", window.location.pathname);
-        // navigate("/");
+        // console.log("user", user);
+        // console.log("token", token);
+        // ✅ simpan ke localStorage di luar reducer
+        localStorage.setItem("token", token);
+        localStorage.setItem("user", JSON.stringify(user));
+        dispatch(setAuthFromUrl({ user, token }));
+        window.history.replaceState({}, "", window.location.pathname);
+        navigate("/");
       } catch (err) {
         console.error("Gagal parse auth dari URL:", err);
         dispatch(setInitialized()); // ← tetap mark initialized meski error

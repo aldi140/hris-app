@@ -68,8 +68,6 @@ export const authSlice = createSlice({
       state.token = action.payload.token;
       state.isAuthenticated = true;
       state.isInitialized = true;
-      localStorage.setItem("user", JSON.stringify(action.payload.user));
-      localStorage.setItem("token", action.payload.token);
     },
     setInitialized: (state) => {
       state.isInitialized = true;
