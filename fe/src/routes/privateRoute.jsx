@@ -6,9 +6,19 @@ export const PrivateRoute = ({ children }) => {
     const isAuthenticated = useSelector(isAuthentication);
     const isInitialized = useSelector((state) => state.auth.isInitialized);
 
+    useEffect(() => {
+        if (isInitialized && !isAuthenticated) {
+            window.location.replace("https://koplink.net/login.php");
+        }
+    }, [isInitialized, isAuthenticated]);
+
     if (!isInitialized) {
-        return <div>Loading...</div>; // atau spinner component
+        return <div>Loading...</div>;
     }
 
-    return isAuthenticated ? children : <Navigate to="https://koplink.net/login.php" replace />;
+    if (!isAuthenticated) {
+        return null;
+    }
+
+    return children;
 };
