@@ -1,6 +1,11 @@
 import { useDispatch } from "react-redux";
 import { login, register } from "../service/authService";
-import { loginUser, logout, setAuthFromUrl } from "../features/auth/authSlice";
+import {
+  loginUser,
+  logout,
+  setAuthFromUrl,
+  setInitialized,
+} from "../features/auth/authSlice";
 import { useNavigate } from "react-router-dom";
 
 export const useAuth = () => {
@@ -28,14 +33,9 @@ export const useAuth = () => {
   };
 
   const handleAuthFromUrl = () => {
-    console.log("Full URL:", window.location.href);
-    console.log("Search:", window.location.search);
     const params = new URLSearchParams(window.location.search);
-    // console.log("params", params);
     const token = params.get("token");
     const userParam = params.get("user");
-    console.log("token", token);
-    console.log("user", userParam);
 
     if (token && userParam) {
       try {
@@ -45,7 +45,10 @@ export const useAuth = () => {
         navigate("/");
       } catch (err) {
         console.error("Gagal parse auth dari URL:", err);
+        dispatch(setInitialized()); // ← tetap mark initialized meski error
       }
+    } else {
+      dispatch(setInitialized()); // ← tidak ada params, langsung initialized
     }
   };
 

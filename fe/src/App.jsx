@@ -5,11 +5,11 @@ import { useEffect } from 'react';
 
 function App() {
   const element = useRoutes(routes);
-  // const { handleAuthFromUrl } = useAuth();
+  const { handleAuthFromUrl } = useAuth();
 
-  // useEffect(() => {
-  //   handleAuthFromUrl();
-  // }, []);
+  useEffect(() => {
+    handleAuthFromUrl();
+  }, []);
 
   return element;
 }

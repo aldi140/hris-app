@@ -22,9 +22,9 @@ const PageLogin = ({ title }) => {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
 
-    useEffect(() => {
-        handleAuthFromUrl(); // ← tambah ini
-    }, []);
+    // useEffect(() => {
+    //     handleAuthFromUrl(); // ← tambah ini
+    // }, []);
 
     useEffect(() => {
         if (location.state?.reason === "SESSION_EXPIRED") {

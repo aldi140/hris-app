@@ -48,6 +48,7 @@ const initialState = {
   user: user,
   token: token,
   isAuthenticated: !!token,
+  isInitialized: !!token,
   isLoading: false,
   isError: null,
 };
@@ -66,8 +67,12 @@ export const authSlice = createSlice({
       state.user = action.payload.user;
       state.token = action.payload.token;
       state.isAuthenticated = true;
+      state.isInitialized = true;
       localStorage.setItem("user", JSON.stringify(action.payload.user));
       localStorage.setItem("token", action.payload.token);
+    },
+    setInitialized: (state) => {
+      state.isInitialized = true;
     },
   },
   extraReducers: (builder) => {
@@ -111,7 +116,7 @@ export const authSlice = createSlice({
 });
 
 export const authReducer = authSlice.reducer;
-export const { logout, setAuthFromUrl } = authSlice.actions;
+export const { logout, setAuthFromUrl, setInitialized } = authSlice.actions;
 
 export const isAuthentication = (state) => state.auth.isAuthenticated;
 // export const dataToken = (state) => state.auth.token
