@@ -1,23 +1,10 @@
-import { useSelector } from "react-redux";
-import { Navigate, Outlet } from "react-router-dom";
-import { isAuthentication } from "../features/auth/authSlice";
+const PrivateRoute = ({ children }) => {
+    const isAuthenticated = useSelector(isAuthentication);
+    const isInitialized = useSelector((state) => state.auth.isInitialized);
 
-export const PrivateRoute = ({ children }) => {
-    const auth = useSelector(isAuthentication);
-    // console.log(auth)
-
-    if (!auth) {
-        return (
-            <Navigate
-                to="/login"
-                replace
-            />
-        );
+    if (!isInitialized) {
+        return <div>Loading...</div>; // atau spinner component
     }
 
-
-    // support:
-    // 1. children (Private + Layout)
-    // 2. Outlet (Private tanpa Layout)
-    return children ? children : <Outlet />;
+    return isAuthenticated ? children : <Navigate to="/login" replace />;
 };
