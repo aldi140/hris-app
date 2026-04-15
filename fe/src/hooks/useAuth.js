@@ -29,7 +29,7 @@ export const useAuth = () => {
 
   const handleLogout = () => {
     dispatch(logout());
-    navigate("/login");
+    navigate("https://koplink.net/login.php");
   };
 
   const handleAuthFromUrl = () => {
