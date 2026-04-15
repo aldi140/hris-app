@@ -38,22 +38,24 @@ export const useAuth = () => {
     const userParam = params.get("user");
 
     console.log("params", params);
-    console.log("token", token);
-    console.log("userParam", userParam);
+    // console.log("token", token);
+    // console.log("userParam", userParam);
 
-    // if (token && userParam) {
-    //   try {
-    //     const user = JSON.parse(decodeURIComponent(userParam));
-    //     dispatch(setAuthFromUrl({ user, token }));
-    //     window.history.replaceState({}, "", window.location.pathname);
-    //     navigate("/");
-    //   } catch (err) {
-    //     console.error("Gagal parse auth dari URL:", err);
-    //     dispatch(setInitialized()); // ← tetap mark initialized meski error
-    //   }
-    // } else {
-    //   dispatch(setInitialized()); // ← tidak ada params, langsung initialized
-    // }
+    if (token && userParam) {
+      try {
+        const user = JSON.parse(decodeURIComponent(userParam));
+        console.log("user", user);
+        console.log("token", token);
+        // dispatch(setAuthFromUrl({ user, token }));
+        // window.history.replaceState({}, "", window.location.pathname);
+        // navigate("/");
+      } catch (err) {
+        console.error("Gagal parse auth dari URL:", err);
+        dispatch(setInitialized()); // ← tetap mark initialized meski error
+      }
+    } else {
+      dispatch(setInitialized()); // ← tidak ada params, langsung initialized
+    }
   };
 
   return { handleLogin, handleRegister, handleLogout, handleAuthFromUrl };
