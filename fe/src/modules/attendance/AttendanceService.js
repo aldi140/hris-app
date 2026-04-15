@@ -23,6 +23,6 @@ export const getAttendance = async ({ search, filter, tgl_absen, page }) => {
   if (tgl_absen) params.tgl_absen = tgl_absen;
   if (page) params.page = page;
 
-  const response = await api.get("/v1/absensi/listdata", { params });
+  const response = await api.get("/absensi/listdata", { params });
   return response;
 };

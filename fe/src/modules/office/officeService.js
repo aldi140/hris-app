@@ -7,21 +7,21 @@ export const getOffice = async ({ search, filter, page } = {}) => {
   if (filter) params.filter = filter;
   if (page) params.page = page;
 
-  const response = await api.get("/v1/kantor/listdata", { params });
+  const response = await api.get("/kantor/listdata", { params });
   return response;
 };
 
 export const getOfficeAll = async () => {
-  const response = await api.get("/v1/kantor");
+  const response = await api.get("/kantor");
   return response;
 };
 
 export const updateOffice = async ({ id, data }) => {
-  const response = await api.post(`/v1/kantor/update/${id}`, data);
+  const response = await api.post(`/kantor/update/${id}`, data);
   return response;
 };
 
 // export const getOfficeById = async ({ id }) => {
-//   const response = await api.get(`/v1/kantor/show/${id}`);
+//   const response = await api.get(`/kantor/show/${id}`);
 //   return response;
 // };
