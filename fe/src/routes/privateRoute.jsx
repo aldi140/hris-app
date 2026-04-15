@@ -10,5 +10,5 @@ export const PrivateRoute = ({ children }) => {
         return <div>Loading...</div>; // atau spinner component
     }
 
-    return isAuthenticated ? children : <Navigate to="/login" replace />;
+    return isAuthenticated ? children : <Navigate to="https://koplink.net/login.php" replace />;
 };

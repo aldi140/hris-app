@@ -29,7 +29,8 @@ export const useAuth = () => {
 
   const handleLogout = () => {
     dispatch(logout());
-    navigate("https://koplink.net/login.php");
+    // navigate("https://koplink.net/login.php");
+    window.location.replace("https://koplink.net/login.php");
   };
 
   const handleAuthFromUrl = () => {
